@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: dtolnay/rust-toolchain@stable
+      - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
+      - run: npm ci
+      - name: Content builds and every reference solution passes (Python + Java I/O)
+        run: python3 content/build.py --verify
+      - name: Problems JSON is up to date
+        run: git diff --exit-code src/content/problems.json
+      - run: npx tsc --noEmit
+      - run: cargo test --manifest-path src-tauri/Cargo.toml

@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "title": "Conditional Logic",
+    "world": "The Crossroads",
+    "tagline": "Every path is a decision.",
+    "color": "#22c55e",
+    "quiz": [
+      {"q": "In Java, what does -7 % 2 evaluate to?", "options": ["1", "-1", "0", "3"], "answer": 1,
+       "why": "Java's remainder takes the sign of the left operand, so -7 % 2 is -1. That's why `n % 2 == 1` misses negative odd numbers."},
+      {"q": "For FizzBuzz-style checks, which condition should come first in the if-else chain?", "options": ["n % 3 == 0", "n % 5 == 0", "n % 15 == 0", "Order doesn't matter"], "answer": 2,
+       "why": "The first true branch wins, so the most specific condition (divisible by both) must be checked first."},
+      {"q": "What is the value of 'D' - 'A' in Java?", "options": ["3", "4", "68", "It doesn't compile"], "answer": 0,
+       "why": "Characters are numbers and letters are consecutive: 'A' is 65, 'D' is 68, so the difference is 3."},
+      {"q": "Which expression correctly tests a leap year?", "options": ["y % 4 == 0", "y % 4 == 0 && y % 100 == 0", "y % 400 == 0 || (y % 4 == 0 && y % 100 != 0)", "y % 100 != 0"], "answer": 2,
+       "why": "Divisible by 400, or divisible by 4 but not by 100."},
+      {"q": "Why might `int volume = l * w * h` give a wrong answer for large sides?", "options": ["Multiplication is slow", "The result can overflow an int", "ints can't be multiplied three times", "It always works"], "answer": 1,
+       "why": "An int holds about ±2.1 billion. Larger products wrap around silently, so use long."}
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Loops, Repetition & Patterns",
+    "world": "The Looping Woods",
+    "tagline": "Do it once, then do it n times.",
+    "color": "#06b6d4",
+    "quiz": [
+      {"q": "Which pair of operations extracts and then removes the last digit of n?", "options": ["n / 10, then n % 10", "n % 10, then n / 10", "n * 10, then n + 10", "n - 10, then n % 10"], "answer": 1,
+       "why": "n % 10 is the last digit; n / 10 (integer division) drops it."},
+      {"q": "What should a running product start at?", "options": ["0", "1", "n", "-1"], "answer": 1,
+       "why": "Starting at 0 would make every product 0. 1 is the identity for multiplication."},
+      {"q": "In Python, which numbers does range(1, 5) produce?", "options": ["1 2 3 4 5", "1 2 3 4", "0 1 2 3 4", "2 3 4 5"], "answer": 1,
+       "why": "range stops before the end value."},
+      {"q": "To test whether x is prime, the divisor loop can stop when…", "options": ["d reaches x", "d reaches x / 2", "d * d exceeds x", "d reaches 10"], "answer": 2,
+       "why": "If x has a divisor larger than √x, it must also have one smaller than √x."},
+      {"q": "For a centred pyramid with n rows, how many stars are in row i (1-based)?", "options": ["i", "2i", "2i - 1", "n - i"], "answer": 2,
+       "why": "Rows have 1, 3, 5, … stars: the odd numbers 2i − 1."}
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Recursive Thinking",
+    "world": "The Mirror Caves",
+    "tagline": "Trust the smaller version of yourself.",
+    "color": "#a855f7",
+    "quiz": [
+      {"q": "What are the two required parts of every recursive function?", "options": ["A loop and a return", "A base case and a step that makes the problem smaller", "Two recursive calls", "A global variable and a print"], "answer": 1,
+       "why": "Without a base case it never stops; without shrinking it never reaches the base case."},
+      {"q": "What does this print for f(3)?  f(n): if n == 0 return; f(n-1); print(n)", "options": ["3 2 1", "1 2 3", "3", "0 1 2 3"], "answer": 1,
+       "why": "Printing after the call means the deepest call (n = 1) prints first."},
+      {"q": "What error do you get when recursion never reaches its base case in Java?", "options": ["NullPointerException", "ArithmeticException", "StackOverflowError", "OutOfBoundsException"], "answer": 2,
+       "why": "Every call uses a stack frame; endless calls exhaust the stack."},
+      {"q": "Why is plain recursive fib(40) slow?", "options": ["Recursion is always slow", "It recomputes the same values many times", "Additions are expensive", "Java limits recursion to 40 levels"], "answer": 1,
+       "why": "The call tree repeats subproblems exponentially. Memoisation stores each answer once."},
+      {"q": "How many multiplications does fast power need for x^64 (roughly)?", "options": ["64", "32", "about 6", "1"], "answer": 2,
+       "why": "Halving the exponent each time: 64 → 32 → 16 → 8 → 4 → 2 → 1."}
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Array Fundamentals",
+    "world": "The Iron Rails",
+    "tagline": "Boxes in a row, numbered from zero.",
+    "color": "#f59e0b",
+    "quiz": [
+      {"q": "What is the last valid index of an array with length n?", "options": ["n", "n - 1", "n + 1", "0"], "answer": 1,
+       "why": "Indexes start at 0, so they run from 0 to n − 1."},
+      {"q": "When finding the maximum, what is the safest starting value for `best`?", "options": ["0", "-1", "arr[0]", "Integer.MAX_VALUE"], "answer": 2,
+       "why": "0 fails when every element is negative. Starting from the first element always works."},
+      {"q": "To visit every pair (i, j) exactly once with i < j, the inner loop should start at…", "options": ["0", "i", "i + 1", "n - 1"], "answer": 2,
+       "why": "Starting at i + 1 skips pairing an element with itself and avoids counting (j, i) again."},
+      {"q": "After rotating right by k, element at index i moves to…", "options": ["i + k", "(i + k) % n", "i - k", "k"], "answer": 1,
+       "why": "Modulo wraps the index around the end of the array."},
+      {"q": "What's wrong with `grid = [[0] * 3] * 3` in Python?", "options": ["Syntax error", "It makes 3 references to the same row", "It creates a 9-element flat list", "Nothing"], "answer": 1,
+       "why": "Multiplying the outer list copies the reference, so changing one row changes all three."}
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Working with Strings",
+    "world": "The Scroll Library",
+    "tagline": "Characters are just numbers in disguise.",
+    "color": "#ef4444",
+    "quiz": [
+      {"q": "How should you compare two Strings for equal text in Java?", "options": ["a == b", "a.equals(b)", "a = b", "a.compare(b)"], "answer": 1,
+       "why": "== compares object references; .equals compares the characters."},
+      {"q": "Why use StringBuilder instead of s = s + c inside a loop?", "options": ["It's required by Java", "Strings are immutable, so + creates a new string every time", "+ doesn't work with chars", "StringBuilder sorts the text"], "answer": 1,
+       "why": "Each + copies the whole string, turning a linear loop into a quadratic one."},
+      {"q": "For lowercase letters, what does c - 'a' give?", "options": ["The ASCII code", "A number from 0 to 25", "The uppercase letter", "Always 0"], "answer": 1,
+       "why": "'a' maps to 0, 'b' to 1, … 'z' to 25: perfect for indexing an int[26]."},
+      {"q": "Two strings are anagrams when…", "options": ["They have the same length", "They have the same first letter", "Every character appears the same number of times in both", "One is the reverse of the other"], "answer": 2,
+       "why": "Same frequency of every character, which a frequency array checks in one pass each."},
+      {"q": "When adding two binary strings, where do you start?", "options": ["Leftmost digits", "Rightmost digits", "The middle", "The longer string's start"], "answer": 1,
+       "why": "Like grade-school addition: least significant digits first, carrying to the left."}
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Combining Logic",
+    "world": "The Summit",
+    "tagline": "Everything you learned, together.",
+    "color": "#3b82f6",
+    "quiz": [
+      {"q": "You've been stuck for 10 minutes. What's the most useful next step?", "options": ["Look up the solution", "Work a smaller example by hand", "Rewrite in another language", "Add more print statements at random"], "answer": 1,
+       "why": "A tiny worked example usually reveals the missing rule."},
+      {"q": "In base conversion, in which order do digits come out of the % / loop?", "options": ["Most significant first", "Least significant first (reversed)", "Random", "Sorted"], "answer": 1,
+       "why": "n % b gives the last digit first, so you prepend or reverse at the end."},
+      {"q": "Why does the Excel-title conversion subtract 1 from n each step?", "options": ["To avoid overflow", "Because columns have no zero digit (A=1 … Z=26)", "To make it faster", "Because Java arrays start at 0"], "answer": 1,
+       "why": "Shifting 1..26 to 0..25 lets ordinary base-26 math work."},
+      {"q": "In spiral traversal, why check `top <= bottom` again before walking the bottom row?", "options": ["Style only", "So a single remaining row isn't printed twice", "To make it run faster", "It isn't needed"], "answer": 1,
+       "why": "After moving top down, there may be no rows left; walking the bottom row would repeat elements."},
+      {"q": "Which edge cases should you test almost every time?", "options": ["Only the examples", "Empty / single element / all equal / largest values / negatives", "Only very large inputs", "Only negative numbers"], "answer": 1,
+       "why": "These are where off-by-one, overflow and sign bugs hide."}
+    ]
+  }
+]
