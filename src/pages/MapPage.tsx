@@ -5,7 +5,7 @@ import { areProblemsOpen, dailyQuest, dayKey, isPhaseOpen, needToOpen, solvedCou
 import { WorldGlyph } from "../components/WorldGlyph";
 import { Topo } from "../components/Topo";
 import { Flame } from "../components/Sidebar";
-import { basecampDone, unitsFor, type Unit } from "../lib/basecamp";
+import { basecampDone, unitsIn, type Unit } from "../lib/basecamp";
 import { LANGS } from "../content";
 
 // Pin positions on the map: x in % of width, y in px.
@@ -38,7 +38,7 @@ function nextStep(state: ProgressState): Next {
   const lang = state.settings.lang;
   const solvedAny = Object.values(state.problems).some((p) => p.solvedAt);
   if (!solvedAny && !state.lastOpened && !basecampDone(lang, state).complete) {
-    const units = unitsFor(lang);
+    const units = unitsIn(lang, "core");
     const index = units.findIndex((u) => !state.basecamp[lang]?.units[u.id]?.done);
     if (index >= 0) return { kind: "basecamp", unit: units[index], index, total: units.length };
   }
@@ -119,7 +119,7 @@ export function MapPage() {
         ) : next.kind === "done" ? (
           <div className="continue" style={{ ["--c" as string]: "var(--gold)" }}>
             <span className="eyebrow">All worlds complete</span>
-            <h2>You finished LogicQuest. Time for DSA.</h2>
+            <h2>You finished LogIQ. Time for DSA.</h2>
             <span className="meta">Try the Pure challenges you skipped, or solve problems again in another language.</span>
           </div>
         ) : (

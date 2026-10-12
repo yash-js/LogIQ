@@ -7,6 +7,7 @@ import { CodeEditor } from "../components/CodeEditor";
 import { WorldGlyph } from "../components/WorldGlyph";
 import { useProgress } from "../lib/progress";
 import { judge, runCustom, type JudgeResult, type TestResult } from "../lib/runner";
+import { useToolchain } from "../lib/toolchain";
 import { findShortcuts, type Shortcut } from "../lib/builtins";
 import { areProblemsOpen, dailyQuest, HINT_PENALTY, levelFromXp, levelTitle, pureBonus, xpFor } from "../lib/game";
 
@@ -57,6 +58,8 @@ export function ProblemPage() {
   const state = useProgress();
   const { saveCode, takeHint, recordAttempt, recordSolve, recordPure, setSettings, setLastOpened } = state;
   const lang = state.settings.lang;
+  const runtimeMissing = useToolchain().missing(lang);
+  const runtimeTip = `Install ${LANGS.find((l) => l.id === lang)!.label} to run code`;
   const prog = state.problems[id];
 
   const [leftTab, setLeftTab] = useState<LeftTab>("problem");
@@ -114,7 +117,7 @@ export function ProblemPage() {
 
   const run = useCallback(
     async (mode: "run" | "submit") => {
-      if (!problem || busy) return;
+      if (!problem || busy || runtimeMissing) return;
       setBusy(mode);
       setConsoleTab("result");
       try {
@@ -166,11 +169,11 @@ export function ProblemPage() {
         setBusy(null);
       }
     },
-    [problem, busy, lang, prefs, recordAttempt, recordSolve, recordPure],
+    [problem, busy, lang, prefs, runtimeMissing, recordAttempt, recordSolve, recordPure],
   );
 
   const runOnCustom = useCallback(async () => {
-    if (!problem || busy) return;
+    if (!problem || busy || runtimeMissing) return;
     setBusy("custom");
     try {
       const input = customInput.endsWith("\n") ? customInput : customInput + "\n";
@@ -184,7 +187,7 @@ export function ProblemPage() {
     } finally {
       setBusy(null);
     }
-  }, [problem, busy, lang, customInput, prefs]);
+  }, [problem, busy, lang, customInput, prefs, runtimeMissing]);
 
   if (!problem) return <Navigate to="/" replace />;
   if (!areProblemsOpen(state, problem.phase)) return <Navigate to={`/phase/${problem.phase}`} replace />;
@@ -484,17 +487,23 @@ export function ProblemPage() {
               )}
               <span className="spacer" />
               {consoleTab === "custom" ? (
-                <button className="btn" disabled={!!busy} onClick={() => void runOnCustom()}>
-                  Run with this input
-                </button>
+                <span className="tip-host" title={runtimeMissing ? runtimeTip : undefined}>
+                  <button className="btn" disabled={!!busy || runtimeMissing} onClick={() => void runOnCustom()}>
+                    Run with this input
+                  </button>
+                </span>
               ) : (
-                <button className="btn" disabled={!!busy} onClick={() => void run("run")}>
-                  Run
-                </button>
+                <span className="tip-host" title={runtimeMissing ? runtimeTip : undefined}>
+                  <button className="btn" disabled={!!busy || runtimeMissing} onClick={() => void run("run")}>
+                    Run
+                  </button>
+                </span>
               )}
-              <button className="btn btn-gold" disabled={!!busy} onClick={() => void run("submit")}>
-                Submit
-              </button>
+              <span className="tip-host" title={runtimeMissing ? runtimeTip : undefined}>
+                <button className="btn btn-gold" disabled={!!busy || runtimeMissing} onClick={() => void run("submit")}>
+                  Submit
+                </button>
+              </span>
             </div>
           </div>
         </section>

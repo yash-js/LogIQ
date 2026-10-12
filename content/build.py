@@ -74,7 +74,7 @@ def build(problems):
                         "javascript": core.js_starter(p, big=p.returns in ("long", "long_list") and needs_bigint(tests))},
         })
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, "w") as f:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     by_phase = {}
     for p in out:

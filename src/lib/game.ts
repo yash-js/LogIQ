@@ -1,6 +1,6 @@
 import { phases, problems, problemsInPhase, type Problem } from "../content";
 import type { ProgressState } from "./progress";
-import { basecampDone } from "./basecamp";
+import { basecampDone, oopDone } from "./basecamp";
 
 /** Share of a phase's problems that must be solved before the next world opens. */
 export const UNLOCK_SHARE = 0.6;
@@ -120,6 +120,15 @@ export function badges(state: ProgressState): Badge[] {
       name: "Basecamp Graduate",
       detail: "Finish Basecamp (or its placement test) in any language",
       earned: (["java", "python", "javascript"] as const).some((l) => basecampDone(l, state).complete),
+    },
+    {
+      id: "oop",
+      name: "Object Thinker",
+      detail: "Finish all 10 OOP units in any one language",
+      earned: (["java", "python", "javascript"] as const).some((l) => {
+        const s = oopDone(l, state);
+        return s.total > 0 && s.done === s.total;
+      }),
     },
     { id: "nohint10", name: "Unassisted", detail: "Solve 10 problems without hints", earned: noHint >= 10 },
     { id: "nohint50", name: "Lone Wolf", detail: "Solve 50 problems without hints", earned: noHint >= 50 },

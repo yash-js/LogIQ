@@ -11,26 +11,30 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { BasecampPage } from "./pages/BasecampPage";
 import { LessonPage } from "./pages/LessonPage";
 import { PlacementPage } from "./pages/PlacementPage";
+import { RuntimeBanner } from "./components/RuntimeBanner";
 
 function Shell() {
   const loc = useLocation();
-  const flush = loc.pathname.startsWith("/problem/") || (/^\/basecamp\/[a-z]+-\d+$/.test(loc.pathname));
+  const flush = loc.pathname.startsWith("/problem/") || /^\/basecamp\/[a-z]+(?:-oop)?-\d+$/.test(loc.pathname);
   return (
       <div className={`app ${flush ? "compact" : ""}`}>
         <Sidebar />
         <main className={`app-main ${flush ? "flush" : ""}`} key={flush ? "ws" : loc.pathname}>
-          <Routes>
-            <Route path="/" element={<MapPage />} />
-            <Route path="/phase/:id" element={<PhasePage />} />
-            <Route path="/phase/:id/guide" element={<GuidePage />} />
-            <Route path="/problem/:id" element={<ProblemPage />} />
-            <Route path="/basecamp" element={<BasecampPage />} />
-            <Route path="/basecamp/placement" element={<PlacementPage />} />
-            <Route path="/basecamp/:unitId" element={<LessonPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*" element={<MapPage />} />
-          </Routes>
+          <RuntimeBanner />
+          <div className="app-stage">
+            <Routes>
+              <Route path="/" element={<MapPage />} />
+              <Route path="/phase/:id" element={<PhasePage />} />
+              <Route path="/phase/:id/guide" element={<GuidePage />} />
+              <Route path="/problem/:id" element={<ProblemPage />} />
+              <Route path="/basecamp" element={<BasecampPage />} />
+              <Route path="/basecamp/placement" element={<PlacementPage />} />
+              <Route path="/basecamp/:unitId" element={<LessonPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="*" element={<MapPage />} />
+            </Routes>
+          </div>
         </main>
       </div>
   );

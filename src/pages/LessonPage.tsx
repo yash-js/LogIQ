@@ -6,6 +6,8 @@ import { ExerciseView, type Checker, type Verdict } from "../components/Exercise
 import { COMBO_FROM, findUnit, LIVES, PERFECT_BONUS, UNIT_BONUS, unitsFor, XP_PER_EXERCISE } from "../lib/basecamp";
 import { useProgress } from "../lib/progress";
 import { levelFromXp, levelTitle } from "../lib/game";
+import { useToolchain } from "../lib/toolchain";
+import { LANGS } from "../content";
 
 type Stage = "intro" | "ex" | "done" | "out";
 
@@ -41,6 +43,7 @@ export function LessonPage() {
   const [wrongs, setWrongs] = useState(0);
   const [summary, setSummary] = useState<{ gain: number; total: number; perfect: boolean; levelUp?: number } | null>(null);
   const checker: Checker = useRef(null);
+  const tool = useToolchain();
 
   const restart = useCallback(() => {
     setStage("intro");
@@ -55,13 +58,17 @@ export function LessonPage() {
   }, []);
 
   if (!found) return <Navigate to="/basecamp" replace />;
-  const { lang, unit, index } = found;
-  const units = unitsFor(lang);
-  const next = units[index + 1];
+  const { lang, unit } = found;
+  const peers = unitsFor(lang).filter((u) => u.section === unit.section);
+  const place = peers.findIndex((u) => u.id === unit.id);
+  const next = peers[place + 1];
   const ex = unit.exercises[idx];
+  const needsRuntime = ex?.kind === "fix" || ex?.kind === "write";
+  const runtimeBlocked = needsRuntime && tool.missing(lang);
+  const runtimeTip = `Install ${LANGS.find((l) => l.id === lang)!.label} to run code`;
 
   async function check() {
-    if (!checker.current || busy) return;
+    if (!checker.current || busy || runtimeBlocked) return;
     setBusy(true);
     try {
       const v = await checker.current();
@@ -130,7 +137,7 @@ export function LessonPage() {
         {stage === "intro" && (
           <div className="lesson-card">
             <div className="ex-kind">
-              Unit {index + 1} of {units.length}
+              Unit {place + 1} of {peers.length}
             </div>
             <h1 className="display" style={{ fontSize: 40, marginBottom: 14 }}>
               {unit.title}
@@ -205,9 +212,11 @@ export function LessonPage() {
               <span className="muted small">
                 {idx + 1} / {unit.exercises.length}
               </span>
-              <button className="btn btn-gold btn-lg" disabled={!ready || busy} onClick={() => void check()}>
-                {busy ? "Checking…" : "Check"}
-              </button>
+              <span className="tip-host" title={runtimeBlocked ? runtimeTip : undefined}>
+                <button className="btn btn-gold btn-lg" disabled={!ready || busy || runtimeBlocked} onClick={() => void check()}>
+                  {busy ? "Checking…" : "Check"}
+                </button>
+              </span>
             </>
           )}
 
@@ -282,6 +291,10 @@ export function LessonPage() {
               {next ? (
                 <button className="btn btn-gold btn-lg" onClick={() => nav(`/basecamp/${next.id}`)} autoFocus>
                   Next: {next.title}
+                </button>
+              ) : unit.section === "oop" ? (
+                <button className="btn btn-gold btn-lg" onClick={() => nav("/basecamp")} autoFocus>
+                  Back to Basecamp
                 </button>
               ) : (
                 <button className="btn btn-gold btn-lg" onClick={() => nav("/")} autoFocus>

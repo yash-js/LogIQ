@@ -16,9 +16,9 @@ console.log("Hello");
 console.log("World");
 """, "Each `console.log` ends its line, so the words land on two lines.")
 u.predict("""
-let line = "Log";
-line += "ic";
-line += "Quest";
+let line = "Lo";
+line += "g";
+line += "IQ";
 console.log(line);
 """, "Build the string first, then log it once.")
 u.choice("What does `console.log(\"a\", \"b\", \"c\")` show?", ["abc", "a b c", "a,b,c", "[ 'a', 'b', 'c' ]"], 1,
@@ -58,8 +58,8 @@ console.log(x);
 u.choice("What happens with `const n = 1; n = 2;`?", ["n becomes 2", "TypeError: Assignment to constant variable", "n stays 1 silently", "n becomes undefined"], 1,
          "`const` can't be reassigned. Use `let` for values that change.")
 u.predict("""
-const first = "Logic";
-const second = "Quest";
+const first = "Log";
+const second = "IQ";
 console.log(first + second);
 console.log(`${first} ${second}`);
 """, "Template strings in backticks put values inside `${...}`.")
@@ -178,7 +178,7 @@ const n = Number(lines[0]);                       // one number
 const [a, b] = lines[1].split(" ").map(Number);   // two numbers on one line
 ```
 
-In LogicQuest's problems the input is read for you, but you'll need this everywhere else.
+In LogIQ's problems the input is read for you, but you'll need this everywhere else.
 """)
 u.predict(READ + """
 const [a, b] = lines[0].split(" ").map(Number);
@@ -409,7 +409,7 @@ function square(x) {
 console.log(square(4));   // 16
 ```
 
-A function without `return` gives back `undefined`. In LogicQuest problems you write `solve`.
+A function without `return` gives back `undefined`. In LogIQ problems you write `solve`.
 """)
 u.predict("""
 function twice(x) {
@@ -506,14 +506,14 @@ if (count === 0) {
 }
 """, "0 / 0 is `NaN` in JavaScript (no crash!). Check `count === 0` first.")
 u.fix("`TypeError: Cannot read properties of undefined`. It should print each word's first letter: `L Q`.", """
-const words = ["Logic", "Quest"];
+const words = ["Loop", "Queue"];
 let out = "";
 for (let i = 0; i <= words.length; i++) {
   out += words[i][0] + " ";
 }
 console.log(out.trim());
 """, """
-const words = ["Logic", "Quest"];
+const words = ["Loop", "Queue"];
 let out = "";
 for (let i = 0; i < words.length; i++) {
   out += words[i][0] + " ";

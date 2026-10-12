@@ -166,7 +166,7 @@ export function SettingsPage() {
             {!tools.python.found && <>Python needs Python 3 from python.org; tick "Add python.exe to PATH" on Windows. </>}
             {!tools.node.found && <>JavaScript needs Node.js (the LTS version from nodejs.org). </>}
             You only need the language you plan to use.
-            Restart LogicQuest after installing, or point to it below.
+            Restart LogIQ after installing, or point to it below.
           </p>
         )}
         <div style={{ display: "grid", gap: 12, marginTop: 16 }}>

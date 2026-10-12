@@ -79,6 +79,14 @@ FORBIDDEN: dict[str, list[str]] = {
     ],
 }
 
+# Extra markers for Basecamp OOP units. Applied on top of FORBIDDEN, including code.
+OOP_EXTRA: dict[str, list[str]] = {
+    "java": [r"\bself\b", r"__init__", r"\bdef\b", r"__str__", r"__repr__", r"__eq__"],
+    "javascript": [r"\bself\b", r"__init__", r"\bdef\b", r"__str__", r"__repr__", r"__eq__"],
+    "python": [r"this\.", r"\bextends\b", r"\bvoid\b", r"public class"],
+}
+
+
 # (language, regex matched against the visible text, why this hit is acceptable)
 # A hit is ignored when an allowlist pattern for that language covers it.
 ALLOWLIST: list[tuple[str, str, str]] = [
@@ -144,16 +152,41 @@ def allowed(lang: str, visible: str, start: int, end: int) -> bool:
     return False
 
 
-def scan(label: str, text: str, lang: str, hits: list[str]) -> None:
+def scan(label: str, text: str, lang: str, hits: list[str], extra: list[str] | None = None) -> None:
     visible = visible_text(text, lang)
     lines = visible.split("\n")
-    for pat in FORBIDDEN[lang]:
+    for pat in FORBIDDEN[lang] + (extra or []):
         for m in re.finditer(pat, visible):
             if allowed(lang, visible, m.start(), m.end()):
                 continue
             line_no = visible.count("\n", 0, m.start()) + 1
             snippet = lines[line_no - 1].strip()
             hits.append(f"{label} [{lang}] line {line_no}: {m.group(0)!r} in: {snippet[:200]}")
+
+
+def scan_raw(label: str, text: str, lang: str, hits: list[str], extra: list[str] | None = None) -> None:
+    """Like scan, but code fences stay in the text so samples are checked too."""
+    lines = text.split("\n")
+    for pat in FORBIDDEN[lang] + (extra or []):
+        for m in re.finditer(pat, text):
+            if allowed(lang, text, m.start(), m.end()):
+                continue
+            line_no = text.count("\n", 0, m.start()) + 1
+            snippet = lines[line_no - 1].strip()
+            hits.append(f"{label} [{lang}] line {line_no}: {m.group(0)!r} in: {snippet[:200]}")
+
+
+def unit_blob(unit) -> str:
+    parts = [unit.intro]
+    for ex in unit.exercises:
+        for key in ("prompt", "why", "code", "solution"):
+            if ex.get(key):
+                parts.append(str(ex[key]))
+        parts.extend(ex.get("options") or [])
+        parts.extend(ex.get("lines") or [])
+        for alts in ex.get("blanks") or []:
+            parts.extend(alts)
+    return "\n".join(parts)
 
 
 def main() -> int:
@@ -186,12 +219,25 @@ def main() -> int:
             scan(f"{p.id} {p.title} hints", "\n".join(hints[lang]), lang, hits)
             scan(f"{p.id} {p.title} statement", p.statement, lang, hits)
 
+    sys.path.insert(0, os.path.join(HERE, "basecamp"))
+    import bc  # noqa: E402
+
+    oop_n = 0
+    for lang in LANGS:
+        importlib.import_module(f"{lang}_oop")
+    for lang in LANGS:
+        for unit in bc.UNITS[lang]:
+            if unit.section != "oop":
+                continue
+            oop_n += 1
+            scan_raw(f"basecamp {unit.id} {unit.title}", unit_blob(unit), lang, hits, OOP_EXTRA[lang])
+
     if hits:
         print(f"{len(hits)} language-marker hit(s):")
         for h in hits:
             print(h)
         return 1
-    print(f"language lint ok ({len(core.REGISTRY)} problems, 6 guides, 6 quizzes)")
+    print(f"language lint ok ({len(core.REGISTRY)} problems, 6 guides, 6 quizzes, {oop_n} OOP units)")
     return 0
 
 

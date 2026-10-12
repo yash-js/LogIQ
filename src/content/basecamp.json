@@ -3,7 +3,8 @@
   {
    "id": "java-01",
    "title": "Hello, output",
-   "intro": "Every Java program starts in `main`. In Basecamp you only see the lines **inside** `main`;\nLogicQuest wraps them in `public class Main { public static void main(String[] args) { ... } }` for you.\n\n`System.out.println(x)` prints `x` and then moves to a new line. `System.out.print(x)` stays on the same line.\nEvery statement ends with a semicolon `;`.",
+   "intro": "Every Java program starts in `main`. In Basecamp you only see the lines **inside** `main`;\nLogIQ wraps them in `public class Main { public static void main(String[] args) { ... } }` for you.\n\n`System.out.println(x)` prints `x` and then moves to a new line. `System.out.print(x)` stays on the same line.\nEvery statement ends with a semicolon `;`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -17,11 +18,11 @@
     {
      "kind": "predict",
      "prompt": "What does this print?",
-     "code": "System.out.print(\"Log\");\nSystem.out.print(\"ic\");\nSystem.out.println(\"Quest\");",
+     "code": "System.out.print(\"Lo\");\nSystem.out.print(\"g\");\nSystem.out.println(\"IQ\");",
      "why": "`print` doesn't add a newline, so the three pieces join into one word.",
      "stdin": "",
      "full": false,
-     "expected": "LogicQuest\n"
+     "expected": "LogIQ\n"
     },
     {
      "kind": "choice",
@@ -75,6 +76,7 @@
    "id": "java-02",
    "title": "Variables and types",
    "intro": "A variable is a named box with a fixed **type**: `int` for whole numbers, `long` for big whole numbers,\n`double` for decimals, `boolean` for `true`/`false`, `char` for one character in single quotes, and\n`String` for text in double quotes.\n\n```java\nint age = 21;\ndouble price = 9.5;\nString name = \"Yash\";\n```",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -101,11 +103,11 @@
     {
      "kind": "predict",
      "prompt": "What does this print?",
-     "code": "String first = \"Logic\";\nString second = \"Quest\";\nSystem.out.println(first + second);\nSystem.out.println(first + \" \" + second);",
+     "code": "String first = \"Log\";\nString second = \"IQ\";\nSystem.out.println(first + second);\nSystem.out.println(first + \" \" + second);",
      "why": "`+` joins Strings. Spaces only appear where you add them.",
      "stdin": "",
      "full": false,
-     "expected": "LogicQuest\nLogic Quest\n"
+     "expected": "LogIQ\nLog IQ\n"
     },
     {
      "kind": "blank",
@@ -154,6 +156,7 @@
    "id": "java-03",
    "title": "Operators",
    "intro": "`+ - * /` work as you'd expect, with one catch: **int / int gives an int**. `7 / 2` is `3`, the decimal part is dropped.\n`%` gives the remainder: `7 % 2` is `1`.\n\n`x += 3` is short for `x = x + 3`, and `x++` adds 1.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -225,6 +228,7 @@
    "id": "java-04",
    "title": "Strings and chars",
    "intro": "A `String` is text; a `char` is one character in single quotes, like `'a'`.\n\n- `s.length()` → number of characters\n- `s.charAt(i)` → the character at index `i` (starting from 0)\n- Compare text with `a.equals(b)`, never `==`.\n- A `char` is a number underneath: `'b' - 'a'` is `1`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -310,7 +314,8 @@
   {
    "id": "java-05",
    "title": "Reading input",
-   "intro": "`Scanner` reads what the user types (stdin):\n\n```java\nScanner sc = new Scanner(System.in);\nint n = sc.nextInt();      // next whole number\nString w = sc.next();      // next word\nString line = sc.nextLine(); // rest of the line\n```\n\nIn LogicQuest's problems the input is read for you, but you'll need this everywhere else.",
+   "intro": "`Scanner` reads what the user types (stdin):\n\n```java\nScanner sc = new Scanner(System.in);\nint n = sc.nextInt();      // next whole number\nString w = sc.next();      // next word\nString line = sc.nextLine(); // rest of the line\n```\n\nIn LogIQ's problems the input is read for you, but you'll need this everywhere else.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -408,6 +413,7 @@
    "id": "java-06",
    "title": "Conditions",
    "intro": "```java\nif (n > 0) {\n    System.out.println(\"positive\");\n} else if (n < 0) {\n    System.out.println(\"negative\");\n} else {\n    System.out.println(\"zero\");\n}\n```\n\nCompare with `== != < > <= >=`. Combine with `&&` (and), `||` (or), `!` (not).",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -499,6 +505,7 @@
    "id": "java-07",
    "title": "Loops",
    "intro": "```java\nfor (int i = 1; i <= 5; i++) {   // start; keep going while; step\n    System.out.println(i);\n}\n\nint n = 10;\nwhile (n > 0) {\n    n = n / 2;\n}\n```\n\n`break` leaves the loop. `continue` jumps to the next round.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -576,6 +583,7 @@
    "id": "java-08",
    "title": "Arrays",
    "intro": "An array holds a fixed number of values of one type:\n\n```java\nint[] nums = {4, 8, 15};\nint[] zeros = new int[5];   // five zeros\nnums[0]          // first element\nnums.length      // 3, no brackets\n```",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -668,7 +676,8 @@
   {
    "id": "java-09",
    "title": "Methods (functions)",
-   "intro": "A method packs logic under a name. In LogicQuest problems you write `solve`:\n\n```java\nstatic int square(int x) {   // return type, name, parameters\n    return x * x;\n}\n```\n\n`static` lets `main` call it directly. `void` means it returns nothing.",
+   "intro": "A method packs logic under a name. In LogIQ problems you write `solve`:\n\n```java\nstatic int square(int x) {   // return type, name, parameters\n    return x * x;\n}\n```\n\n`static` lets `main` call it directly. `void` means it returns nothing.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -760,6 +769,7 @@
    "id": "java-10",
    "title": "Reading errors",
    "intro": "Errors are messages, not failures. Read the **first line** and the **line number**.\n\n- **Compile errors** (before running): `';' expected`, `cannot find symbol` (typo or undeclared variable),\n  `incompatible types` (wrong type).\n- **Runtime exceptions** (while running): `ArrayIndexOutOfBoundsException`, `ArithmeticException: / by zero`,\n  `NullPointerException`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "choice",
@@ -831,6 +841,1006 @@
      "code": null
     }
    ]
+  },
+  {
+   "id": "java-oop-01",
+   "title": "Classes and objects",
+   "intro": "A class is a blueprint. An object is one built thing, with its own fields and methods.\n\n```java\nclass Dog {\n    String name;\n    void bark() {\n        System.out.println(name + \" says woof\");\n    }\n}\n```\n\n`new Dog()` builds an object. A second `new Dog()` is a different object: writing one `name` leaves the other alone.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Counter {\n    int n = 0;\n    void add() { n++; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Counter a = new Counter();\n        Counter b = new Counter();\n        a.add();\n        a.add();\n        b.add();\n        System.out.println(a.n);\n        System.out.println(b.n);\n    }\n}",
+     "why": "Each `new Counter()` has its own `n`. `a` is incremented twice, `b` once.",
+     "stdin": "",
+     "full": true,
+     "expected": "2\n1\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does `new Dog()` do?",
+     "options": [
+      "It renames the Dog class",
+      "It builds one Dog object from the class",
+      "It runs the program",
+      "It deletes a Dog"
+     ],
+     "answer": 1,
+     "why": "`new` builds an object. The class itself is only the blueprint.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Two dogs, two names. Print both.",
+     "code": "class Dog { String name; }\n\npublic class Main {\n    public static void main(String[] args) {\n        Dog a = ___ Dog();\n        a.name = \"Rex\";\n        Dog b = new Dog();\n        b.___ = \"Milo\";\n        System.out.println(a.name);\n        System.out.println(b.name);\n    }\n}",
+     "blanks": [
+      [
+       "new"
+      ],
+      [
+       "name"
+      ]
+     ],
+     "why": "`new` builds the object. `name` is that object's own field.",
+     "stdin": "",
+     "full": true,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Rex`.",
+     "lines": [
+      "class Dog { String name; }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Dog d = new Dog();",
+      "        d.name = \"Rex\";",
+      "        System.out.println(d.name);",
+      "    }",
+      "}"
+     ],
+     "why": "Declare the class, build an object, set the field, then print it.",
+     "stdin": "",
+     "full": true,
+     "expected": "Rex\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Both lines should show different names, `Rex` then `Milo`. They don't.",
+     "code": "class Dog { String name; }\n\npublic class Main {\n    public static void main(String[] args) {\n        Dog a = new Dog();\n        Dog b = a;\n        a.name = \"Rex\";\n        b.name = \"Milo\";\n        System.out.println(a.name);\n        System.out.println(b.name);\n    }\n}",
+     "solution": "class Dog { String name; }\n\npublic class Main {\n    public static void main(String[] args) {\n        Dog a = new Dog();\n        Dog b = new Dog();\n        a.name = \"Rex\";\n        b.name = \"Milo\";\n        System.out.println(a.name);\n        System.out.println(b.name);\n    }\n}",
+     "why": "`b = a` makes both names point at one object. `new Dog()` builds a second one.",
+     "stdin": "",
+     "full": true,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a name and an age. Store them on a `Person` and print `name is age`. Input `Ana` then `21` prints `Ana is 21`.",
+     "code": "import java.util.*;\n\nclass Person { String name; int age; }\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Person p = new Person();\n        p.name = sc.next();\n        p.age = sc.nextInt();\n        System.out.println(p.name);\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Person { String name; int age; }\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Person p = new Person();\n        p.name = sc.next();\n        p.age = sc.nextInt();\n        System.out.println(p.name + \" is \" + p.age);\n    }\n}",
+     "tests": [
+      {
+       "input": "Ana\n21\n",
+       "output": "Ana is 21\n"
+      },
+      {
+       "input": "Bo\n0\n",
+       "output": "Bo is 0\n"
+      },
+      {
+       "input": "Ravi\n7\n",
+       "output": "Ravi is 7\n"
+      }
+     ],
+     "why": "The object holds both fields. Print them in one sentence.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-02",
+   "title": "Constructors and this",
+   "intro": "A constructor runs when `new` builds the object. Its name matches the class, and it has no return type.\nYou can write several, as long as the parameter lists differ.\n\n```java\nclass Box {\n    int w;\n    Box(int w) { this.w = w; }\n}\n```\n\n`this.w` is the field. The bare `w` is the parameter. `w = w` stores the parameter in itself and leaves the field at 0.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Greeter {\n    Greeter() { System.out.println(\"hi\"); }\n    Greeter(String name) { System.out.println(\"hi \" + name); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Greeter();\n        new Greeter(\"Ana\");\n    }\n}",
+     "why": "Java picks the constructor whose parameters match the `new` call.",
+     "stdin": "",
+     "full": true,
+     "expected": "hi\nhi Ana\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "The field and the parameter are both named `w`. Which line stores the parameter on the object?",
+     "options": [
+      "w = w;",
+      "this.w = w;",
+      "w = this.w;",
+      "Box.w = this;"
+     ],
+     "answer": 1,
+     "why": "`this.w` is the field. The `w` on the right is the parameter.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "A square box uses the two-argument constructor.",
+     "code": "class Box {\n    int w;\n    int h;\n    Box(int side) { ___(side, side); }\n    Box(int w, int h) { this.w = w; ___.h = h; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Box b = new Box(4);\n        System.out.println(b.w * b.h);\n    }\n}",
+     "blanks": [
+      [
+       "this"
+      ],
+      [
+       "this"
+      ]
+     ],
+     "why": "`this(...)` calls another constructor. `this.h` is the field.",
+     "stdin": "",
+     "full": true,
+     "expected": "16\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `10`.",
+     "lines": [
+      "class Box { int w; int h; Box(int w, int h) { this.w = w; this.h = h; } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Box b = new Box(2, 5);",
+      "        System.out.println(b.w * b.h);",
+      "    }",
+      "}"
+     ],
+     "why": "Build the box with `new`, then read the fields the constructor stored.",
+     "stdin": "",
+     "full": true,
+     "expected": "10\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`show` should print `4`, the value passed to `new`. It prints `0`.",
+     "code": "class Point {\n    int x;\n    Point(int x) { x = x; }\n    void show() { System.out.println(x); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Point(4).show();\n    }\n}",
+     "solution": "class Point {\n    int x;\n    Point(int x) { this.x = x; }\n    void show() { System.out.println(x); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Point(4).show();\n    }\n}",
+     "why": "`x = x` writes the parameter onto itself. `this.x = x` writes it onto the field.",
+     "stdin": "",
+     "full": true,
+     "expected": "4\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read width and height. Build a `Box` with a constructor that uses `this`, and print the area. Input `3 4` prints `12`.",
+     "code": "import java.util.*;\n\nclass Box {\n    int w;\n    int h;\n    Box(int w, int h) { w = w; h = h; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Box b = new Box(sc.nextInt(), sc.nextInt());\n        System.out.println(b.w * b.h);\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Box {\n    int w;\n    int h;\n    Box(int w, int h) { this.w = w; this.h = h; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Box b = new Box(sc.nextInt(), sc.nextInt());\n        System.out.println(b.w * b.h);\n    }\n}",
+     "tests": [
+      {
+       "input": "3 4\n",
+       "output": "12\n"
+      },
+      {
+       "input": "0 5\n",
+       "output": "0\n"
+      },
+      {
+       "input": "2 2\n",
+       "output": "4\n"
+      },
+      {
+       "input": "-3 4\n",
+       "output": "-12\n"
+      }
+     ],
+     "why": "`this.w = w` stores each parameter. Then print `w * h`.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-03",
+   "title": "Private fields",
+   "intro": "`private` means only code inside the class can touch that field. Other classes go through methods.\n\n```java\nclass Account {\n    private int balance = 0;\n    public void deposit(int n) { if (n > 0) balance += n; }\n    public int getBalance() { return balance; }\n}\n```\n\nThe check lives in one place. Callers cannot set `balance` to a negative number directly.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Account {\n    private int balance = 0;\n    public void deposit(int n) { if (n > 0) balance += n; }\n    public int getBalance() { return balance; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Account a = new Account();\n        a.deposit(30);\n        a.deposit(-5);\n        a.deposit(12);\n        System.out.println(a.getBalance());\n    }\n}",
+     "why": "30 is stored, -5 is rejected, 12 is added. The balance is 42.",
+     "stdin": "",
+     "full": true,
+     "expected": "42\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "From `main` in another class, who can read a `private` field?",
+     "options": [
+      "Any class in the file",
+      "Only methods of the class that declares it",
+      "Any subclass",
+      "Only static methods"
+     ],
+     "answer": 1,
+     "why": "`private` stops other classes, including `Main`. They call a method instead.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Finish the getter and call it.",
+     "code": "class Account {\n    private int balance = 0;\n    public void deposit(int n) { if (n > 0) balance += n; }\n    public int ___() { return balance; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Account a = new Account();\n        a.deposit(10);\n        System.out.println(a.___());\n    }\n}",
+     "blanks": [
+      [
+       "getBalance"
+      ],
+      [
+       "getBalance"
+      ]
+     ],
+     "why": "The method is the public door. The field stays `private`.",
+     "stdin": "",
+     "full": true,
+     "expected": "10\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `15`.",
+     "lines": [
+      "class Account { private int balance = 0; public void deposit(int n) { if (n > 0) balance += n; } public int getBalance() { return balance; } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Account a = new Account();",
+      "        a.deposit(15);",
+      "        System.out.println(a.getBalance());",
+      "    }",
+      "}"
+     ],
+     "why": "Deposit through the method, then read with the getter.",
+     "stdin": "",
+     "full": true,
+     "expected": "15\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Age must stay at or above 0. After `setAge(20)` and `setAge(-3)`, print `20`.",
+     "code": "class Person {\n    private int age = 0;\n    public void setAge(int n) { age = n; }\n    public int getAge() { return age; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Person p = new Person();\n        p.setAge(20);\n        p.setAge(-3);\n        System.out.println(p.getAge());\n    }\n}",
+     "solution": "class Person {\n    private int age = 0;\n    public void setAge(int n) { if (n >= 0) age = n; }\n    public int getAge() { return age; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Person p = new Person();\n        p.setAge(20);\n        p.setAge(-3);\n        System.out.println(p.getAge());\n    }\n}",
+     "why": "The setter is where the rule lives. Ignore a negative argument.",
+     "stdin": "",
+     "full": true,
+     "expected": "20\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` amounts. Add an amount to an `Account` only when it is greater than 0, and print the balance.\nInput `3` / `10` / `-4` / `5` prints `15`.",
+     "code": "import java.util.*;\n\nclass Account {\n    private int balance = 0;\n    public void deposit(int n) { balance += n; }\n    public int getBalance() { return balance; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Account a = new Account();\n        int n = sc.nextInt();\n        for (int i = 0; i < n; i++) a.deposit(sc.nextInt());\n        System.out.println(a.getBalance());\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Account {\n    private int balance = 0;\n    public void deposit(int n) { if (n > 0) balance += n; }\n    public int getBalance() { return balance; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Account a = new Account();\n        int n = sc.nextInt();\n        for (int i = 0; i < n; i++) a.deposit(sc.nextInt());\n        System.out.println(a.getBalance());\n    }\n}",
+     "tests": [
+      {
+       "input": "3\n10\n-4\n5\n",
+       "output": "15\n"
+      },
+      {
+       "input": "1\n0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "2\n-8\n-1\n",
+       "output": "0\n"
+      },
+      {
+       "input": "4\n20\n0\n7\n3\n",
+       "output": "30\n"
+      }
+     ],
+     "why": "Reject amounts that are not positive, then print `getBalance()`.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-04",
+   "title": "Static members",
+   "intro": "A `static` field belongs to the class, not to one object. Every object sees the same one.\nA `static` method is called on the class: `Ticket.issued()`.\n\n```java\nclass Ticket {\n    static int next = 1;\n    int id;\n    Ticket() { id = next++; }\n}\n```\n\n`id` is different on each ticket. `next` is the shared counter.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Ticket {\n    static int next = 1;\n    int id;\n    Ticket() { id = next++; }\n    static int issued() { return next - 1; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Ticket a = new Ticket();\n        Ticket b = new Ticket();\n        System.out.println(a.id);\n        System.out.println(b.id);\n        System.out.println(Ticket.issued());\n    }\n}",
+     "why": "One shared `next` hands out 1, then 2. `issued` reads that same counter.",
+     "stdin": "",
+     "full": true,
+     "expected": "1\n2\n2\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A `static` field is stored…",
+     "options": [
+      "separately inside every object",
+      "once, on the class, shared by every object",
+      "only inside main",
+      "on the first object, and copied after that"
+     ],
+     "answer": 1,
+     "why": "Change it from any object and the others see the new value.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Count calls with one shared field.",
+     "code": "class Counter {\n    ___ int n = 0;\n    static void add() { n++; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Counter.add();\n        Counter.add();\n        System.out.println(Counter.___);\n    }\n}",
+     "blanks": [
+      [
+       "static"
+      ],
+      [
+       "n"
+      ]
+     ],
+     "why": "`static` puts `n` on the class, so both calls update the same number.",
+     "stdin": "",
+     "full": true,
+     "expected": "2\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `2`.",
+     "lines": [
+      "class Counter { static int n = 0; }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        for (int i = 0; i < 2; i++) Counter.n++;",
+      "        System.out.println(Counter.n);",
+      "    }",
+      "}"
+     ],
+     "why": "Bump the shared field twice, then print it.",
+     "stdin": "",
+     "full": true,
+     "expected": "2\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "The second ticket should be id `2`. Both print `1`.",
+     "code": "class Ticket {\n    int next = 1;\n    int id;\n    Ticket() { id = next++; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Ticket a = new Ticket();\n        Ticket b = new Ticket();\n        System.out.println(a.id);\n        System.out.println(b.id);\n    }\n}",
+     "solution": "class Ticket {\n    static int next = 1;\n    int id;\n    Ticket() { id = next++; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Ticket a = new Ticket();\n        Ticket b = new Ticket();\n        System.out.println(a.id);\n        System.out.println(b.id);\n    }\n}",
+     "why": "Without `static`, each ticket has its own `next` starting at 1. `static` makes them share one counter.",
+     "stdin": "",
+     "full": true,
+     "expected": "1\n2\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n` and create `n` tickets from a class with a `static` counter. Print how many were issued. Input `3` prints `3`.",
+     "code": "import java.util.*;\n\nclass Ticket {\n    int issued = 0;\n    Ticket() { issued++; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        for (int i = 0; i < n; i++) new Ticket();\n        System.out.println(0);\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Ticket {\n    static int issued = 0;\n    Ticket() { issued++; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        for (int i = 0; i < n; i++) new Ticket();\n        System.out.println(Ticket.issued);\n    }\n}",
+     "tests": [
+      {
+       "input": "3\n",
+       "output": "3\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "1\n",
+       "output": "1\n"
+      },
+      {
+       "input": "10\n",
+       "output": "10\n"
+      }
+     ],
+     "why": "The counter has to be `static`, or each ticket would count only itself.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-05",
+   "title": "Inheritance",
+   "intro": "`class Dog extends Animal` means a dog is an animal and starts with Animal's fields and methods.\nThe subclass constructor calls `super(...)` first, so the parent part is built before the child part.\n\n```java\nclass Dog extends Animal {\n    Dog(String name) { super(name); }\n}\n```\n\nBuilding a `Dog` runs Animal's constructor, then Dog's.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class A {\n    A() { System.out.println(\"A\"); }\n}\nclass B extends A {\n    B() { System.out.println(\"B\"); }\n}\nclass C extends B {\n    C() { System.out.println(\"C\"); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new C();\n    }\n}",
+     "why": "Each constructor calls `super()` first, even when you don't write it. Parent runs, then child.",
+     "stdin": "",
+     "full": true,
+     "expected": "A\nB\nC\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A dog is a kind of animal. Which declaration says that?",
+     "options": [
+      "class Dog extends Animal",
+      "class Animal extends Dog",
+      "class Dog { Animal animal; }",
+      "Dog dog = new Animal();"
+     ],
+     "answer": 0,
+     "why": "`extends` points at the parent. The child is the more specific type.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Pass the name up to Animal.",
+     "code": "class Animal {\n    String name;\n    Animal(String name) { this.name = name; }\n}\nclass Dog ___ Animal {\n    Dog(String name) { ___(name); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Dog d = new Dog(\"Rex\");\n        System.out.println(d.name);\n    }\n}",
+     "blanks": [
+      [
+       "extends"
+      ],
+      [
+       "super"
+      ]
+     ],
+     "why": "`extends` names the parent. `super(name)` calls the parent constructor.",
+     "stdin": "",
+     "full": true,
+     "expected": "Rex\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Animal` and then `Dog`.",
+     "lines": [
+      "class Animal { Animal() { System.out.println(\"Animal\"); } }",
+      "class Dog extends Animal { Dog() { System.out.println(\"Dog\"); } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        new Dog();",
+      "    }",
+      "}"
+     ],
+     "why": "The parent constructor runs before the child's body.",
+     "stdin": "",
+     "full": true,
+     "expected": "Animal\nDog\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `A` then `B`, but it does not compile.",
+     "code": "class A {\n    A() { System.out.println(\"A\"); }\n}\nclass B extends A {\n    B() {\n        System.out.println(\"B\");\n        super();\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new B();\n    }\n}",
+     "solution": "class A {\n    A() { System.out.println(\"A\"); }\n}\nclass B extends A {\n    B() {\n        super();\n        System.out.println(\"B\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new B();\n    }\n}",
+     "why": "`super()` has to be the first line of the constructor. The parent is built before the child prints.",
+     "stdin": "",
+     "full": true,
+     "expected": "A\nB\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a name. Build a `Dog` that `extends` an animal with that name, and print `dog ` plus the name. Input `Rex` prints `dog Rex`.",
+     "code": "import java.util.*;\n\nclass Animal {\n    String name;\n    Animal(String name) { this.name = name; }\n}\nclass Dog extends Animal {\n    Dog(String name) { super(name); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Dog d = new Dog(sc.next());\n        System.out.println(d.name);\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Animal {\n    String name;\n    Animal(String name) { this.name = name; }\n}\nclass Dog extends Animal {\n    Dog(String name) { super(name); }\n    String tag() { return \"dog \" + name; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Dog d = new Dog(sc.next());\n        System.out.println(d.tag());\n    }\n}",
+     "tests": [
+      {
+       "input": "Rex\n",
+       "output": "dog Rex\n"
+      },
+      {
+       "input": "A\n",
+       "output": "dog A\n"
+      },
+      {
+       "input": "Milo\n",
+       "output": "dog Milo\n"
+      }
+     ],
+     "why": "`super(name)` stores the name on the animal. The dog adds the word `dog`.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-06",
+   "title": "Overriding",
+   "intro": "A child can replace a parent method. The variable can be the parent type; the call still runs the object's own method.\n\n```java\nclass Dog extends Animal {\n    @Override\n    String sound() { return \"woof\"; }\n}\n```\n\n`@Override` asks the compiler to check that the method really replaces one from the parent. A mismatched parameter list will not compile.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Animal {\n    String sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n    @Override String sound() { return \"woof\"; }\n}\nclass Cat extends Animal {\n    @Override String sound() { return \"meow\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal[] pets = { new Dog(), new Cat(), new Dog() };\n        for (Animal p : pets) System.out.println(p.sound());\n    }\n}",
+     "why": "The array type is Animal. Each call uses the real object's `sound`.",
+     "stdin": "",
+     "full": true,
+     "expected": "woof\nmeow\nwoof\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "The variable type is `Animal` and the object is a `Dog`. Which `sound` runs?",
+     "options": [
+      "Animal.sound, because the variable says Animal",
+      "Dog.sound, picked while the program runs",
+      "Both, Animal first",
+      "It fails to compile"
+     ],
+     "answer": 1,
+     "why": "Java looks at the object, not only the variable, when it calls the method.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Mark the method as a real override.",
+     "code": "class Animal {\n    String sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n    ___\n    String sound() { return \"woof\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        System.out.println(a.___());\n    }\n}",
+     "blanks": [
+      [
+       "@Override"
+      ],
+      [
+       "sound"
+      ]
+     ],
+     "why": "`@Override` checks the signature. The call still uses the dog's method.",
+     "stdin": "",
+     "full": true,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `woof`.",
+     "lines": [
+      "class Animal { String sound() { return \"...\"; } }",
+      "class Dog extends Animal { @Override String sound() { return \"woof\"; } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Animal a = new Dog();",
+      "        System.out.println(a.sound());",
+      "    }",
+      "}"
+     ],
+     "why": "Store a Dog in an Animal variable, then call `sound`.",
+     "stdin": "",
+     "full": true,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`@Override` is right to want, but this does not compile. `a.sound()` should print `woof`.",
+     "code": "class Animal {\n    String sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n    @Override\n    String sound(int n) { return \"woof\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        System.out.println(a.sound());\n    }\n}",
+     "solution": "class Animal {\n    String sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n    @Override\n    String sound() { return \"woof\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        System.out.println(a.sound());\n    }\n}",
+     "why": "The parameter list has to match. `sound(int)` is a different method, so `@Override` is rejected.",
+     "stdin": "",
+     "full": true,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` words, each `dog` or `cat`. Print `woof` or `meow` by calling `sound()` on an animal reference.\nInput `2` / `dog` / `cat` prints `woof` then `meow`.",
+     "code": "import java.util.*;\n\nclass Animal {\n    String sound() { return \"...\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        for (int i = 0; i < n; i++) {\n            sc.next();\n            System.out.println(\"...\");\n        }\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Animal {\n    String sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n    @Override String sound() { return \"woof\"; }\n}\nclass Cat extends Animal {\n    @Override String sound() { return \"meow\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        for (int i = 0; i < n; i++) {\n            Animal a = sc.next().equals(\"dog\") ? new Dog() : new Cat();\n            System.out.println(a.sound());\n        }\n    }\n}",
+     "tests": [
+      {
+       "input": "2\ndog\ncat\n",
+       "output": "woof\nmeow\n"
+      },
+      {
+       "input": "1\ndog\n",
+       "output": "woof\n"
+      },
+      {
+       "input": "3\ncat\ncat\ndog\n",
+       "output": "meow\nmeow\nwoof\n"
+      }
+     ],
+     "why": "One parent variable, two child classes. `sound()` follows the object.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-07",
+   "title": "Abstract and interfaces",
+   "intro": "An `abstract` class can hold fields and a constructor, and it can leave methods without a body. You cannot `new` it.\nAn `interface` is a list of methods a class promises to have. A class `extends` one class and can `implements` several interfaces.\n\n```java\nclass Lamp implements Switchable, Named {\n    public void toggle() { on = !on; }\n    public String label() { return on ? \"bright\" : \"dark\"; }\n}\n```\n\nInterface methods are public, so the methods that fill them in are public too.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "interface Switchable { void toggle(); }\ninterface Named { String label(); }\n\nclass Lamp implements Switchable, Named {\n    boolean on = false;\n    public void toggle() { on = !on; }\n    public String label() { return on ? \"bright\" : \"dark\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Lamp lamp = new Lamp();\n        System.out.println(lamp.label());\n        lamp.toggle();\n        System.out.println(lamp.label());\n    }\n}",
+     "why": "One class can fill in two interfaces. `toggle` flips the field `label` reads.",
+     "stdin": "",
+     "full": true,
+     "expected": "dark\nbright\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which line fails to compile?",
+     "options": [
+      "class Square extends Shape { int area() { return 1; } }",
+      "Shape s = new Shape();",
+      "Shape s = new Square();",
+      "abstract class Shape { int side = 1; }"
+     ],
+     "answer": 1,
+     "why": "An abstract class is incomplete, so `new Shape()` is rejected. A concrete subclass is fine.",
+     "code": "abstract class Shape {\n    abstract int area();\n}\nclass Square extends Shape {\n    int area() { return 1; }\n}"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Leave `area` without a body, then fill it in on the square.",
+     "code": "abstract class Shape {\n    ___ int area();\n}\nclass Square extends Shape {\n    int side;\n    Square(int side) { this.side = side; }\n    public int area() { return side * side; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Shape s = new Square(3);\n        System.out.println(s.area());\n    }\n}",
+     "blanks": [
+      [
+       "abstract"
+      ]
+     ],
+     "why": "The parent declares `area`. The square is the class you can actually `new`.",
+     "stdin": "",
+     "full": true,
+     "expected": "9\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `16`.",
+     "lines": [
+      "abstract class Shape { abstract int area(); }",
+      "class Square extends Shape { int side; Square(int side) { this.side = side; } int area() { return side * side; } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Shape s = new Square(4);",
+      "        System.out.println(s.area());",
+      "    }",
+      "}"
+     ],
+     "why": "The variable can be the abstract type. The object is a Square.",
+     "stdin": "",
+     "full": true,
+     "expected": "16\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`Square` says it extends `Shape`, but the program does not compile. Printing `s.area()` should show `9`.",
+     "code": "abstract class Shape {\n    abstract int area();\n}\nclass Square extends Shape {\n    int side;\n    Square(int side) { this.side = side; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Shape s = new Square(3);\n        System.out.println(s.area());\n    }\n}",
+     "solution": "abstract class Shape {\n    abstract int area();\n}\nclass Square extends Shape {\n    int side;\n    Square(int side) { this.side = side; }\n    int area() { return side * side; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Shape s = new Square(3);\n        System.out.println(s.area());\n    }\n}",
+     "why": "A concrete class has to fill in every abstract method, or it has to be abstract itself.",
+     "stdin": "",
+     "full": true,
+     "expected": "9\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a side length and print the area of a `Square` that extends an abstract `Shape`. Input `4` prints `16`.",
+     "code": "import java.util.*;\n\nabstract class Shape {\n    abstract int area();\n}\nclass Square extends Shape {\n    int side;\n    Square(int side) { this.side = side; }\n    int area() { return 0; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Shape s = new Square(sc.nextInt());\n        System.out.println(s.area());\n    }\n}",
+     "solution": "import java.util.*;\n\nabstract class Shape {\n    abstract int area();\n}\nclass Square extends Shape {\n    int side;\n    Square(int side) { this.side = side; }\n    int area() { return side * side; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Shape s = new Square(sc.nextInt());\n        System.out.println(s.area());\n    }\n}",
+     "tests": [
+      {
+       "input": "4\n",
+       "output": "16\n"
+      },
+      {
+       "input": "1\n",
+       "output": "1\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "5\n",
+       "output": "25\n"
+      }
+     ],
+     "why": "`area` returns `side * side`. The variable can stay typed as `Shape`.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-08",
+   "title": "Printing and equality",
+   "intro": "`System.out.println(obj)` calls `toString()`. The default text is the class name and a code, which is rarely what you want.\n\n`==` asks whether two variables point at the same object. `equals` is yours to define: same coordinates, same book id, and so on.\nIf you override `equals`, override `hashCode` too, with the same fields.\n\n```java\npublic String toString() { return x + \",\" + y; }\npublic boolean equals(Object other) { /* compare fields */ }\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    public String toString() { return x + \",\" + y; }\n    public boolean equals(Object other) {\n        if (!(other instanceof Point)) return false;\n        Point p = (Point) other;\n        return x == p.x && y == p.y;\n    }\n    public int hashCode() { return 31 * x + y; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point a = new Point(1, 2);\n        Point b = new Point(1, 2);\n        System.out.println(a);\n        System.out.println(a == b);\n        System.out.println(a.equals(b));\n    }\n}",
+     "why": "`println` uses `toString`. `==` is false because `a` and `b` are two objects. `equals` compares the numbers.",
+     "stdin": "",
+     "full": true,
+     "expected": "1,2\nfalse\ntrue\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "You wrote `equals` using `x` and `y`. What else should you override?",
+     "options": [
+      "toString",
+      "hashCode",
+      "compare",
+      "clone"
+     ],
+     "answer": 1,
+     "why": "Equal objects should land in the same hash bucket. `hashCode` has to use those same fields.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Teach `println` to show the coordinates.",
+     "code": "class Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    public String ___() { return x + \",\" + y; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point p = new Point(3, 4);\n        System.out.println(p);\n    }\n}",
+     "blanks": [
+      [
+       "toString"
+      ]
+     ],
+     "why": "`println` looks for `toString` and prints whatever that method returns.",
+     "stdin": "",
+     "full": true,
+     "expected": "3,4\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `true`.",
+     "lines": [
+      "class Point { int x, y; Point(int x, int y) { this.x = x; this.y = y; } public boolean equals(Object o) { Point p = (Point) o; return x == p.x && y == p.y; } public int hashCode() { return 31 * x + y; } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Point a = new Point(1, 2);",
+      "        Point b = new Point(1, 2);",
+      "        System.out.println(a.equals(b));",
+      "    }",
+      "}"
+     ],
+     "why": "`equals` compares the fields. `==` would have compared the two references.",
+     "stdin": "",
+     "full": true,
+     "expected": "true\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "The two points both hold `(1, 2)`. The program should print `true`.",
+     "code": "class Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    public boolean equals(Object other) {\n        if (!(other instanceof Point)) return false;\n        Point p = (Point) other;\n        return x == p.x && y == p.y;\n    }\n    public int hashCode() { return 31 * x + y; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point a = new Point(1, 2);\n        Point b = new Point(1, 2);\n        System.out.println(a == b);\n    }\n}",
+     "solution": "class Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    public boolean equals(Object other) {\n        if (!(other instanceof Point)) return false;\n        Point p = (Point) other;\n        return x == p.x && y == p.y;\n    }\n    public int hashCode() { return 31 * x + y; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point a = new Point(1, 2);\n        Point b = new Point(1, 2);\n        System.out.println(a.equals(b));\n    }\n}",
+     "why": "`==` is true only when both variables are the same object. `equals` is the field comparison.",
+     "stdin": "",
+     "full": true,
+     "expected": "true\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read four integers `x1 y1 x2 y2`. Build two points and print `true` or `false` from `equals`. Input `1 2 1 2` prints `true`.",
+     "code": "import java.util.*;\n\nclass Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Point a = new Point(sc.nextInt(), sc.nextInt());\n        Point b = new Point(sc.nextInt(), sc.nextInt());\n        System.out.println(false);\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    public boolean equals(Object other) {\n        if (!(other instanceof Point)) return false;\n        Point p = (Point) other;\n        return x == p.x && y == p.y;\n    }\n    public int hashCode() { return 31 * x + y; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Point a = new Point(sc.nextInt(), sc.nextInt());\n        Point b = new Point(sc.nextInt(), sc.nextInt());\n        System.out.println(a.equals(b));\n    }\n}",
+     "tests": [
+      {
+       "input": "1 2 1 2\n",
+       "output": "true\n"
+      },
+      {
+       "input": "1 2 1 3\n",
+       "output": "false\n"
+      },
+      {
+       "input": "0 0 0 0\n",
+       "output": "true\n"
+      },
+      {
+       "input": "-1 4 -1 4\n",
+       "output": "true\n"
+      }
+     ],
+     "why": "Compare fields inside `equals`. `==` would stay false for two different objects.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-09",
+   "title": "Composition",
+   "intro": "A car is not a kind of engine. A car **has** an engine. That is a field, not `extends`.\n\n```java\nclass Car {\n    String model;\n    Engine engine;\n    Car(String model, Engine engine) {\n        this.model = model;\n        this.engine = engine;\n    }\n}\n```\n\nUse `extends` when the new type really is the parent type. Use a field when one object uses another.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Engine {\n    int hp;\n    Engine(int hp) { this.hp = hp; }\n    String status() { return hp + \"hp\"; }\n}\nclass Car {\n    String model;\n    Engine engine;\n    Car(String model, Engine engine) { this.model = model; this.engine = engine; }\n    String spec() { return model + \" \" + engine.status(); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car c = new Car(\"Civic\", new Engine(150));\n        System.out.println(c.spec());\n    }\n}",
+     "why": "`spec` asks the engine it holds. The car does not extend the engine.",
+     "stdin": "",
+     "full": true,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A car is built around an engine it uses. Which shape fits?",
+     "options": [
+      "class Car extends Engine",
+      "Car holds an Engine field",
+      "class Engine extends Car",
+      "One class, and a boolean that switches job"
+     ],
+     "answer": 1,
+     "why": "Has-a is a field. Is-a is `extends`. A car is not an engine.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Read the horsepower from the engine the car holds.",
+     "code": "class Engine {\n    int hp;\n    Engine(int hp) { this.hp = hp; }\n    String status() { return hp + \"hp\"; }\n}\nclass Car {\n    String model;\n    Engine engine;\n    Car(String model, Engine engine) { this.model = model; this.engine = engine; }\n    String spec() { return model + \" \" + ___.status(); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car c = new Car(\"Civic\", new Engine(150));\n        System.out.println(c.spec());\n    }\n}",
+     "blanks": [
+      [
+       "engine"
+      ]
+     ],
+     "why": "The car keeps an `Engine` and calls methods on that field.",
+     "stdin": "",
+     "full": true,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Civic 150hp`.",
+     "lines": [
+      "class Engine { int hp; Engine(int hp) { this.hp = hp; } String status() { return hp + \"hp\"; } }",
+      "class Car { Engine engine; String model; Car(String model, Engine engine) { this.model = model; this.engine = engine; } String spec() { return model + \" \" + engine.status(); } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Car c = new Car(\"Civic\", new Engine(150));",
+      "        System.out.println(c.spec());",
+      "    }",
+      "}"
+     ],
+     "why": "Build the engine, hand it to the car, then ask the car for its spec.",
+     "stdin": "",
+     "full": true,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`spec` should include the engine's horsepower. It prints `Civic 0hp`.",
+     "code": "class Engine {\n    int hp;\n    Engine(int hp) { this.hp = hp; }\n}\nclass Car {\n    String model;\n    int hp;\n    Engine engine;\n    Car(String model, Engine engine) { this.model = model; this.engine = engine; }\n    String spec() { return model + \" \" + hp + \"hp\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car c = new Car(\"Civic\", new Engine(150));\n        System.out.println(c.spec());\n    }\n}",
+     "solution": "class Engine {\n    int hp;\n    Engine(int hp) { this.hp = hp; }\n}\nclass Car {\n    String model;\n    Engine engine;\n    Car(String model, Engine engine) { this.model = model; this.engine = engine; }\n    String spec() { return model + \" \" + engine.hp + \"hp\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car c = new Car(\"Civic\", new Engine(150));\n        System.out.println(c.spec());\n    }\n}",
+     "why": "The horsepower lives on the engine. The car reads `engine.hp` instead of a field it never set.",
+     "stdin": "",
+     "full": true,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a model and a horsepower. Build a `Car` that has an `Engine`, and print `model hp` with `hp` stuck on the end, like `Civic 150hp`.",
+     "code": "import java.util.*;\n\nclass Engine {\n    int hp;\n    Engine(int hp) { this.hp = hp; }\n}\nclass Car {\n    String model;\n    Engine engine;\n    Car(String model, Engine engine) { this.model = model; this.engine = engine; }\n    String spec() { return model; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Car c = new Car(sc.next(), new Engine(sc.nextInt()));\n        System.out.println(c.spec());\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Engine {\n    int hp;\n    Engine(int hp) { this.hp = hp; }\n}\nclass Car {\n    String model;\n    Engine engine;\n    Car(String model, Engine engine) { this.model = model; this.engine = engine; }\n    String spec() { return model + \" \" + engine.hp + \"hp\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Car c = new Car(sc.next(), new Engine(sc.nextInt()));\n        System.out.println(c.spec());\n    }\n}",
+     "tests": [
+      {
+       "input": "Civic\n150\n",
+       "output": "Civic 150hp\n"
+      },
+      {
+       "input": "Van\n90\n",
+       "output": "Van 90hp\n"
+      },
+      {
+       "input": "Bus\n0\n",
+       "output": "Bus 0hp\n"
+      }
+     ],
+     "why": "The car stores the engine and reads `engine.hp` when it builds the line.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-oop-10",
+   "title": "Bank account",
+   "intro": "Put the rules on the object. A `Bank` starts at 0 and is the only thing allowed to change its balance.\n\n- `deposit N` adds `N` when `N > 0` and prints the balance; otherwise it prints `Invalid`\n- `withdraw N` prints `Invalid` when `N <= 0`, `Insufficient funds` when `N` is too big, otherwise subtracts and prints the balance\n- `balance` prints the balance\n\n```java\nclass Bank {\n    private int balance = 0;\n    void deposit(int n) { /* check, then update */ }\n}\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Bank {\n    private int balance = 0;\n    void deposit(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        balance += n;\n        System.out.println(balance);\n    }\n    void withdraw(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        if (n > balance) { System.out.println(\"Insufficient funds\"); return; }\n        balance -= n;\n        System.out.println(balance);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Bank b = new Bank();\n        b.deposit(50);\n        b.withdraw(80);\n        b.withdraw(20);\n    }\n}",
+     "why": "50 is stored. 80 is more than 50, so the balance stays 50. 20 then leaves 30.",
+     "stdin": "",
+     "full": true,
+     "expected": "50\nInsufficient funds\n30\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which line belongs in `withdraw` before it subtracts?",
+     "options": [
+      "balance = n;",
+      "if (n > balance) { System.out.println(\"Insufficient funds\"); return; }",
+      "balance = 0;",
+      "n = balance;"
+     ],
+     "answer": 1,
+     "why": "Say no, and return, before changing the field. The balance stays as it was.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Reject a non-positive deposit.",
+     "code": "class Bank {\n    private int balance = 0;\n    void deposit(int n) {\n        if (n ___ 0) { System.out.println(\"Invalid\"); return; }\n        balance += n;\n        System.out.println(balance);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Bank b = new Bank();\n        b.deposit(0);\n        b.deposit(15);\n    }\n}",
+     "blanks": [
+      [
+       "<="
+      ]
+     ],
+     "why": "`<= 0` catches 0 and negatives. A positive amount falls through and is added.",
+     "stdin": "",
+     "full": true,
+     "expected": "Invalid\n15\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Insufficient funds`.",
+     "lines": [
+      "class Bank { private int balance = 0; void withdraw(int n) { if (n > balance) { System.out.println(\"Insufficient funds\"); return; } balance -= n; System.out.println(balance); } }",
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Bank b = new Bank();",
+      "        b.withdraw(80);",
+      "    }",
+      "}"
+     ],
+     "why": "The account starts at 0, so 80 is too much.",
+     "stdin": "",
+     "full": true,
+     "expected": "Insufficient funds\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`deposit` must reject non-positive amounts, and `withdraw` must refuse to go below 0.\n\n- `withdraw 80` prints `Insufficient funds`\n- `deposit 50` then `withdraw 80` prints `50` then `Insufficient funds`\n- `deposit -4` prints `Invalid`\n- `deposit 20`, `withdraw 20`, `withdraw 5` prints `20`, `0`, `Insufficient funds`",
+     "code": "import java.util.*;\n\nclass Bank {\n    private int balance = 0;\n    void deposit(int n) {\n        balance += n;\n        System.out.println(balance);\n    }\n    void withdraw(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        balance -= n;\n        System.out.println(balance);\n    }\n    void show() { System.out.println(balance); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Bank bank = new Bank();\n        while (sc.hasNext()) {\n            String cmd = sc.next();\n            if (cmd.equals(\"deposit\")) bank.deposit(sc.nextInt());\n            else if (cmd.equals(\"withdraw\")) bank.withdraw(sc.nextInt());\n            else if (cmd.equals(\"balance\")) bank.show();\n        }\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Bank {\n    private int balance = 0;\n    void deposit(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        balance += n;\n        System.out.println(balance);\n    }\n    void withdraw(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        if (n > balance) { System.out.println(\"Insufficient funds\"); return; }\n        balance -= n;\n        System.out.println(balance);\n    }\n    void show() { System.out.println(balance); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Bank bank = new Bank();\n        while (sc.hasNext()) {\n            String cmd = sc.next();\n            if (cmd.equals(\"deposit\")) bank.deposit(sc.nextInt());\n            else if (cmd.equals(\"withdraw\")) bank.withdraw(sc.nextInt());\n            else if (cmd.equals(\"balance\")) bank.show();\n        }\n    }\n}",
+     "why": "Check the amount before you change `balance`. A rejected command leaves the field as it was.",
+     "stdin": "withdraw 80\n",
+     "full": true,
+     "tests": [
+      {
+       "input": "withdraw 80\n",
+       "output": "Insufficient funds\n"
+      },
+      {
+       "input": "deposit 50\nwithdraw 80\n",
+       "output": "50\nInsufficient funds\n"
+      },
+      {
+       "input": "deposit -4\n",
+       "output": "Invalid\n"
+      },
+      {
+       "input": "deposit 20\nwithdraw 20\nwithdraw 5\n",
+       "output": "20\n0\nInsufficient funds\n"
+      }
+     ],
+     "expected": "Insufficient funds\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read commands until the input ends. Keep the balance `private` on a `Bank` that starts at 0.\n\n- `deposit N` — if `N > 0`, add it and print the balance; otherwise print `Invalid`\n- `withdraw N` — if `N <= 0`, print `Invalid`; if `N` is greater than the balance, print `Insufficient funds`; otherwise subtract and print the balance\n- `balance` — print the balance",
+     "code": "import java.util.*;\n\nclass Bank {\n    private int balance = 0;\n    void deposit(int n) { }\n    void withdraw(int n) { }\n    void show() { }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Bank bank = new Bank();\n        while (sc.hasNext()) {\n            String cmd = sc.next();\n            if (cmd.equals(\"deposit\")) bank.deposit(sc.nextInt());\n            else if (cmd.equals(\"withdraw\")) bank.withdraw(sc.nextInt());\n            else if (cmd.equals(\"balance\")) bank.show();\n        }\n    }\n}",
+     "solution": "import java.util.*;\n\nclass Bank {\n    private int balance = 0;\n    void deposit(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        balance += n;\n        System.out.println(balance);\n    }\n    void withdraw(int n) {\n        if (n <= 0) { System.out.println(\"Invalid\"); return; }\n        if (n > balance) { System.out.println(\"Insufficient funds\"); return; }\n        balance -= n;\n        System.out.println(balance);\n    }\n    void show() { System.out.println(balance); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        Bank bank = new Bank();\n        while (sc.hasNext()) {\n            String cmd = sc.next();\n            if (cmd.equals(\"deposit\")) bank.deposit(sc.nextInt());\n            else if (cmd.equals(\"withdraw\")) bank.withdraw(sc.nextInt());\n            else if (cmd.equals(\"balance\")) bank.show();\n        }\n    }\n}",
+     "tests": [
+      {
+       "input": "deposit 50\nwithdraw 20\nbalance\n",
+       "output": "50\n30\n30\n"
+      },
+      {
+       "input": "withdraw 80\n",
+       "output": "Insufficient funds\n"
+      },
+      {
+       "input": "deposit 40\nwithdraw 40\nwithdraw 1\n",
+       "output": "40\n0\nInsufficient funds\n"
+      },
+      {
+       "input": "deposit 0\ndeposit -3\ndeposit 15\n",
+       "output": "Invalid\nInvalid\n15\n"
+      },
+      {
+       "input": "balance\n",
+       "output": "0\n"
+      }
+     ],
+     "why": "The object owns the number. Each command either prints a refusal or the new balance.",
+     "full": true
+    }
+   ]
   }
  ],
  "python": [
@@ -838,6 +1848,7 @@
    "id": "python-01",
    "title": "Hello, output",
    "intro": "`print(x)` shows `x` and then moves to a new line. No semicolons, no `main` needed:\na Python file simply runs from top to bottom.\n\n`print(a, b)` puts a space between the values. `print(x, end=\"\")` stays on the same line.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -851,11 +1862,11 @@
     {
      "kind": "predict",
      "prompt": "What does this print?",
-     "code": "print(\"Log\", end=\"\")\nprint(\"ic\", end=\"\")\nprint(\"Quest\")",
+     "code": "print(\"Lo\", end=\"\")\nprint(\"g\", end=\"\")\nprint(\"IQ\")",
      "why": "`end=\"\"` replaces the newline with nothing, so the pieces join.",
      "stdin": "",
      "full": false,
-     "expected": "LogicQuest\n"
+     "expected": "LogIQ\n"
     },
     {
      "kind": "choice",
@@ -910,6 +1921,7 @@
    "id": "python-02",
    "title": "Variables and types",
    "intro": "A variable is a name pointing at a value. No type keyword is needed; Python works it out:\n\n```python\nage = 21          # int\nprice = 9.5       # float\nname = \"Yash\"     # str\ndone = True       # bool (capital T)\n```\n\n`type(x)` tells you what you have.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -936,11 +1948,11 @@
     {
      "kind": "predict",
      "prompt": "What does this print?",
-     "code": "first = \"Logic\"\nsecond = \"Quest\"\nprint(first + second)\nprint(first, second)",
+     "code": "first = \"Log\"\nsecond = \"IQ\"\nprint(first + second)\nprint(first, second)",
      "why": "`+` joins strings with no space; a comma in `print` adds one.",
      "stdin": "",
      "full": false,
-     "expected": "LogicQuest\nLogic Quest\n"
+     "expected": "LogIQ\nLog IQ\n"
     },
     {
      "kind": "blank",
@@ -989,6 +2001,7 @@
    "id": "python-03",
    "title": "Operators",
    "intro": "`/` always gives a float: `7 / 2` is `3.5`. Use `//` for whole-number division: `7 // 2` is `3`.\n`%` is the remainder, `**` is power.\n\n`x += 3` is short for `x = x + 3`. There is no `x++` in Python.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1063,6 +2076,7 @@
    "id": "python-04",
    "title": "Strings and characters",
    "intro": "A `str` is text. A single character is just a string of length 1.\n\n- `len(s)` → number of characters\n- `s[i]` → character at index `i` (from 0); `s[-1]` is the last one\n- `ord(\"a\")` → 97, `chr(98)` → `\"b\"`\n- Compare text with `==`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1148,7 +2162,8 @@
   {
    "id": "python-05",
    "title": "Reading input",
-   "intro": "`input()` reads one line as a **string**. Convert it to use it as a number:\n\n```python\nn = int(input())                    # one number\na, b = map(int, input().split())    # two numbers on one line\n```\n\nIn LogicQuest's problems the input is read for you, but you'll need this everywhere else.",
+   "intro": "`input()` reads one line as a **string**. Convert it to use it as a number:\n\n```python\nn = int(input())                    # one number\na, b = map(int, input().split())    # two numbers on one line\n```\n\nIn LogIQ's problems the input is read for you, but you'll need this everywhere else.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1242,6 +2257,7 @@
    "id": "python-06",
    "title": "Conditions",
    "intro": "```python\nif n > 0:\n    print(\"positive\")\nelif n < 0:\n    print(\"negative\")\nelse:\n    print(\"zero\")\n```\n\nThe colon `:` and the **indentation** (4 spaces) mark the block. Combine conditions with `and`, `or`, `not`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1333,6 +2349,7 @@
    "id": "python-07",
    "title": "Loops",
    "intro": "```python\nfor i in range(1, 6):     # 1, 2, 3, 4, 5  (stops BEFORE 6)\n    print(i)\n\nn = 10\nwhile n > 0:\n    n = n // 2\n```\n\n`range(5)` is 0..4, `range(a, b)` is a..b−1, `range(a, b, step)` jumps by step. `break` and `continue` work as usual.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1408,6 +2425,7 @@
    "id": "python-08",
    "title": "Lists",
    "intro": "A list holds values in order:\n\n```python\nnums = [4, 8, 15]\nzeros = [0] * 5       # five zeros\nnums[0]               # first\nnums[-1]              # last\nlen(nums)             # 3\nnums.append(16)       # add to the end\n```",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1499,7 +2517,8 @@
   {
    "id": "python-09",
    "title": "Functions",
-   "intro": "```python\ndef square(x):\n    return x * x\n\nprint(square(4))   # 16\n```\n\nA function without `return` gives back `None`. In LogicQuest problems you write `solve`.",
+   "intro": "```python\ndef square(x):\n    return x * x\n\nprint(square(4))   # 16\n```\n\nA function without `return` gives back `None`. In LogIQ problems you write `solve`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1591,6 +2610,7 @@
    "id": "python-10",
    "title": "Reading errors",
    "intro": "Python prints a **traceback**. Read the **last line** first: it names the error. The line above shows where.\n\n- `NameError` → a name doesn't exist (typo, or used before defining)\n- `TypeError` → wrong type for the operation (e.g. `\"a\" + 1`)\n- `IndexError` → index outside the list or string\n- `ZeroDivisionError`, `ValueError` (e.g. `int(\"abc\")`)\n- `IndentationError` → the spaces at the start of a line don't line up",
+   "section": "core",
    "exercises": [
     {
      "kind": "choice",
@@ -1662,6 +2682,999 @@
      "code": null
     }
    ]
+  },
+  {
+   "id": "python-oop-01",
+   "title": "Classes and objects",
+   "intro": "A class is a blueprint. An object is one built thing. You add fields by assigning them, and methods take the object as `self`.\n\n```python\nclass Dog:\n    def bark(self):\n        print(self.name + \" says woof\")\n\nrex = Dog()\nrex.name = \"Rex\"\n```\n\n`milo = Dog()` is a second object. Setting `rex.name` does not change `milo.name`.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Counter:\n    def ready(self):\n        self.n = 0\n    def add(self):\n        self.n += 1\n\na = Counter()\nb = Counter()\na.ready()\nb.ready()\na.add()\na.add()\nb.add()\nprint(a.n)\nprint(b.n)",
+     "why": "Each call of `Counter()` is its own object. `a.n` and `b.n` are separate.",
+     "stdin": "",
+     "full": false,
+     "expected": "2\n1\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does `Dog()` do?",
+     "options": [
+      "It renames the class",
+      "It builds one Dog object",
+      "It runs only the methods",
+      "It copies every existing dog"
+     ],
+     "answer": 1,
+     "why": "Calling the class builds an object. The class stays the blueprint.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Two dogs, two names.",
+     "code": "class Dog:\n    def label(self):\n        print(___.name)\n\na = Dog()\nb = ___()\na.name = \"Rex\"\nb.name = \"Milo\"\na.label()\nb.label()",
+     "blanks": [
+      [
+       "self"
+      ],
+      [
+       "Dog"
+      ]
+     ],
+     "why": "`self` is the object the method was called on. `Dog()` builds the second one.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Rex`.",
+     "lines": [
+      "class Dog:",
+      "    def label(self):",
+      "        print(self.name)",
+      "d = Dog()",
+      "d.name = \"Rex\"",
+      "d.label()"
+     ],
+     "why": "Build the object, set its field, then call the method.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Both lines should be different names. The second call crashes.",
+     "code": "class Dog:\n    def label(self):\n        print(self.name)\n\na = Dog()\nb = a\na.name = \"Rex\"\nb.name = \"Milo\"\na.label()\nc.label()",
+     "solution": "class Dog:\n    def label(self):\n        print(self.name)\n\na = Dog()\nb = Dog()\na.name = \"Rex\"\nb.name = \"Milo\"\na.label()\nb.label()",
+     "why": "`b = a` is one object with two names. `b = Dog()` builds another. `c` was never created.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a name and an age. Store them on a `Person` and print `name is age`. Input `Ana` then `21` prints `Ana is 21`.",
+     "code": "class Person:\n    def line(self):\n        print(self.name)\n\np = Person()\np.name = input()\np.age = int(input())\np.line()",
+     "solution": "class Person:\n    def line(self):\n        print(self.name + \" is \" + str(self.age))\n\np = Person()\np.name = input()\np.age = int(input())\np.line()",
+     "tests": [
+      {
+       "input": "Ana\n21\n",
+       "output": "Ana is 21\n"
+      },
+      {
+       "input": "Bo\n0\n",
+       "output": "Bo is 0\n"
+      },
+      {
+       "input": "Ravi\n7\n",
+       "output": "Ravi is 7\n"
+      }
+     ],
+     "why": "Keep both values on the object, and build the sentence from `self`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-02",
+   "title": "__init__ and self",
+   "intro": "`__init__` runs when you call the class. The first parameter is the new object. Everyone names it `self`.\n\n```python\nclass Dog:\n    def __init__(self, name):\n        self.name = name\n```\n\n`rex = Dog(\"Rex\")` builds the object and passes it in as `self`. Forget `self` on a method and the call crashes: the object is passed anyway. `name = name` never creates a field.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n    def label(self):\n        print(self.name)\n\nDog(\"Rex\").label()\nDog(\"Milo\").label()",
+     "why": "Each call runs `__init__` for that object and stores the name on it.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Calling `c.add()` when `add` is defined `def add():` raises…",
+     "options": [
+      "nothing, self is optional",
+      "TypeError: the object is passed and the method doesn't accept it",
+      "the method runs with self set to None",
+      "a syntax error at the call"
+     ],
+     "answer": 1,
+     "why": "Instance calls always pass the object as the first argument. The definition has to accept it.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Store the parameter on the object.",
+     "code": "class Point:\n    def __init__(self, x):\n        ___.x = x\n    def show(self):\n        print(___.x)\n\nPoint(4).show()",
+     "blanks": [
+      [
+       "self"
+      ],
+      [
+       "self"
+      ]
+     ],
+     "why": "`self.x` is the field. The bare `x` is only the parameter.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `4`.",
+     "lines": [
+      "class Point:",
+      "    def __init__(self, x):",
+      "        self.x = x",
+      "p = Point(4)",
+      "print(p.x)"
+     ],
+     "why": "`__init__` stores `x` before the print reads it.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`show` should print `4`. It crashes with AttributeError.",
+     "code": "class Point:\n    def __init__(self, x):\n        x = x\n    def show(self):\n        print(self.x)\n\nPoint(4).show()",
+     "solution": "class Point:\n    def __init__(self, x):\n        self.x = x\n    def show(self):\n        print(self.x)\n\nPoint(4).show()",
+     "why": "`x = x` writes the parameter onto itself. `self.x = x` creates the field.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read width and height. Store them in `__init__` and print the area. Input `3 4` prints `12`.",
+     "code": "class Box:\n    def __init__(self, w, h):\n        w = w\n        h = h\n    def area(self):\n        return self.w * self.h\n\nw, h = map(int, input().split())\nprint(Box(w, h).area())",
+     "solution": "class Box:\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def area(self):\n        return self.w * self.h\n\nw, h = map(int, input().split())\nprint(Box(w, h).area())",
+     "tests": [
+      {
+       "input": "3 4\n",
+       "output": "12\n"
+      },
+      {
+       "input": "0 5\n",
+       "output": "0\n"
+      },
+      {
+       "input": "2 2\n",
+       "output": "4\n"
+      },
+      {
+       "input": "-3 4\n",
+       "output": "-12\n"
+      }
+     ],
+     "why": "`self.w` and `self.h` keep the numbers after `__init__` returns.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-03",
+   "title": "Properties",
+   "intro": "A single leading underscore, `_balance`, is a convention: other code should leave it alone. Nothing stops a caller from touching it.\n\n`@property` is the checked door. Reading `account.balance` calls the getter. Assigning `account.balance = n` calls the setter, which can refuse a bad value.\n\n```python\nclass Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n    @balance.setter\n    def balance(self, n):\n        if n >= 0:\n            self._balance = n\n\na = Account()\na.balance = 20\na.balance = -3\nprint(a.balance)",
+     "why": "20 is stored. The setter ignores -3, so the property still reads 20.",
+     "stdin": "",
+     "full": false,
+     "expected": "20\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does the leading underscore in `_balance` mean?",
+     "options": [
+      "Other modules cannot see the attribute",
+      "A convention: use the property, not this attribute",
+      "The attribute is shared by every object",
+      "Reading it raises AttributeError"
+     ],
+     "answer": 1,
+     "why": "The underscore is a warning to people. `@property` is what actually checks the value.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Wire the setter to the same name as the property.",
+     "code": "class Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n    @___.setter\n    def balance(self, n):\n        if n >= 0:\n            self._balance = n\n\na = Account()\na.balance = 8\nprint(a.___)",
+     "blanks": [
+      [
+       "balance"
+      ],
+      [
+       "balance"
+      ]
+     ],
+     "why": "The decorator is `@balance.setter`. Callers still write `a.balance`.",
+     "stdin": "",
+     "full": false,
+     "expected": "8\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `8`.",
+     "lines": [
+      "class Account:",
+      "    def __init__(self):",
+      "        self._balance = 0",
+      "    @property",
+      "    def balance(self):",
+      "        return self._balance",
+      "a = Account()",
+      "a._balance = 8",
+      "print(a.balance)"
+     ],
+     "why": "The getter reads `_balance`. The assignment has to happen before the print.",
+     "stdin": "",
+     "full": false,
+     "expected": "8\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "After setting 20 and then -3, the balance should still be `20`.",
+     "code": "class Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n    @balance.setter\n    def balance(self, n):\n        self._balance = n\n\na = Account()\na.balance = 20\na.balance = -3\nprint(a.balance)",
+     "solution": "class Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n    @balance.setter\n    def balance(self, n):\n        if n >= 0:\n            self._balance = n\n\na = Account()\na.balance = 20\na.balance = -3\nprint(a.balance)",
+     "why": "The setter is the place for the rule. Skip the assignment when `n` is negative.",
+     "stdin": "",
+     "full": false,
+     "expected": "20\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` amounts. Add an amount only when it is greater than 0, using a property setter, and print the balance.\nInput `3` / `10` / `-4` / `5` prints `15`.",
+     "code": "class Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n    @balance.setter\n    def balance(self, n):\n        self._balance = n\n\na = Account()\nn = int(input())\nfor _ in range(n):\n    a.balance += int(input())\nprint(a.balance)",
+     "solution": "class Account:\n    def __init__(self):\n        self._balance = 0\n    @property\n    def balance(self):\n        return self._balance\n    @balance.setter\n    def balance(self, n):\n        if n >= 0:\n            self._balance = n\n\na = Account()\nn = int(input())\nfor _ in range(n):\n    amount = int(input())\n    if amount > 0:\n        a.balance += amount\nprint(a.balance)",
+     "tests": [
+      {
+       "input": "3\n10\n-4\n5\n",
+       "output": "15\n"
+      },
+      {
+       "input": "1\n0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "2\n-8\n-1\n",
+       "output": "0\n"
+      },
+      {
+       "input": "4\n20\n0\n7\n3\n",
+       "output": "30\n"
+      }
+     ],
+     "why": "Ignore amounts that are not positive. Print the property at the end.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-04",
+   "title": "Class data",
+   "intro": "Assign a value on the class and every object sees that same value. Assign on `self` and only that object changes.\n\n```python\nclass Counter:\n    n = 0\n    def __init__(self):\n        Counter.n += 1\n    @classmethod\n    def how_many(cls):\n        return cls.n\n```\n\n`@classmethod` receives the class as `cls`. `@staticmethod` receives neither the object nor the class. A list stored on the class is one list: `append` from any object changes it for all of them.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Team:\n    members = []\n    def add(self, name):\n        self.members.append(name)\n\na = Team()\nb = Team()\na.add(\"Ana\")\nb.add(\"Bo\")\nprint(\" \".join(a.members))\nprint(\" \".join(b.members))",
+     "why": "`members` lives on the class, so both objects append to one list.",
+     "stdin": "",
+     "full": false,
+     "expected": "Ana Bo\nAna Bo\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A method that uses neither the object nor the class should be a…",
+     "options": [
+      "staticmethod",
+      "classmethod",
+      "property",
+      "abstractmethod"
+     ],
+     "answer": 0,
+     "why": "`@staticmethod` takes no `self` and no `cls`. `@classmethod` is for when you need the class.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Count objects from the class.",
+     "code": "class Tally:\n    n = 0\n    def __init__(self):\n        Tally.n += 1\n    @___\n    def how_many(cls):\n        return cls.n\n\nTally()\nTally()\nprint(Tally.how_many())",
+     "blanks": [
+      [
+       "classmethod"
+      ]
+     ],
+     "why": "`cls` is the class. `@classmethod` passes it in, so `how_many` can read `cls.n`.",
+     "stdin": "",
+     "full": false,
+     "expected": "2\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `pen`.",
+     "lines": [
+      "class Bag:",
+      "    def __init__(self):",
+      "        self.items = []",
+      "    def add(self, item):",
+      "        self.items.append(item)",
+      "a = Bag()",
+      "a.add(\"pen\")",
+      "print(a.items[0])"
+     ],
+     "why": "Create the list on the object inside `__init__`, then append.",
+     "stdin": "",
+     "full": false,
+     "expected": "pen\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Each team should keep its own member. The print shows both names on both teams.",
+     "code": "class Team:\n    members = []\n    def add(self, name):\n        self.members.append(name)\n\na = Team()\nb = Team()\na.add(\"Ana\")\nb.add(\"Bo\")\nprint(\" \".join(a.members))\nprint(\" \".join(b.members))",
+     "solution": "class Team:\n    def __init__(self):\n        self.members = []\n    def add(self, name):\n        self.members.append(name)\n\na = Team()\nb = Team()\na.add(\"Ana\")\nb.add(\"Bo\")\nprint(\" \".join(a.members))\nprint(\" \".join(b.members))",
+     "why": "A list on the class is shared. Build a new list on `self` inside `__init__`.",
+     "stdin": "",
+     "full": false,
+     "expected": "Ana\nBo\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` names. Each name becomes a `Member`. Print how many were created, using a class attribute. Input `2` / `Ana` / `Bo` prints `2`.",
+     "code": "class Member:\n    total = 0\n    def __init__(self, name):\n        self.name = name\n\nn = int(input())\nfor _ in range(n):\n    Member(input())\nprint(0)",
+     "solution": "class Member:\n    total = 0\n    def __init__(self, name):\n        self.name = name\n        Member.total += 1\n\nn = int(input())\nfor _ in range(n):\n    Member(input())\nprint(Member.total)",
+     "tests": [
+      {
+       "input": "2\nAna\nBo\n",
+       "output": "2\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "1\nSam\n",
+       "output": "1\n"
+      },
+      {
+       "input": "3\nA\nB\nC\n",
+       "output": "3\n"
+      }
+     ],
+     "why": "`Member.total` is one number for the class. Bump it in `__init__`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-05",
+   "title": "Inheritance",
+   "intro": "List the parent in parentheses: `class Dog(Animal)`. The child starts with the parent's methods.\n\n`super().__init__(...)` runs the parent setup. Skip it and the parent fields are never stored. With a chain of classes, the prints run parent first, then child.\n\n```python\nclass Dog(Animal):\n    def __init__(self, name):\n        super().__init__(name)\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class A:\n    def __init__(self):\n        print(\"A\")\n\nclass B(A):\n    def __init__(self):\n        super().__init__()\n        print(\"B\")\n\nclass C(B):\n    def __init__(self):\n        super().__init__()\n        print(\"C\")\n\nC()",
+     "why": "`super()` walks one step up. C calls B, B calls A, then the prints unwind A, B, C.",
+     "stdin": "",
+     "full": false,
+     "expected": "A\nB\nC\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "How does Dog inherit from Animal?",
+     "options": [
+      "class Dog(Animal):",
+      "class Dog: Animal",
+      "Dog = Animal()",
+      "class Animal(Dog):"
+     ],
+     "answer": 0,
+     "why": "The parent goes in parentheses on the child class.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Run the parent setup before the child uses the name.",
+     "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Dog(Animal):\n    def __init__(self, name):\n        ___().__init__(name)\n\nprint(Dog(\"Rex\").name)",
+     "blanks": [
+      [
+       "super"
+      ]
+     ],
+     "why": "`super()` finds Animal, and `__init__` stores the name.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Animal` then `Dog`.",
+     "lines": [
+      "class Animal:",
+      "    def __init__(self): print(\"Animal\")",
+      "class Dog(Animal):",
+      "    def __init__(self):",
+      "        super().__init__()",
+      "        print(\"Dog\")",
+      "Dog()"
+     ],
+     "why": "Call `super().__init__()` before the child prints.",
+     "stdin": "",
+     "full": false,
+     "expected": "Animal\nDog\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Building a C should print `A`, then `B`, then `C`. `B` never calls up.",
+     "code": "class A:\n    def __init__(self):\n        print(\"A\")\n\nclass B(A):\n    def __init__(self):\n        print(\"B\")\n\nclass C(B):\n    def __init__(self):\n        super().__init__()\n        print(\"C\")\n\nC()",
+     "solution": "class A:\n    def __init__(self):\n        print(\"A\")\n\nclass B(A):\n    def __init__(self):\n        super().__init__()\n        print(\"B\")\n\nclass C(B):\n    def __init__(self):\n        super().__init__()\n        print(\"C\")\n\nC()",
+     "why": "Each class that writes `__init__` has to call `super().__init__()`, or the chain stops there.",
+     "stdin": "",
+     "full": false,
+     "expected": "A\nB\nC\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a name. Build a `Dog` whose parent stores that name, and print `dog ` plus the name. Input `Rex` prints `dog Rex`.",
+     "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Dog(Animal):\n    def __init__(self, name):\n        super().__init__(name)\n\nprint(Dog(input()).name)",
+     "solution": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Dog(Animal):\n    def __init__(self, name):\n        super().__init__(name)\n    def tag(self):\n        return \"dog \" + self.name\n\nprint(Dog(input()).tag())",
+     "tests": [
+      {
+       "input": "Rex\n",
+       "output": "dog Rex\n"
+      },
+      {
+       "input": "A\n",
+       "output": "dog A\n"
+      },
+      {
+       "input": "Milo\n",
+       "output": "dog Milo\n"
+      }
+     ],
+     "why": "`super().__init__(name)` stores the name. `tag` adds the word `dog`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-06",
+   "title": "Overriding methods",
+   "intro": "Define the same method name on the child and the child's version wins. A list can hold a mix of children; the call uses the object you actually put in.\n\n```python\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\n```\n\nNames are case-sensitive. `Sound` does not replace `sound`, and nothing warns you.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Animal:\n    def sound(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\n\nclass Cat(Animal):\n    def sound(self):\n        return \"meow\"\n\npets = [Dog(), Cat(), Dog()]\nfor p in pets:\n    print(p.sound())",
+     "why": "The list has no single type. `p.sound()` runs the method on that object.",
+     "stdin": "",
+     "full": false,
+     "expected": "woof\nmeow\nwoof\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What decides which `sound` runs?",
+     "options": [
+      "The class written on the list",
+      "The class of the object in that slot",
+      "Whichever class was defined first",
+      "The name of the variable `p`"
+     ],
+     "answer": 1,
+     "why": "The call looks up the method on the object. Dog and Cat each supply their own.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Replace the parent method.",
+     "code": "class Animal:\n    def sound(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def ___(self):\n        return \"woof\"\n\nprint(Dog().sound())",
+     "blanks": [
+      [
+       "sound"
+      ]
+     ],
+     "why": "The names match, so `Dog().sound()` finds the child's method first.",
+     "stdin": "",
+     "full": false,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `woof`.",
+     "lines": [
+      "class Animal:",
+      "    def sound(self): return \"...\"",
+      "class Dog(Animal):",
+      "    def sound(self):",
+      "        return \"woof\"",
+      "print(Dog().sound())"
+     ],
+     "why": "The child defines `sound`, then the call uses a Dog.",
+     "stdin": "",
+     "full": false,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`a.sound()` should print `woof`. It prints `...`.",
+     "code": "class Animal:\n    def sound(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def Sound(self):\n        return \"woof\"\n\na = Dog()\nprint(a.sound())",
+     "solution": "class Animal:\n    def sound(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\n\na = Dog()\nprint(a.sound())",
+     "why": "`Sound` and `sound` are different names, so the parent method is still the one that runs.",
+     "stdin": "",
+     "full": false,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` words, each `dog` or `cat`. Print `woof` or `meow` from a method on that object.\nInput `2` / `dog` / `cat` prints `woof` then `meow`.",
+     "code": "class Animal:\n    def sound(self):\n        return \"...\"\n\nn = int(input())\nfor _ in range(n):\n    input()\n    print(\"...\")",
+     "solution": "class Animal:\n    def sound(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\n\nclass Cat(Animal):\n    def sound(self):\n        return \"meow\"\n\nn = int(input())\nfor _ in range(n):\n    pet = Dog() if input() == \"dog\" else Cat()\n    print(pet.sound())",
+     "tests": [
+      {
+       "input": "2\ndog\ncat\n",
+       "output": "woof\nmeow\n"
+      },
+      {
+       "input": "1\ndog\n",
+       "output": "woof\n"
+      },
+      {
+       "input": "3\ncat\ncat\ndog\n",
+       "output": "meow\nmeow\nwoof\n"
+      }
+     ],
+     "why": "Build the matching object and call `sound()`. The parent version is the fallback.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-07",
+   "title": "Abstract classes",
+   "intro": "`abc.ABC` plus `@abstractmethod` means the class is unfinished. Calling it raises `TypeError` until a child supplies the method.\n\nA lot of code never uses that machinery. If the function only calls `thing.quack()`, any object with `quack` will do. That is duck typing: the methods matter, not the parent class.\n\n```python\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\ntry:\n    Shape()\n    print(\"made one\")\nexcept TypeError:\n    print(\"TypeError\")\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = side\n    def area(self):\n        return self.side * self.side\n\nprint(Square(3).area())",
+     "why": "Calling `Shape()` raises TypeError. `Square` fills in `area`, so it can be built.",
+     "stdin": "",
+     "full": false,
+     "expected": "TypeError\n9\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A function only calls `thing.quack()`. Which callers are fine?",
+     "options": [
+      "Only objects whose class lists Duck as a parent",
+      "A Duck, and a Person that also defines quack",
+      "Any object, even with no quack method",
+      "Only Duck, because of the class name"
+     ],
+     "answer": 1,
+     "why": "Duck typing looks for the method. The class name is not checked.",
+     "code": "def speak(thing):\n    return thing.quack()"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Mark the method that children must supply.",
+     "code": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @___\n    def area(self):\n        pass\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = side\n    def area(self):\n        return self.side * self.side\n\nprint(Square(4).area())",
+     "blanks": [
+      [
+       "abstractmethod"
+      ]
+     ],
+     "why": "Without the method on the child, building a Square would raise TypeError.",
+     "stdin": "",
+     "full": false,
+     "expected": "16\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `16`.",
+     "lines": [
+      "from abc import ABC, abstractmethod",
+      "class Shape(ABC):",
+      "    @abstractmethod",
+      "    def area(self): pass",
+      "class Square(Shape):",
+      "    def __init__(self, side):",
+      "        self.side = side",
+      "    def area(self):",
+      "        return self.side * self.side",
+      "print(Square(4).area())"
+     ],
+     "why": "Import abc, declare the method, fill it in, then call it.",
+     "stdin": "",
+     "full": false,
+     "expected": "16\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`Square(3).area()` should print `9`. Building the square crashes.",
+     "code": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = side\n\nprint(Square(3).area())",
+     "solution": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = side\n    def area(self):\n        return self.side * self.side\n\nprint(Square(3).area())",
+     "why": "A child of an ABC still has abstract methods until it defines them. `area` has to return `side * side`.",
+     "stdin": "",
+     "full": false,
+     "expected": "9\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a side length and print the area of a `Square` that implements an abstract `area`. Input `4` prints `16`.",
+     "code": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = side\n    def area(self):\n        return 0\n\nprint(Square(int(input())).area())",
+     "solution": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = side\n    def area(self):\n        return self.side * self.side\n\nprint(Square(int(input())).area())",
+     "tests": [
+      {
+       "input": "4\n",
+       "output": "16\n"
+      },
+      {
+       "input": "1\n",
+       "output": "1\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "5\n",
+       "output": "25\n"
+      }
+     ],
+     "why": "`area` returns `self.side * self.side`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-08",
+   "title": "Printing and equality",
+   "intro": "`print(obj)` uses `__str__`. The prompt and containers use `__repr__`, which should be a clearer description.\n\n`==` calls `__eq__` when you define it. `is` does not: it asks whether both names point at the same object.\n\n```python\ndef __eq__(self, other):\n    return isinstance(other, Point) and self.x == other.x and self.y == other.y\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    def __str__(self):\n        return f\"({self.x}, {self.y})\"\n    def __repr__(self):\n        return f\"Point({self.x}, {self.y})\"\n    def __eq__(self, other):\n        return isinstance(other, Point) and self.x == other.x and self.y == other.y\n\na = Point(1, 2)\nb = Point(1, 2)\nprint(a)\nprint(repr(a))\nprint(a is b)\nprint(a == b)",
+     "why": "`print` uses `__str__`. `repr` uses `__repr__`. `is` is false for two objects; `==` uses `__eq__`.",
+     "stdin": "",
+     "full": false,
+     "expected": "(1, 2)\nPoint(1, 2)\nFalse\nTrue\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What is the difference between `is` and `==` here?",
+     "options": [
+      "`is` checks the fields, `==` checks identity",
+      "`is` checks identity, `==` calls `__eq__` when it exists",
+      "They always give the same answer",
+      "`is` is only for numbers"
+     ],
+     "answer": 1,
+     "why": "Two points with the same numbers are `==` and still not `is`.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Make `print` show the coordinates.",
+     "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    def ___(self):\n        return f\"({self.x}, {self.y})\"\n\nprint(Point(3, 4))",
+     "blanks": [
+      [
+       "__str__"
+      ]
+     ],
+     "why": "`print` looks for `__str__`. `__repr__` is the other one, used by `repr()`.",
+     "stdin": "",
+     "full": false,
+     "expected": "(3, 4)\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `True`.",
+     "lines": [
+      "class Point:",
+      "    def __init__(self, x, y):",
+      "        self.x = x",
+      "        self.y = y",
+      "    def __eq__(self, other):",
+      "        return self.x == other.x and self.y == other.y",
+      "a = Point(1, 2)",
+      "b = Point(1, 2)",
+      "print(a == b)"
+     ],
+     "why": "`==` calls `__eq__`. `is` would be False for these two objects.",
+     "stdin": "",
+     "full": false,
+     "expected": "True\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "The points match. The program should print `True`.",
+     "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n\na = Point(1, 2)\nb = Point(1, 2)\nprint(a is b)",
+     "solution": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n\na = Point(1, 2)\nb = Point(1, 2)\nprint(a == b)",
+     "why": "`is` asks if `a` and `b` are the same object. `==` uses `__eq__` and compares the numbers.",
+     "stdin": "",
+     "full": false,
+     "expected": "True\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read four integers `x1 y1 x2 y2`. Build two points and print whether they are equal with `==`. Input `1 2 1 2` prints `True`.",
+     "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\nnums = list(map(int, input().split()))\na = Point(nums[0], nums[1])\nb = Point(nums[2], nums[3])\nprint(False)",
+     "solution": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    def __eq__(self, other):\n        return isinstance(other, Point) and self.x == other.x and self.y == other.y\n\nnums = list(map(int, input().split()))\na = Point(nums[0], nums[1])\nb = Point(nums[2], nums[3])\nprint(a == b)",
+     "tests": [
+      {
+       "input": "1 2 1 2\n",
+       "output": "True\n"
+      },
+      {
+       "input": "1 2 1 3\n",
+       "output": "False\n"
+      },
+      {
+       "input": "0 0 0 0\n",
+       "output": "True\n"
+      },
+      {
+       "input": "-1 4 -1 4\n",
+       "output": "True\n"
+      }
+     ],
+     "why": "`__eq__` compares the fields. `is` would stay False.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-09",
+   "title": "Composition",
+   "intro": "A car is not a kind of engine. A car **has** an engine, stored on `self`.\n\n```python\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n```\n\nPut a parent in parentheses only when the new type really is that parent. Otherwise keep the other object in a field and call its methods.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Engine:\n    def __init__(self, hp):\n        self.hp = hp\n    def status(self):\n        return f\"{self.hp}hp\"\n\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n    def spec(self):\n        return f\"{self.model} {self.engine.status()}\"\n\nprint(Car(\"Civic\", Engine(150)).spec())",
+     "why": "`spec` asks the engine object stored on the car.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A car is built around an engine it uses. Which shape fits?",
+     "options": [
+      "class Car(Engine):",
+      "Car stores an Engine on self",
+      "class Engine(Car):",
+      "One class with a flag that switches job"
+     ],
+     "answer": 1,
+     "why": "Has-a is a field. Listing a parent means the child is that kind of thing.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Read the horsepower from the engine the car holds.",
+     "code": "class Engine:\n    def __init__(self, hp):\n        self.hp = hp\n    def status(self):\n        return f\"{self.hp}hp\"\n\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n    def spec(self):\n        return self.model + \" \" + self.___.status()\n\nprint(Car(\"Civic\", Engine(150)).spec())",
+     "blanks": [
+      [
+       "engine"
+      ]
+     ],
+     "why": "The car keeps an engine and calls `status` on that field.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Civic 150hp`.",
+     "lines": [
+      "class Engine:",
+      "    def __init__(self, hp):",
+      "        self.hp = hp",
+      "class Car:",
+      "    def __init__(self, model, engine):",
+      "        self.model = model",
+      "        self.engine = engine",
+      "c = Car(\"Civic\", Engine(150))",
+      "print(c.model, str(c.engine.hp) + \"hp\")"
+     ],
+     "why": "Build an Engine, pass it into Car, then read the engine's horsepower.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`spec` should include the engine's horsepower. It crashes with AttributeError.",
+     "code": "class Engine:\n    def __init__(self, hp):\n        self.hp = hp\n\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n    def spec(self):\n        return f\"{self.model} {self.hp}hp\"\n\nprint(Car(\"Civic\", Engine(150)).spec())",
+     "solution": "class Engine:\n    def __init__(self, hp):\n        self.hp = hp\n\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n    def spec(self):\n        return f\"{self.model} {self.engine.hp}hp\"\n\nprint(Car(\"Civic\", Engine(150)).spec())",
+     "why": "The horsepower lives on the engine. Read `self.engine.hp`, not a field the car never stored.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a model and a horsepower. Build a `Car` that holds an `Engine`, and print `model hp` like `Civic 150hp`.",
+     "code": "class Engine:\n    def __init__(self, hp):\n        self.hp = hp\n\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n    def spec(self):\n        return self.model\n\nmodel = input()\nhp = int(input())\nprint(Car(model, Engine(hp)).spec())",
+     "solution": "class Engine:\n    def __init__(self, hp):\n        self.hp = hp\n\nclass Car:\n    def __init__(self, model, engine):\n        self.model = model\n        self.engine = engine\n    def spec(self):\n        return self.model + \" \" + str(self.engine.hp) + \"hp\"\n\nmodel = input()\nhp = int(input())\nprint(Car(model, Engine(hp)).spec())",
+     "tests": [
+      {
+       "input": "Civic\n150\n",
+       "output": "Civic 150hp\n"
+      },
+      {
+       "input": "Van\n90\n",
+       "output": "Van 90hp\n"
+      },
+      {
+       "input": "Bus\n0\n",
+       "output": "Bus 0hp\n"
+      }
+     ],
+     "why": "Store the engine on the car and read `self.engine.hp` in `spec`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-oop-10",
+   "title": "Bank account",
+   "intro": "Put the rules on the object. A `Bank` starts at 0, keeps the number on `self._balance`, and is the only code that changes it.\n\n- `deposit N` adds `N` when `N > 0` and prints the balance; otherwise it prints `Invalid`\n- `withdraw N` prints `Invalid` when `N <= 0`, `Insufficient funds` when `N` is too big, otherwise subtracts and prints the balance\n- `balance` prints the balance\n\n```python\nclass Bank:\n    def __init__(self):\n        self._balance = 0\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Bank:\n    def __init__(self):\n        self._balance = 0\n    def deposit(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        self._balance += n\n        print(self._balance)\n    def withdraw(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        if n > self._balance:\n            print(\"Insufficient funds\")\n            return\n        self._balance -= n\n        print(self._balance)\n\nb = Bank()\nb.deposit(50)\nb.withdraw(80)\nb.withdraw(20)",
+     "why": "50 is stored. 80 is more than 50, so the field stays 50. 20 then leaves 30.",
+     "stdin": "",
+     "full": false,
+     "expected": "50\nInsufficient funds\n30\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which check belongs in `withdraw` before it subtracts?",
+     "options": [
+      "self._balance = n",
+      "if n > self._balance: print a refusal and return",
+      "self._balance = 0",
+      "n = self._balance"
+     ],
+     "answer": 1,
+     "why": "Return before changing the field. A refused withdrawal leaves the balance as it was.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Reject a non-positive deposit.",
+     "code": "class Bank:\n    def __init__(self):\n        self._balance = 0\n    def deposit(self, n):\n        if n ___ 0:\n            print(\"Invalid\")\n            return\n        self._balance += n\n        print(self._balance)\n\nb = Bank()\nb.deposit(0)\nb.deposit(15)",
+     "blanks": [
+      [
+       "<="
+      ]
+     ],
+     "why": "`<= 0` catches 0 and negatives. A positive amount is added and printed.",
+     "stdin": "",
+     "full": false,
+     "expected": "Invalid\n15\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Insufficient funds`.",
+     "lines": [
+      "class Bank:",
+      "    def __init__(self):",
+      "        self._balance = 0",
+      "    def withdraw(self, n):",
+      "        if n > self._balance:",
+      "            print(\"Insufficient funds\")",
+      "            return",
+      "b = Bank()",
+      "b.withdraw(80)"
+     ],
+     "why": "A new account is at 0, so 80 is too much.",
+     "stdin": "",
+     "full": false,
+     "expected": "Insufficient funds\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`deposit` must reject non-positive amounts, and `withdraw` must refuse to go below 0.\n\n- `withdraw 80` prints `Insufficient funds`\n- `deposit 50` then `withdraw 80` prints `50` then `Insufficient funds`\n- `deposit -4` prints `Invalid`\n- `deposit 20`, `withdraw 20`, `withdraw 5` prints `20`, `0`, `Insufficient funds`",
+     "code": "import sys\n\nclass Bank:\n    def __init__(self):\n        self._balance = 0\n    def deposit(self, n):\n        self._balance += n\n        print(self._balance)\n    def withdraw(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        self._balance -= n\n        print(self._balance)\n    def show(self):\n        print(self._balance)\n\nbank = Bank()\nfor line in sys.stdin:\n    parts = line.split()\n    if not parts:\n        continue\n    cmd = parts[0]\n    if cmd == \"balance\":\n        bank.show()\n    elif cmd == \"deposit\":\n        bank.deposit(int(parts[1]))\n    elif cmd == \"withdraw\":\n        bank.withdraw(int(parts[1]))",
+     "solution": "import sys\n\nclass Bank:\n    def __init__(self):\n        self._balance = 0\n    def deposit(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        self._balance += n\n        print(self._balance)\n    def withdraw(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        if n > self._balance:\n            print(\"Insufficient funds\")\n            return\n        self._balance -= n\n        print(self._balance)\n    def show(self):\n        print(self._balance)\n\nbank = Bank()\nfor line in sys.stdin:\n    parts = line.split()\n    if not parts:\n        continue\n    cmd = parts[0]\n    if cmd == \"balance\":\n        bank.show()\n    elif cmd == \"deposit\":\n        bank.deposit(int(parts[1]))\n    elif cmd == \"withdraw\":\n        bank.withdraw(int(parts[1]))",
+     "why": "Check the amount before you change `_balance`. A rejected command leaves the field as it was.",
+     "stdin": "withdraw 80\n",
+     "full": false,
+     "tests": [
+      {
+       "input": "withdraw 80\n",
+       "output": "Insufficient funds\n"
+      },
+      {
+       "input": "deposit 50\nwithdraw 80\n",
+       "output": "50\nInsufficient funds\n"
+      },
+      {
+       "input": "deposit -4\n",
+       "output": "Invalid\n"
+      },
+      {
+       "input": "deposit 20\nwithdraw 20\nwithdraw 5\n",
+       "output": "20\n0\nInsufficient funds\n"
+      }
+     ],
+     "expected": "Insufficient funds\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read commands until the input ends. Keep the balance on a `Bank` that starts at 0.\n\n- `deposit N` — if `N > 0`, add it and print the balance; otherwise print `Invalid`\n- `withdraw N` — if `N <= 0`, print `Invalid`; if `N` is greater than the balance, print `Insufficient funds`; otherwise subtract and print the balance\n- `balance` — print the balance",
+     "code": "import sys\n\nclass Bank:\n    def __init__(self):\n        self._balance = 0\n    def deposit(self, n):\n        pass\n    def withdraw(self, n):\n        pass\n    def show(self):\n        pass\n\nbank = Bank()\nfor line in sys.stdin:\n    parts = line.split()\n    if not parts:\n        continue\n    cmd = parts[0]\n    if cmd == \"balance\":\n        bank.show()\n    elif cmd == \"deposit\":\n        bank.deposit(int(parts[1]))\n    elif cmd == \"withdraw\":\n        bank.withdraw(int(parts[1]))",
+     "solution": "import sys\n\nclass Bank:\n    def __init__(self):\n        self._balance = 0\n    def deposit(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        self._balance += n\n        print(self._balance)\n    def withdraw(self, n):\n        if n <= 0:\n            print(\"Invalid\")\n            return\n        if n > self._balance:\n            print(\"Insufficient funds\")\n            return\n        self._balance -= n\n        print(self._balance)\n    def show(self):\n        print(self._balance)\n\nbank = Bank()\nfor line in sys.stdin:\n    parts = line.split()\n    if not parts:\n        continue\n    cmd = parts[0]\n    if cmd == \"balance\":\n        bank.show()\n    elif cmd == \"deposit\":\n        bank.deposit(int(parts[1]))\n    elif cmd == \"withdraw\":\n        bank.withdraw(int(parts[1]))",
+     "tests": [
+      {
+       "input": "deposit 50\nwithdraw 20\nbalance\n",
+       "output": "50\n30\n30\n"
+      },
+      {
+       "input": "withdraw 80\n",
+       "output": "Insufficient funds\n"
+      },
+      {
+       "input": "deposit 40\nwithdraw 40\nwithdraw 1\n",
+       "output": "40\n0\nInsufficient funds\n"
+      },
+      {
+       "input": "deposit 0\ndeposit -3\ndeposit 15\n",
+       "output": "Invalid\nInvalid\n15\n"
+      },
+      {
+       "input": "balance\n",
+       "output": "0\n"
+      }
+     ],
+     "why": "The object owns the number. Each command either prints a refusal or the new balance.",
+     "full": false
+    }
+   ]
   }
  ],
  "javascript": [
@@ -1669,6 +3682,7 @@
    "id": "javascript-01",
    "title": "Hello, output",
    "intro": "`console.log(x)` prints `x` and then moves to a new line. A JavaScript file runs from top to bottom.\n\n`console.log(a, b)` puts a space between values. There is no \"print without newline\" in `console.log`;\nbuild the whole line as a string first, then log it once.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1682,11 +3696,11 @@
     {
      "kind": "predict",
      "prompt": "What does this print?",
-     "code": "let line = \"Log\";\nline += \"ic\";\nline += \"Quest\";\nconsole.log(line);",
+     "code": "let line = \"Lo\";\nline += \"g\";\nline += \"IQ\";\nconsole.log(line);",
      "why": "Build the string first, then log it once.",
      "stdin": "",
      "full": false,
-     "expected": "LogicQuest\n"
+     "expected": "LogIQ\n"
     },
     {
      "kind": "choice",
@@ -1740,6 +3754,7 @@
    "id": "javascript-02",
    "title": "Variables and types",
    "intro": "Declare with `let` (can change) or `const` (can't be reassigned). Never use the old `var`.\n\n```js\nlet age = 21;          // number\nconst price = 9.5;     // number too: JS has one number type\nconst name = \"Yash\";   // string\nlet done = true;       // boolean\n```\n\n`typeof x` tells you the type.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1766,11 +3781,11 @@
     {
      "kind": "predict",
      "prompt": "What does this print?",
-     "code": "const first = \"Logic\";\nconst second = \"Quest\";\nconsole.log(first + second);\nconsole.log(`${first} ${second}`);",
+     "code": "const first = \"Log\";\nconst second = \"IQ\";\nconsole.log(first + second);\nconsole.log(`${first} ${second}`);",
      "why": "Template strings in backticks put values inside `${...}`.",
      "stdin": "",
      "full": false,
-     "expected": "LogicQuest\nLogic Quest\n"
+     "expected": "LogIQ\nLog IQ\n"
     },
     {
      "kind": "blank",
@@ -1819,6 +3834,7 @@
    "id": "javascript-03",
    "title": "Operators",
    "intro": "`/` always gives a decimal: `7 / 2` is `3.5`. For whole-number division use `Math.trunc(7 / 2)` (or `Math.floor` for non-negative numbers).\n`%` is the remainder, `**` is power.\n\n`x += 3` is short for `x = x + 3`, `x++` adds 1. Compare with `===` and `!==`; avoid `==`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1894,6 +3910,7 @@
    "id": "javascript-04",
    "title": "Strings and characters",
    "intro": "A string is text. A single character is a string of length 1.\n\n- `s.length` → number of characters (a property, no brackets)\n- `s[i]` → character at index `i` (from 0); `s[s.length - 1]` is the last\n- `s.charCodeAt(i)` → code number, `String.fromCharCode(98)` → `\"b\"`\n- Compare text with `===`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -1979,7 +3996,8 @@
   {
    "id": "javascript-05",
    "title": "Reading input",
-   "intro": "Node reads everything the user typed (stdin) at once. Split it into lines, then convert:\n\n```js\nconst lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);                       // one number\nconst [a, b] = lines[1].split(\" \").map(Number);   // two numbers on one line\n```\n\nIn LogicQuest's problems the input is read for you, but you'll need this everywhere else.",
+   "intro": "Node reads everything the user typed (stdin) at once. Split it into lines, then convert:\n\n```js\nconst lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);                       // one number\nconst [a, b] = lines[1].split(\" \").map(Number);   // two numbers on one line\n```\n\nIn LogIQ's problems the input is read for you, but you'll need this everywhere else.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -2074,6 +4092,7 @@
    "id": "javascript-06",
    "title": "Conditions",
    "intro": "```js\nif (n > 0) {\n  console.log(\"positive\");\n} else if (n < 0) {\n  console.log(\"negative\");\n} else {\n  console.log(\"zero\");\n}\n```\n\nCompare with `=== !== < > <= >=`. Combine with `&&` (and), `||` (or), `!` (not).",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -2166,6 +4185,7 @@
    "id": "javascript-07",
    "title": "Loops",
    "intro": "```js\nfor (let i = 1; i <= 5; i++) {   // start; keep going while; step\n  console.log(i);\n}\n\nlet n = 10;\nwhile (n > 0) {\n  n = Math.floor(n / 2);\n}\n\nfor (const x of [4, 8, 15]) { ... }   // each value of an array\n```\n\n`break` leaves the loop, `continue` jumps to the next round.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -2243,6 +4263,7 @@
    "id": "javascript-08",
    "title": "Arrays",
    "intro": "```js\nconst nums = [4, 8, 15];\nconst zeros = new Array(5).fill(0);   // five zeros\nnums[0];          // first\nnums.length;      // 3\nnums.push(16);    // add to the end\n```\n\n`const` stops you from reassigning `nums`, but you can still change what's inside.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -2335,7 +4356,8 @@
   {
    "id": "javascript-09",
    "title": "Functions",
-   "intro": "```js\nfunction square(x) {\n  return x * x;\n}\n\nconsole.log(square(4));   // 16\n```\n\nA function without `return` gives back `undefined`. In LogicQuest problems you write `solve`.",
+   "intro": "```js\nfunction square(x) {\n  return x * x;\n}\n\nconsole.log(square(4));   // 16\n```\n\nA function without `return` gives back `undefined`. In LogIQ problems you write `solve`.",
+   "section": "core",
    "exercises": [
     {
      "kind": "predict",
@@ -2427,6 +4449,7 @@
    "id": "javascript-10",
    "title": "Reading errors",
    "intro": "Node prints the error type and a stack trace. Read the **first line** and the `main.js:LINE` location.\n\n- `ReferenceError: x is not defined` → typo, or used before declaring\n- `TypeError: ... is not a function` / `Cannot read properties of undefined` → wrong value, often from a bad index\n- `SyntaxError` → missing bracket, quote or comma\n- Silent bugs: `undefined` and `NaN` in your output usually mean an index or conversion went wrong.",
+   "section": "core",
    "exercises": [
     {
      "kind": "choice",
@@ -2477,8 +4500,8 @@
     {
      "kind": "fix",
      "prompt": "`TypeError: Cannot read properties of undefined`. It should print each word's first letter: `L Q`.",
-     "code": "const words = [\"Logic\", \"Quest\"];\nlet out = \"\";\nfor (let i = 0; i <= words.length; i++) {\n  out += words[i][0] + \" \";\n}\nconsole.log(out.trim());",
-     "solution": "const words = [\"Logic\", \"Quest\"];\nlet out = \"\";\nfor (let i = 0; i < words.length; i++) {\n  out += words[i][0] + \" \";\n}\nconsole.log(out.trim());",
+     "code": "const words = [\"Loop\", \"Queue\"];\nlet out = \"\";\nfor (let i = 0; i <= words.length; i++) {\n  out += words[i][0] + \" \";\n}\nconsole.log(out.trim());",
+     "solution": "const words = [\"Loop\", \"Queue\"];\nlet out = \"\";\nfor (let i = 0; i < words.length; i++) {\n  out += words[i][0] + \" \";\n}\nconsole.log(out.trim());",
      "why": "`i <= words.length` reaches index 2, which is `undefined`. Use `<`.",
      "stdin": "",
      "full": false,
@@ -2496,6 +4519,954 @@
      "answer": 0,
      "why": "Off-by-one: check where the loop starts and whether the end should be included.",
      "code": null
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-01",
+   "title": "Classes and objects",
+   "intro": "A class is a blueprint. `new Dog()` builds one object. Fields can be added on that object, and methods use `this` for the object they were called on.\n\n```js\nclass Dog {\n  bark() {\n    console.log(this.name + \" says woof\");\n  }\n}\nconst rex = new Dog();\nrex.name = \"Rex\";\n```\n\n`const milo = new Dog()` is a different object. Setting `rex.name` leaves `milo` alone.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Counter {\n  add() { this.n += 1; }\n}\nconst a = new Counter();\nconst b = new Counter();\na.n = 0;\nb.n = 0;\na.add();\na.add();\nb.add();\nconsole.log(a.n);\nconsole.log(b.n);",
+     "why": "Each `new Counter()` has its own `n`. Calling `add` changes only that object.",
+     "stdin": "",
+     "full": false,
+     "expected": "2\n1\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does `new Dog()` do?",
+     "options": [
+      "It renames the class",
+      "It builds one Dog object",
+      "It runs the file again",
+      "It copies every existing dog"
+     ],
+     "answer": 1,
+     "why": "`new` builds an object from the class. The class itself is only the blueprint.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Two dogs, two names.",
+     "code": "class Dog {\n  label() { console.log(___.name); }\n}\nconst a = new Dog();\nconst b = ___ Dog();\na.name = \"Rex\";\nb.name = \"Milo\";\na.label();\nb.label();",
+     "blanks": [
+      [
+       "this"
+      ],
+      [
+       "new"
+      ]
+     ],
+     "why": "`this` is the object the method was called on. `new` builds the second dog.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Rex`.",
+     "lines": [
+      "class Dog { label() { console.log(this.name); } }",
+      "const d = new Dog();",
+      "d.name = \"Rex\";",
+      "d.label();"
+     ],
+     "why": "Build the object with `new`, set the field, then call the method.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Both lines should be different names, `Rex` then `Milo`.",
+     "code": "class Dog {\n  label() { console.log(this.name); }\n}\nconst a = new Dog();\nconst b = a;\na.name = \"Rex\";\nb.name = \"Milo\";\na.label();\nb.label();",
+     "solution": "class Dog {\n  label() { console.log(this.name); }\n}\nconst a = new Dog();\nconst b = new Dog();\na.name = \"Rex\";\nb.name = \"Milo\";\na.label();\nb.label();",
+     "why": "`b = a` is one object with two names. `new Dog()` builds a second object.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\nMilo\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a name and an age, one per line. Store them on a `Person` and print `name is age`. Input `Ana` then `21` prints `Ana is 21`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Person {\n  line() { console.log(this.name); }\n}\nconst p = new Person();\np.name = lines[0].trim();\np.age = Number(lines[1]);\np.line();",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Person {\n  line() { console.log(this.name + \" is \" + this.age); }\n}\nconst p = new Person();\np.name = lines[0].trim();\np.age = Number(lines[1]);\np.line();",
+     "tests": [
+      {
+       "input": "Ana\n21\n",
+       "output": "Ana is 21\n"
+      },
+      {
+       "input": "Bo\n0\n",
+       "output": "Bo is 0\n"
+      },
+      {
+       "input": "Ravi\n7\n",
+       "output": "Ravi is 7\n"
+      }
+     ],
+     "why": "Keep both values on the object and build the sentence from `this`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-02",
+   "title": "Constructors and new",
+   "intro": "`constructor` runs when `new` builds the object. Inside it, `this` is that new object.\n\n```js\nclass Box {\n  constructor(w) { this.w = w; }\n}\n```\n\nThe bare name `w` is the parameter. `this.w` is the field. Call the class without `new` and it throws: a class constructor cannot be called as a plain function.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Point {\n  constructor(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n}\nconst a = new Point(1, 2);\nconst b = new Point(3, 4);\nconsole.log(a.x + a.y);\nconsole.log(b.x);",
+     "why": "`new` runs `constructor` for that object. `a` and `b` keep different fields.",
+     "stdin": "",
+     "full": false,
+     "expected": "3\n3\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What happens if you call a class as `Point(4)`, with no `new`?",
+     "options": [
+      "You get a Point",
+      "TypeError: the class must be called with new",
+      "You get undefined, and the code keeps going",
+      "You get 4"
+     ],
+     "answer": 1,
+     "why": "Class constructors refuse a call that is missing `new`.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Store the parameter on the object.",
+     "code": "class Point {\n  constructor(x) { ___.x = x; }\n}\nconsole.log(new Point(4).x);",
+     "blanks": [
+      [
+       "this"
+      ]
+     ],
+     "why": "`this.x` is the field. The bare `x` is only the parameter.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `10`.",
+     "lines": [
+      "class Box { constructor(w, h) { this.w = w; this.h = h; } }",
+      "const b = new Box(2, 5);",
+      "console.log(b.w * b.h);"
+     ],
+     "why": "`new` runs the constructor, which stores both fields before the print.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`show` should print `4`. The call throws.",
+     "code": "class Point {\n  constructor(x) { this.x = x; }\n  show() { console.log(this.x); }\n}\nconst p = Point(4);\np.show();",
+     "solution": "class Point {\n  constructor(x) { this.x = x; }\n  show() { console.log(this.x); }\n}\nconst p = new Point(4);\np.show();",
+     "why": "Put `new` in front of the class. Without it the constructor throws and `p` is never assigned.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read width and height from one line. Store them with `constructor` and print the area. Input `3 4` prints `12`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Box {\n  constructor(w, h) { w = w; h = h; }\n}\nconst [w, h] = lines[0].split(\" \").map(Number);\nconsole.log(new Box(w, h).w * new Box(w, h).h);",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Box {\n  constructor(w, h) { this.w = w; this.h = h; }\n}\nconst [w, h] = lines[0].split(\" \").map(Number);\nconst b = new Box(w, h);\nconsole.log(b.w * b.h);",
+     "tests": [
+      {
+       "input": "3 4\n",
+       "output": "12\n"
+      },
+      {
+       "input": "0 5\n",
+       "output": "0\n"
+      },
+      {
+       "input": "2 2\n",
+       "output": "4\n"
+      },
+      {
+       "input": "-3 4\n",
+       "output": "-12\n"
+      }
+     ],
+     "why": "`this.w = w` stores the parameter. Then multiply the two fields.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-03",
+   "title": "Private fields",
+   "intro": "A field that starts with `#` is private to the class. Code outside cannot read `#balance` at all; that line is a syntax error.\n\n`get` and `set` are the door. Reading `account.balance` runs the getter. Assigning `account.balance = n` runs the setter, which can ignore a bad value.\n\n```js\nclass Account {\n  #balance = 0;\n  get balance() { return this.#balance; }\n}\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Account {\n  #balance = 0;\n  deposit(n) { if (n > 0) this.#balance += n; }\n  get balance() { return this.#balance; }\n}\nconst a = new Account();\na.deposit(30);\na.deposit(-5);\na.deposit(12);\nconsole.log(a.balance);",
+     "why": "30 is stored, -5 is rejected, 12 is added. The getter returns 42.",
+     "stdin": "",
+     "full": false,
+     "expected": "42\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What is true of a `#balance` field?",
+     "options": [
+      "Any code can read it if it spells the name",
+      "Only methods inside the class can use it",
+      "It is shared by every object",
+      "It is just a naming habit and still public"
+     ],
+     "answer": 1,
+     "why": "The `#` name is checked by the language. Outside the class, mentioning it will not run.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Expose the private number through a getter named `balance`.",
+     "code": "class Account {\n  #balance = 0;\n  deposit(n) { if (n > 0) this.#balance += n; }\n  get ___() { return this.#balance; }\n}\nconst a = new Account();\na.deposit(10);\nconsole.log(a.balance);",
+     "blanks": [
+      [
+       "balance"
+      ]
+     ],
+     "why": "The getter's name is what callers write. The field stays `#balance`.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `15`.",
+     "lines": [
+      "class Account { #balance = 0; deposit(n) { if (n > 0) this.#balance += n; } get balance() { return this.#balance; } }",
+      "const a = new Account();",
+      "a.deposit(15);",
+      "console.log(a.balance);"
+     ],
+     "why": "Deposit through the method, then read the getter.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "After setting 20 and then -3, the balance should still be `20`.",
+     "code": "class Person {\n  #age = 0;\n  set age(n) { this.#age = n; }\n  get age() { return this.#age; }\n}\nconst p = new Person();\np.age = 20;\np.age = -3;\nconsole.log(p.age);",
+     "solution": "class Person {\n  #age = 0;\n  set age(n) { if (n >= 0) this.#age = n; }\n  get age() { return this.#age; }\n}\nconst p = new Person();\np.age = 20;\np.age = -3;\nconsole.log(p.age);",
+     "why": "The setter is where the rule lives. Ignore a negative assignment.",
+     "stdin": "",
+     "full": false,
+     "expected": "20\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` amounts, one per line. Add an amount only when it is greater than 0, and print the balance through a getter.\nInput `3` / `10` / `-4` / `5` prints `15`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Account {\n  #balance = 0;\n  deposit(n) { this.#balance += n; }\n  get balance() { return this.#balance; }\n}\nconst a = new Account();\nconst n = Number(lines[0]);\nfor (let i = 0; i < n; i++) a.deposit(Number(lines[i + 1]));\nconsole.log(a.balance);",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Account {\n  #balance = 0;\n  deposit(n) { if (n > 0) this.#balance += n; }\n  get balance() { return this.#balance; }\n}\nconst a = new Account();\nconst n = Number(lines[0]);\nfor (let i = 0; i < n; i++) a.deposit(Number(lines[i + 1]));\nconsole.log(a.balance);",
+     "tests": [
+      {
+       "input": "3\n10\n-4\n5\n",
+       "output": "15\n"
+      },
+      {
+       "input": "1\n0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "2\n-8\n-1\n",
+       "output": "0\n"
+      },
+      {
+       "input": "4\n20\n0\n7\n3\n",
+       "output": "30\n"
+      }
+     ],
+     "why": "Reject amounts that are not positive, then print the getter.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-04",
+   "title": "Static members",
+   "intro": "A `static` field belongs to the class. Every object sees the same one. Call a static method on the class: `Ticket.issued()`.\n\n```js\nclass Ticket {\n  static next = 1;\n  constructor() { this.id = Ticket.next++; }\n}\n```\n\n`id` is different on each ticket. `Ticket.next` is the shared counter.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Ticket {\n  static next = 1;\n  constructor() { this.id = Ticket.next++; }\n  static issued() { return Ticket.next - 1; }\n}\nconst a = new Ticket();\nconst b = new Ticket();\nconsole.log(a.id);\nconsole.log(b.id);\nconsole.log(Ticket.issued());",
+     "why": "One shared `next` hands out 1, then 2. `issued` reads that same field.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n2\n2\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A `static` field is stored…",
+     "options": [
+      "separately inside every object",
+      "once on the class, shared by every object",
+      "only inside the constructor",
+      "on the first object, then copied"
+     ],
+     "answer": 1,
+     "why": "Change `Ticket.next` and every object sees the new value.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Count calls on the class.",
+     "code": "class Counter {\n  ___ n = 0;\n  static add() { Counter.n += 1; }\n}\nCounter.add();\nCounter.add();\nconsole.log(Counter.___);",
+     "blanks": [
+      [
+       "static"
+      ],
+      [
+       "n"
+      ]
+     ],
+     "why": "`static` puts `n` on `Counter`, so both calls update the same number.",
+     "stdin": "",
+     "full": false,
+     "expected": "2\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `2`.",
+     "lines": [
+      "class Counter { static n = 0; }",
+      "for (let i = 0; i < 2; i++) Counter.n += 1;",
+      "console.log(Counter.n);"
+     ],
+     "why": "Bump the shared field twice, then print it.",
+     "stdin": "",
+     "full": false,
+     "expected": "2\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "The second ticket should be id `2`. Both print `1`.",
+     "code": "class Ticket {\n  constructor() {\n    this.next = 1;\n    this.id = this.next++;\n  }\n}\nconst a = new Ticket();\nconst b = new Ticket();\nconsole.log(a.id);\nconsole.log(b.id);",
+     "solution": "class Ticket {\n  static next = 1;\n  constructor() { this.id = Ticket.next++; }\n}\nconst a = new Ticket();\nconst b = new Ticket();\nconsole.log(a.id);\nconsole.log(b.id);",
+     "why": "A field set in the constructor belongs to that object and starts over at 1. `static next` is shared.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n2\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n` and create `n` tickets from a class with a `static` counter. Print how many were issued. Input `3` prints `3`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Ticket {\n  constructor() {}\n}\nconst n = Number(lines[0]);\nfor (let i = 0; i < n; i++) new Ticket();\nconsole.log(0);",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Ticket {\n  static issued = 0;\n  constructor() { Ticket.issued += 1; }\n}\nconst n = Number(lines[0]);\nfor (let i = 0; i < n; i++) new Ticket();\nconsole.log(Ticket.issued);",
+     "tests": [
+      {
+       "input": "3\n",
+       "output": "3\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "1\n",
+       "output": "1\n"
+      },
+      {
+       "input": "10\n",
+       "output": "10\n"
+      }
+     ],
+     "why": "The counter has to be `static`. A field on `this` would count only that one ticket.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-05",
+   "title": "Inheritance",
+   "intro": "`class Dog extends Animal` means a dog starts with Animal's methods. The child constructor must call `super(...)` before it uses `this`.\n\n```js\nclass Dog extends Animal {\n  constructor(name) { super(name); }\n}\n```\n\nBuilding a `Dog` runs Animal's constructor first, then the rest of Dog's. Leave `super` out and the constructor throws.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class A {\n  constructor() { console.log(\"A\"); }\n}\nclass B extends A {\n  constructor() { super(); console.log(\"B\"); }\n}\nclass C extends B {\n  constructor() { super(); console.log(\"C\"); }\n}\nnew C();",
+     "why": "`super()` walks one step up. C calls B, B calls A, then the logs run A, B, C.",
+     "stdin": "",
+     "full": false,
+     "expected": "A\nB\nC\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A dog is a kind of animal. Which declaration says that?",
+     "options": [
+      "class Dog extends Animal",
+      "class Animal extends Dog",
+      "class Dog { Animal() {} }",
+      "const Dog = new Animal();"
+     ],
+     "answer": 0,
+     "why": "`extends` points at the parent. The child is the more specific type.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Pass the name up to Animal.",
+     "code": "class Animal {\n  constructor(name) { this.name = name; }\n}\nclass Dog ___ Animal {\n  constructor(name) { ___(name); }\n}\nconsole.log(new Dog(\"Rex\").name);",
+     "blanks": [
+      [
+       "extends"
+      ],
+      [
+       "super"
+      ]
+     ],
+     "why": "`extends` names the parent. `super(name)` runs its constructor.",
+     "stdin": "",
+     "full": false,
+     "expected": "Rex\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Animal` and then `Dog`.",
+     "lines": [
+      "class Animal { constructor() { console.log(\"Animal\"); } }",
+      "class Dog extends Animal { constructor() { super(); console.log(\"Dog\"); } }",
+      "new Dog();"
+     ],
+     "why": "`super()` runs the parent constructor before the child logs.",
+     "stdin": "",
+     "full": false,
+     "expected": "Animal\nDog\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `A` then `B`. It throws instead.",
+     "code": "class A {\n  constructor() { console.log(\"A\"); }\n}\nclass B extends A {\n  constructor() { console.log(\"B\"); }\n}\nnew B();",
+     "solution": "class A {\n  constructor() { console.log(\"A\"); }\n}\nclass B extends A {\n  constructor() {\n    super();\n    console.log(\"B\");\n  }\n}\nnew B();",
+     "why": "A child constructor has to call `super()` before it does anything else. The parent runs first.",
+     "stdin": "",
+     "full": false,
+     "expected": "A\nB\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a name. Build a `Dog` that `extends` an animal with that name, and print `dog ` plus the name. Input `Rex` prints `dog Rex`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Animal {\n  constructor(name) { this.name = name; }\n}\nclass Dog extends Animal {\n  constructor(name) { super(name); }\n}\nconsole.log(new Dog(lines[0].trim()).name);",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Animal {\n  constructor(name) { this.name = name; }\n}\nclass Dog extends Animal {\n  constructor(name) { super(name); }\n  tag() { return \"dog \" + this.name; }\n}\nconsole.log(new Dog(lines[0].trim()).tag());",
+     "tests": [
+      {
+       "input": "Rex\n",
+       "output": "dog Rex\n"
+      },
+      {
+       "input": "A\n",
+       "output": "dog A\n"
+      },
+      {
+       "input": "Milo\n",
+       "output": "dog Milo\n"
+      }
+     ],
+     "why": "`super(name)` stores the name. `tag` adds the word `dog`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-06",
+   "title": "Overriding methods",
+   "intro": "Define the same method on the child and the child's version wins. Call `super.sound()` when the child wants the parent text and then its own.\n\n```js\nclass Dog extends Animal {\n  sound() { return super.sound() + \" woof\"; }\n}\n```\n\nA list can mix children. The call uses the object in that slot. A mismatched name does not override anything, and nothing warns you.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Animal {\n  sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n  sound() { return super.sound() + \" woof\"; }\n}\nclass Cat extends Animal {\n  sound() { return \"meow\"; }\n}\nconst pets = [new Dog(), new Cat(), new Dog()];\nfor (const p of pets) console.log(p.sound());",
+     "why": "`super.sound()` runs the parent method. Cat replaces `sound` completely. The list holds both.",
+     "stdin": "",
+     "full": false,
+     "expected": "... woof\nmeow\n... woof\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "The list holds animals, and one slot is a Dog. Which `sound` runs for that slot?",
+     "options": [
+      "Animal.sound only, because the list is mixed",
+      "Dog.sound, because that object is a Dog",
+      "Both, and the outputs are added by the loop",
+      "It throws"
+     ],
+     "answer": 1,
+     "why": "The call looks up the method on the object. Dog's `sound` is the one that runs.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Add the parent text in front of `woof`.",
+     "code": "class Animal {\n  sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n  sound() { return ___.sound() + \" woof\"; }\n}\nconsole.log(new Dog().sound());",
+     "blanks": [
+      [
+       "super"
+      ]
+     ],
+     "why": "`super.sound()` calls Animal's method, then the string adds ` woof`.",
+     "stdin": "",
+     "full": false,
+     "expected": "... woof\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `... woof`.",
+     "lines": [
+      "class Animal { sound() { return \"...\"; } }",
+      "class Dog extends Animal { sound() { return super.sound() + \" woof\"; } }",
+      "console.log(new Dog().sound());"
+     ],
+     "why": "The child calls `super.sound()` and appends its own word.",
+     "stdin": "",
+     "full": false,
+     "expected": "... woof\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`a.sound()` should print `woof`. It prints `...`.",
+     "code": "class Animal {\n  sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n  Sound() { return \"woof\"; }\n}\nconst a = new Dog();\nconsole.log(a.sound());",
+     "solution": "class Animal {\n  sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n  sound() { return \"woof\"; }\n}\nconst a = new Dog();\nconsole.log(a.sound());",
+     "why": "`Sound` and `sound` are different names, so the parent method is still the one that runs.",
+     "stdin": "",
+     "full": false,
+     "expected": "woof\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` words, each `dog` or `cat`. Print `woof` or `meow` by calling `sound()` on that object.\nInput `2` / `dog` / `cat` prints `woof` then `meow`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Animal {\n  sound() { return \"...\"; }\n}\nconst n = Number(lines[0]);\nfor (let i = 0; i < n; i++) console.log(\"...\");",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Animal {\n  sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n  sound() { return \"woof\"; }\n}\nclass Cat extends Animal {\n  sound() { return \"meow\"; }\n}\nconst n = Number(lines[0]);\nfor (let i = 0; i < n; i++) {\n  const pet = lines[i + 1].trim() === \"dog\" ? new Dog() : new Cat();\n  console.log(pet.sound());\n}",
+     "tests": [
+      {
+       "input": "2\ndog\ncat\n",
+       "output": "woof\nmeow\n"
+      },
+      {
+       "input": "1\ndog\n",
+       "output": "woof\n"
+      },
+      {
+       "input": "3\ncat\ncat\ndog\n",
+       "output": "meow\nmeow\nwoof\n"
+      }
+     ],
+     "why": "Build the matching object and call `sound()`. The method on the object is the one that runs.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-07",
+   "title": "Duck typing",
+   "intro": "There is no `interface` keyword to implement. If a function calls `shape.area()`, any object with `area` will do. That is duck typing: the methods matter, not a parent class.\n\nA base class can still demand a method by throwing:\n\n```js\nclass Shape {\n  area() { throw new Error(\"must be implemented\"); }\n}\n```\n\nA child replaces `area`. Call the base version and the error fires.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Shape {\n  area() { throw new Error(\"must be implemented\"); }\n}\nclass Square extends Shape {\n  constructor(side) { super(); this.side = side; }\n  area() { return this.side * this.side; }\n}\nfunction areaOf(shape) { return shape.area(); }\nconst duck = { area() { return 7; } };\nconsole.log(areaOf(new Square(3)));\ntry {\n  console.log(new Shape().area());\n} catch (e) {\n  console.log(e.message);\n}\nconsole.log(areaOf(duck));",
+     "why": "`areaOf` only needs an `area` method, so the plain object works. The base `Shape` throws, and the message is caught.",
+     "stdin": "",
+     "full": false,
+     "expected": "9\nmust be implemented\n7\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "`areaOf` only calls `shape.area()`. Which values work?",
+     "options": [
+      "Only objects created with `new Square`",
+      "A Square, and any object that has an area method",
+      "Only Shape itself",
+      "Any value, even a number"
+     ],
+     "answer": 1,
+     "why": "Duck typing checks for the method at the call. A class is not required.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Refuse to run the unfinished method.",
+     "code": "class Shape {\n  area() { ___ new Error(\"must be implemented\"); }\n}\nclass Square extends Shape {\n  constructor(side) { super(); this.side = side; }\n  area() { return this.side * this.side; }\n}\nconsole.log(new Square(4).area());",
+     "blanks": [
+      [
+       "throw"
+      ]
+     ],
+     "why": "`throw` stops the base method. Square replaces `area`, so this call never throws.",
+     "stdin": "",
+     "full": false,
+     "expected": "16\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `16`.",
+     "lines": [
+      "class Shape { area() { throw new Error(\"must be implemented\"); } }",
+      "class Square extends Shape { constructor(side) { super(); this.side = side; } area() { return this.side * this.side; } }",
+      "console.log(new Square(4).area());"
+     ],
+     "why": "The child replaces `area`. `super()` in the constructor still runs the parent constructor.",
+     "stdin": "",
+     "full": false,
+     "expected": "16\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`new Square(3).area()` should print `9`. It throws `must be implemented`.",
+     "code": "class Shape {\n  area() { throw new Error(\"must be implemented\"); }\n}\nclass Square extends Shape {\n  constructor(side) { super(); this.side = side; }\n}\nconsole.log(new Square(3).area());",
+     "solution": "class Shape {\n  area() { throw new Error(\"must be implemented\"); }\n}\nclass Square extends Shape {\n  constructor(side) { super(); this.side = side; }\n  area() { return this.side * this.side; }\n}\nconsole.log(new Square(3).area());",
+     "why": "Without its own `area`, Square uses the base method, and that method throws. Replace it.",
+     "stdin": "",
+     "full": false,
+     "expected": "9\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a side length and print the area of a `Square` that replaces a base `area` method. Input `4` prints `16`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Shape {\n  area() { throw new Error(\"must be implemented\"); }\n}\nclass Square extends Shape {\n  constructor(side) { super(); this.side = side; }\n  area() { return 0; }\n}\nconsole.log(new Square(Number(lines[0])).area());",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Shape {\n  area() { throw new Error(\"must be implemented\"); }\n}\nclass Square extends Shape {\n  constructor(side) { super(); this.side = side; }\n  area() { return this.side * this.side; }\n}\nconsole.log(new Square(Number(lines[0])).area());",
+     "tests": [
+      {
+       "input": "4\n",
+       "output": "16\n"
+      },
+      {
+       "input": "1\n",
+       "output": "1\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "5\n",
+       "output": "25\n"
+      }
+     ],
+     "why": "`area` returns `this.side * this.side` instead of throwing.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-08",
+   "title": "Printing and identity",
+   "intro": "`console.log` on an object shows its fields. Turning the object into a string calls `toString()`. The default result is `[object Object]`.\n\n`===` compares references. Two objects with the same fields are still not `===`. Compare the fields yourself, or write a method that does.\n\n```js\ntoString() { return this.x + \",\" + this.y; }\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Point {\n  constructor(x, y) { this.x = x; this.y = y; }\n  toString() { return this.x + \",\" + this.y; }\n}\nconst a = new Point(1, 2);\nconst b = new Point(1, 2);\nconsole.log(a.toString());\nconsole.log({}.toString());\nconsole.log(a === b);\nconsole.log(a === a);",
+     "why": "`toString` builds the text. `{}` still has the default. `===` is false for two objects and true for a value and itself.",
+     "stdin": "",
+     "full": false,
+     "expected": "1,2\n[object Object]\nfalse\ntrue\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Two different Point objects both hold `1, 2`. What is `a === b`?",
+     "options": [
+      "true, because the fields match",
+      "false, because they are two objects",
+      "true after toString runs",
+      "It throws"
+     ],
+     "answer": 1,
+     "why": "`===` does not look at the fields. It asks whether both names are the same object.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Teach string conversion to show the coordinates.",
+     "code": "class Point {\n  constructor(x, y) { this.x = x; this.y = y; }\n  ___() { return this.x + \",\" + this.y; }\n}\nconsole.log(String(new Point(3, 4)));",
+     "blanks": [
+      [
+       "toString"
+      ]
+     ],
+     "why": "`String(obj)` calls `toString`. Name the method that, or you still get `[object Object]`.",
+     "stdin": "",
+     "full": false,
+     "expected": "3,4\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `true`.",
+     "lines": [
+      "class Point { constructor(x, y) { this.x = x; this.y = y; } same(other) { return this.x === other.x && this.y === other.y; } }",
+      "const a = new Point(1, 2);",
+      "const b = new Point(1, 2);",
+      "console.log(a.same(b));"
+     ],
+     "why": "`===` on the objects would be false. Comparing the numbers is a method on the point.",
+     "stdin": "",
+     "full": false,
+     "expected": "true\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "The coordinates match. The program should print `true`.",
+     "code": "class Point {\n  constructor(x, y) { this.x = x; this.y = y; }\n}\nconst a = new Point(1, 2);\nconst b = new Point(1, 2);\nconsole.log(a === b);",
+     "solution": "class Point {\n  constructor(x, y) { this.x = x; this.y = y; }\n  same(other) { return this.x === other.x && this.y === other.y; }\n}\nconst a = new Point(1, 2);\nconst b = new Point(1, 2);\nconsole.log(a.same(b));",
+     "why": "`===` compares references, so two points are not equal that way. Compare `x` and `y`.",
+     "stdin": "",
+     "full": false,
+     "expected": "true\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read four integers `x1 y1 x2 y2` from one line. Build two points and print `true` or `false` by comparing their fields. Input `1 2 1 2` prints `true`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Point {\n  constructor(x, y) { this.x = x; this.y = y; }\n}\nconst [x1, y1, x2, y2] = lines[0].split(\" \").map(Number);\nconst a = new Point(x1, y1);\nconst b = new Point(x2, y2);\nconsole.log(false);",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Point {\n  constructor(x, y) { this.x = x; this.y = y; }\n  same(other) { return this.x === other.x && this.y === other.y; }\n}\nconst [x1, y1, x2, y2] = lines[0].split(\" \").map(Number);\nconst a = new Point(x1, y1);\nconst b = new Point(x2, y2);\nconsole.log(a.same(b));",
+     "tests": [
+      {
+       "input": "1 2 1 2\n",
+       "output": "true\n"
+      },
+      {
+       "input": "1 2 1 3\n",
+       "output": "false\n"
+      },
+      {
+       "input": "0 0 0 0\n",
+       "output": "true\n"
+      },
+      {
+       "input": "-1 4 -1 4\n",
+       "output": "true\n"
+      }
+     ],
+     "why": "Compare the fields. `===` on the two objects stays false.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-09",
+   "title": "Composition",
+   "intro": "A car is not a kind of engine. A car **has** an engine, stored on `this`.\n\n```js\nclass Car {\n  constructor(model, engine) {\n    this.model = model;\n    this.engine = engine;\n  }\n}\n```\n\nUse `extends` only when the new type really is the parent. One more trap: `const show = engine.status` pulls the function off the object. Call `show()` and `this` is gone. An arrow wraps the call, `() => engine.status()`, or `engine.status.bind(engine)` sticks `this` back on.",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Engine {\n  constructor(hp) { this.hp = hp; }\n  status() { return this.hp + \"hp\"; }\n}\nclass Car {\n  constructor(model, engine) { this.model = model; this.engine = engine; }\n  spec() { return this.model + \" \" + this.engine.status(); }\n}\nconst c = new Car(\"Civic\", new Engine(150));\nconsole.log(c.spec());",
+     "why": "`spec` asks the engine object stored on the car.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A car is built around an engine it uses. Which shape fits?",
+     "options": [
+      "class Car extends Engine",
+      "Car stores an Engine on this",
+      "class Engine extends Car",
+      "One class, and a boolean that switches job"
+     ],
+     "answer": 1,
+     "why": "Has-a is a field. `extends` means the child is that kind of thing.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Read the horsepower from the engine the car holds.",
+     "code": "class Engine {\n  constructor(hp) { this.hp = hp; }\n  status() { return this.hp + \"hp\"; }\n}\nclass Car {\n  constructor(model, engine) { this.model = model; this.engine = engine; }\n  spec() { return this.model + \" \" + this.___.status(); }\n}\nconsole.log(new Car(\"Civic\", new Engine(150)).spec());",
+     "blanks": [
+      [
+       "engine"
+      ]
+     ],
+     "why": "The car keeps an engine and calls `status` on that field.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Civic 150hp`.",
+     "lines": [
+      "class Engine { constructor(hp) { this.hp = hp; } status() { return this.hp + \"hp\"; } }",
+      "class Car { constructor(model, engine) { this.model = model; this.engine = engine; } spec() { return this.model + \" \" + this.engine.status(); } }",
+      "console.log(new Car(\"Civic\", new Engine(150)).spec());"
+     ],
+     "why": "Build the engine, hand it to the car, then ask the car for its spec.",
+     "stdin": "",
+     "full": false,
+     "expected": "Civic 150hp\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`show()` should print `150hp`. Pulling the method off the object throws.",
+     "code": "class Engine {\n  constructor(hp) { this.hp = hp; }\n  status() { return this.hp + \"hp\"; }\n}\nconst engine = new Engine(150);\nconst show = engine.status;\nconsole.log(show());",
+     "solution": "class Engine {\n  constructor(hp) { this.hp = hp; }\n  status() { return this.hp + \"hp\"; }\n}\nconst engine = new Engine(150);\nconst show = () => engine.status();\nconsole.log(show());",
+     "why": "A bare `engine.status` does not keep `this`. An arrow calls it as a method. `engine.status.bind(engine)` does too.",
+     "stdin": "",
+     "full": false,
+     "expected": "150hp\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a model and a horsepower, one per line. Build a `Car` that holds an `Engine`, and print `model hp` like `Civic 150hp`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Engine {\n  constructor(hp) { this.hp = hp; }\n}\nclass Car {\n  constructor(model, engine) { this.model = model; this.engine = engine; }\n  spec() { return this.model; }\n}\nconst c = new Car(lines[0].trim(), new Engine(Number(lines[1])));\nconsole.log(c.spec());",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Engine {\n  constructor(hp) { this.hp = hp; }\n}\nclass Car {\n  constructor(model, engine) { this.model = model; this.engine = engine; }\n  spec() { return this.model + \" \" + this.engine.hp + \"hp\"; }\n}\nconst c = new Car(lines[0].trim(), new Engine(Number(lines[1])));\nconsole.log(c.spec());",
+     "tests": [
+      {
+       "input": "Civic\n150\n",
+       "output": "Civic 150hp\n"
+      },
+      {
+       "input": "Van\n90\n",
+       "output": "Van 90hp\n"
+      },
+      {
+       "input": "Bus\n0\n",
+       "output": "Bus 0hp\n"
+      }
+     ],
+     "why": "Store the engine on the car and read `this.engine.hp` in `spec`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-oop-10",
+   "title": "Bank account",
+   "intro": "Put the rules on the object. A `Bank` starts at 0, keeps the number in `#balance`, and is the only code that changes it.\n\n- `deposit N` adds `N` when `N > 0` and prints the balance; otherwise it prints `Invalid`\n- `withdraw N` prints `Invalid` when `N <= 0`, `Insufficient funds` when `N` is too big, otherwise subtracts and prints the balance\n- `balance` prints the balance\n\n```js\nclass Bank {\n  #balance = 0;\n  deposit(n) { /* check, then update */ }\n}\n```",
+   "section": "oop",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "class Bank {\n  #balance = 0;\n  deposit(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    this.#balance += n;\n    console.log(this.#balance);\n  }\n  withdraw(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    if (n > this.#balance) { console.log(\"Insufficient funds\"); return; }\n    this.#balance -= n;\n    console.log(this.#balance);\n  }\n}\nconst b = new Bank();\nb.deposit(50);\nb.withdraw(80);\nb.withdraw(20);",
+     "why": "50 is stored. 80 is more than 50, so the field stays 50. 20 then leaves 30.",
+     "stdin": "",
+     "full": false,
+     "expected": "50\nInsufficient funds\n30\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which check belongs in `withdraw` before it subtracts?",
+     "options": [
+      "this.#balance = n",
+      "if (n > this.#balance) { console.log(\"Insufficient funds\"); return; }",
+      "this.#balance = 0",
+      "n = this.#balance"
+     ],
+     "answer": 1,
+     "why": "Return before changing the field. A refused withdrawal leaves the balance as it was.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Reject a non-positive deposit.",
+     "code": "class Bank {\n  #balance = 0;\n  deposit(n) {\n    if (n ___ 0) { console.log(\"Invalid\"); return; }\n    this.#balance += n;\n    console.log(this.#balance);\n  }\n}\nconst b = new Bank();\nb.deposit(0);\nb.deposit(15);",
+     "blanks": [
+      [
+       "<="
+      ]
+     ],
+     "why": "`<= 0` catches 0 and negatives. A positive amount is added and printed.",
+     "stdin": "",
+     "full": false,
+     "expected": "Invalid\n15\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `Insufficient funds`.",
+     "lines": [
+      "class Bank { #balance = 0; withdraw(n) { if (n > this.#balance) { console.log(\"Insufficient funds\"); return; } this.#balance -= n; console.log(this.#balance); } }",
+      "const b = new Bank();",
+      "b.withdraw(80);"
+     ],
+     "why": "A new account is at 0, so 80 is too much.",
+     "stdin": "",
+     "full": false,
+     "expected": "Insufficient funds\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`deposit` must reject non-positive amounts, and `withdraw` must refuse to go below 0.\n\n- `withdraw 80` prints `Insufficient funds`\n- `deposit 50` then `withdraw 80` prints `50` then `Insufficient funds`\n- `deposit -4` prints `Invalid`\n- `deposit 20`, `withdraw 20`, `withdraw 5` prints `20`, `0`, `Insufficient funds`",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Bank {\n  #balance = 0;\n  deposit(n) { this.#balance += n; console.log(this.#balance); }\n  withdraw(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    this.#balance -= n;\n    console.log(this.#balance);\n  }\n  show() { console.log(this.#balance); }\n}\nconst bank = new Bank();\nfor (const line of lines) {\n  const parts = line.trim().split(/\\s+/);\n  if (!parts[0]) continue;\n  const cmd = parts[0];\n  const n = Number(parts[1]);\n  if (cmd === \"deposit\") bank.deposit(n);\n  else if (cmd === \"withdraw\") bank.withdraw(n);\n  else if (cmd === \"balance\") bank.show();\n}",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Bank {\n  #balance = 0;\n  deposit(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    this.#balance += n;\n    console.log(this.#balance);\n  }\n  withdraw(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    if (n > this.#balance) { console.log(\"Insufficient funds\"); return; }\n    this.#balance -= n;\n    console.log(this.#balance);\n  }\n  show() { console.log(this.#balance); }\n}\nconst bank = new Bank();\nfor (const line of lines) {\n  const parts = line.trim().split(/\\s+/);\n  if (!parts[0]) continue;\n  const cmd = parts[0];\n  const n = Number(parts[1]);\n  if (cmd === \"deposit\") bank.deposit(n);\n  else if (cmd === \"withdraw\") bank.withdraw(n);\n  else if (cmd === \"balance\") bank.show();\n}",
+     "why": "Check the amount before you change `#balance`. A rejected command leaves the field as it was.",
+     "stdin": "withdraw 80\n",
+     "full": false,
+     "tests": [
+      {
+       "input": "withdraw 80\n",
+       "output": "Insufficient funds\n"
+      },
+      {
+       "input": "deposit 50\nwithdraw 80\n",
+       "output": "50\nInsufficient funds\n"
+      },
+      {
+       "input": "deposit -4\n",
+       "output": "Invalid\n"
+      },
+      {
+       "input": "deposit 20\nwithdraw 20\nwithdraw 5\n",
+       "output": "20\n0\nInsufficient funds\n"
+      }
+     ],
+     "expected": "Insufficient funds\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read commands until the input ends. Keep the balance in a private field on a `Bank` that starts at 0.\n\n- `deposit N` — if `N > 0`, add it and print the balance; otherwise print `Invalid`\n- `withdraw N` — if `N <= 0`, print `Invalid`; if `N` is greater than the balance, print `Insufficient funds`; otherwise subtract and print the balance\n- `balance` — print the balance",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Bank {\n  #balance = 0;\n  deposit(n) {}\n  withdraw(n) {}\n  show() {}\n}\nconst bank = new Bank();\nfor (const line of lines) {\n  const parts = line.trim().split(/\\s+/);\n  if (!parts[0]) continue;\n  const cmd = parts[0];\n  const n = Number(parts[1]);\n  if (cmd === \"deposit\") bank.deposit(n);\n  else if (cmd === \"withdraw\") bank.withdraw(n);\n  else if (cmd === \"balance\") bank.show();\n}",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nclass Bank {\n  #balance = 0;\n  deposit(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    this.#balance += n;\n    console.log(this.#balance);\n  }\n  withdraw(n) {\n    if (n <= 0) { console.log(\"Invalid\"); return; }\n    if (n > this.#balance) { console.log(\"Insufficient funds\"); return; }\n    this.#balance -= n;\n    console.log(this.#balance);\n  }\n  show() { console.log(this.#balance); }\n}\nconst bank = new Bank();\nfor (const line of lines) {\n  const parts = line.trim().split(/\\s+/);\n  if (!parts[0]) continue;\n  const cmd = parts[0];\n  const n = Number(parts[1]);\n  if (cmd === \"deposit\") bank.deposit(n);\n  else if (cmd === \"withdraw\") bank.withdraw(n);\n  else if (cmd === \"balance\") bank.show();\n}",
+     "tests": [
+      {
+       "input": "deposit 50\nwithdraw 20\nbalance\n",
+       "output": "50\n30\n30\n"
+      },
+      {
+       "input": "withdraw 80\n",
+       "output": "Insufficient funds\n"
+      },
+      {
+       "input": "deposit 40\nwithdraw 40\nwithdraw 1\n",
+       "output": "40\n0\nInsufficient funds\n"
+      },
+      {
+       "input": "deposit 0\ndeposit -3\ndeposit 15\n",
+       "output": "Invalid\nInvalid\n15\n"
+      },
+      {
+       "input": "balance\n",
+       "output": "0\n"
+      }
+     ],
+     "why": "The object owns the number. Each command either prints a refusal or the new balance.",
+     "full": false
     }
    ]
   }

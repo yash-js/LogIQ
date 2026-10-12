@@ -2,7 +2,7 @@
 
 Every program makes decisions. This phase teaches you to turn a sentence like *"if the number is divisible by both 3 and 5, say Both"* into code that is correct for **every** input, including the awkward ones.
 
-## 1. How a LogicQuest problem looks
+## 1. How a LogIQ problem looks
 
 You only write the body of `solve(...)`. Reading input and printing the answer are already done for you below the dotted line.
 
@@ -195,7 +195,7 @@ Numbers stay exact only up to 2^53 (about 9 × 10^15). Past that, the value sile
 
 ## 8. Shortcuts and the Pure challenge
 
-Library helpers like `sort`, `Set`, `max()` or `reverse()` do the thinking for you, and this course is about doing the thinking yourself. You can still use them: a correct answer is accepted and earns XP. But LogicQuest notices them and opens a **Pure challenge** for that problem: solve it again with only loops, conditions, arrays and strings for **+50% bonus XP**. The editor shows which shortcuts it spotted while you type.
+Library helpers like `sort`, `Set`, `max()` or `reverse()` do the thinking for you, and this course is about doing the thinking yourself. You can still use them: a correct answer is accepted and earns XP. But LogIQ notices them and opens a **Pure challenge** for that problem: solve it again with only loops, conditions, arrays and strings for **+50% bonus XP**. The editor shows which shortcuts it spotted while you type.
 
 ## 9. A habit to keep
 

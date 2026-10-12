@@ -15,13 +15,14 @@ export type Exercise =
   | (Base & { kind: "predict"; code: string; expected: string; stdin: string })
   | (Base & { kind: "blank"; code: string; blanks: string[][]; expected: string; stdin: string })
   | (Base & { kind: "order"; lines: string[]; expected: string; stdin: string })
-  | (Base & { kind: "fix"; code: string; solution: string; expected: string; stdin: string })
+  | (Base & { kind: "fix"; code: string; solution: string; expected: string; stdin: string; tests?: { input: string; output: string }[] })
   | (Base & { kind: "write"; code: string; solution: string; tests: { input: string; output: string }[] });
 
 export interface Unit {
   id: string;
   title: string;
   intro: string;
+  section: "core" | "oop";
   exercises: Exercise[];
 }
 
@@ -29,6 +30,10 @@ export const basecamp = basecampJson as unknown as Record<Lang, Unit[]>;
 
 export function unitsFor(lang: Lang): Unit[] {
   return basecamp[lang] ?? [];
+}
+
+export function unitsIn(lang: Lang, section: Unit["section"]): Unit[] {
+  return unitsFor(lang).filter((u) => u.section === section);
 }
 
 export function findUnit(id: string): { lang: Lang; unit: Unit; index: number } | null {
@@ -115,19 +120,30 @@ export async function runAndCompare(
   return { ok: true };
 }
 
-/** Placement test: one question per unit, taken from its choice/predict exercises. */
+/** Placement test: one question per core unit, taken from its choice/predict exercises. */
 export function placementQuestions(lang: Lang): { unit: string; ex: Exercise }[] {
-  return unitsFor(lang).map((u) => {
+  return unitsIn(lang, "core").map((u) => {
     const pool = u.exercises.filter((e) => e.kind === "predict" || e.kind === "choice");
     const pick = pool.find((e) => e.kind === "predict") ?? pool[0];
     return { unit: u.title, ex: pick };
   });
 }
 
-export function basecampDone(lang: Lang, state: { basecamp: Partial<Record<Lang, { units: Record<string, { done: boolean }>; placed?: boolean }>> }) {
+type CampState = { basecamp: Partial<Record<Lang, { units: Record<string, { done: boolean }>; placed?: boolean }>> };
+
+/** Core units only. OOP progress does not mark Basecamp complete. */
+export function basecampDone(lang: Lang, state: CampState) {
+  const units = unitsIn(lang, "core");
   const bc = state.basecamp[lang];
-  if (!bc) return { done: 0, total: unitsFor(lang).length, complete: false, placed: false };
-  const done = unitsFor(lang).filter((u) => bc.units[u.id]?.done).length;
-  return { done, total: unitsFor(lang).length, complete: !!bc.placed || done === unitsFor(lang).length, placed: !!bc.placed };
+  if (!bc) return { done: 0, total: units.length, complete: false, placed: false };
+  const done = units.filter((u) => bc.units[u.id]?.done).length;
+  return { done, total: units.length, complete: !!bc.placed || done === units.length, placed: !!bc.placed };
+}
+
+export function oopDone(lang: Lang, state: CampState) {
+  const units = unitsIn(lang, "oop");
+  const bc = state.basecamp[lang];
+  const done = bc ? units.filter((u) => bc.units[u.id]?.done).length : 0;
+  return { done, total: units.length };
 }
 

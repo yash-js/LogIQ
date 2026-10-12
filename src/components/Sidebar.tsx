@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { LANGS } from "../content";
 import { useProgress } from "../lib/progress";
 import { levelFromXp, levelTitle, streak } from "../lib/game";
+import { useToolchain } from "../lib/toolchain";
 
 export function Logo({ className }: { className?: string }) {
   return (
@@ -76,6 +77,7 @@ export function Sidebar() {
   const activity = useProgress((s) => s.activity);
   const lang = useProgress((s) => s.settings.lang);
   const setSettings = useProgress((s) => s.setSettings);
+  const { missing } = useToolchain();
   const lv = levelFromXp(xp);
   const st = streak(activity);
 
@@ -83,7 +85,7 @@ export function Sidebar() {
     <aside className="sidebar">
       <NavLink to="/" className="brand">
         <Logo className="brand-mark" />
-        <span>LogicQuest</span>
+        <span>LogIQ</span>
       </NavLink>
 
       <nav className="side-nav">
@@ -104,12 +106,23 @@ export function Sidebar() {
       <div className="side-section">
         <div className="side-label">Solving in</div>
         <div className="lang-pick" role="radiogroup" aria-label="Language">
-          {LANGS.map((l) => (
-            <button key={l.id} title={l.label} role="radio" aria-checked={lang === l.id} className={lang === l.id ? "on" : ""} onClick={() => setSettings({ lang: l.id })}>
-              <span className={`lang-dot ${l.id}`} />
-              <span className="txt">{l.label}</span>
-            </button>
-          ))}
+          {LANGS.map((l) => {
+            const gone = missing(l.id);
+            return (
+              <button
+                key={l.id}
+                title={gone ? `${l.label} — not installed` : l.label}
+                role="radio"
+                aria-checked={lang === l.id}
+                className={lang === l.id ? "on" : ""}
+                onClick={() => setSettings({ lang: l.id })}
+              >
+                <span className={`lang-dot ${l.id}`} />
+                <span className="txt">{l.label}</span>
+                {gone && <span className="runtime-miss" aria-label="not installed" />}
+              </button>
+            );
+          })}
         </div>
       </div>
 

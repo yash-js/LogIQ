@@ -78,7 +78,8 @@ export function ExerciseView({
         return { correct: r.ok, got: r.got ?? r.error };
       }
       case "fix": {
-        const r = await runAndCompare(lang, code, ex.full, [{ input: ex.stdin, output: ex.expected }], prefs);
+        const cases = ex.tests?.length ? ex.tests : [{ input: ex.stdin, output: ex.expected }];
+        const r = await runAndCompare(lang, code, ex.full, cases, prefs);
         return { correct: r.ok, error: r.error, got: r.got };
       }
       case "write": {
@@ -192,7 +193,13 @@ export function ExerciseView({
 
       {(ex.kind === "fix" || ex.kind === "write") && (
         <>
-          {ex.kind === "fix" && ex.stdin && (
+          {ex.kind === "fix" && ex.tests && ex.tests.length > 1 && (
+            <p className="note">
+              Checked with {ex.tests.length} inputs, e.g. <code>{ex.tests[0].input.trim().replace(/\n/g, " ⏎ ")}</code> →{" "}
+              <code>{ex.tests[0].output.trim()}</code>
+            </p>
+          )}
+          {ex.kind === "fix" && !(ex.tests && ex.tests.length > 1) && ex.stdin && (
             <p className="note">
               Input: <code>{ex.stdin.trim()}</code>
             </p>
@@ -203,7 +210,7 @@ export function ExerciseView({
               <code>{ex.tests[0].output.trim()}</code>
             </p>
           )}
-          {lang === "java" && !ex.full && <p className="note">Write the lines inside <code>main</code>; LogicQuest adds the class around them.</p>}
+          {lang === "java" && !ex.full && <p className="note">Write the lines inside <code>main</code>; LogIQ adds the class around them.</p>}
           <div className="ex-editor">
             <CodeEditor lang={lang} value={code} fontSize={settings.fontSize} onChange={setCode} onRun={() => {}} onSubmit={() => {}} />
           </div>

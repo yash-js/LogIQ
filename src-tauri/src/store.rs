@@ -26,7 +26,7 @@ pub struct DataInfo {
 impl Store {
     pub fn open(dir: &Path) -> Result<Self, String> {
         std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
-        let conn = Connection::open(dir.join("logicquest.db")).map_err(|e| e.to_string())?;
+        let conn = Connection::open(dir.join("logicquest.db")).map_err(|e| e.to_string())?; // legacy name kept so existing progress loads
         conn.execute_batch(
             "PRAGMA journal_mode = WAL;
              CREATE TABLE IF NOT EXISTS kv (
@@ -109,6 +109,7 @@ impl Store {
             return Err("Invalid backup name".into());
         }
         let conn = Connection::open(self.backup_dir().join(name)).map_err(|e| e.to_string())?;
+        // legacy name kept so existing progress loads
         conn.query_row("SELECT value FROM kv WHERE key = 'progress'", [], |r| r.get(0))
             .optional()
             .map_err(|e| e.to_string())
@@ -117,7 +118,7 @@ impl Store {
     pub fn info(&self) -> DataInfo {
         DataInfo {
             data_dir: self.dir.to_string_lossy().to_string(),
-            db_path: self.dir.join("logicquest.db").to_string_lossy().to_string(),
+            db_path: self.dir.join("logicquest.db").to_string_lossy().to_string(), // legacy name kept so existing progress loads
             backups: self.list_backups(),
         }
     }

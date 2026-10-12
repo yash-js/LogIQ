@@ -5,7 +5,7 @@ L = "java"
 # 1 ---------------------------------------------------------------- output
 u = unit(L, "Hello, output", """
 Every Java program starts in `main`. In Basecamp you only see the lines **inside** `main`;
-LogicQuest wraps them in `public class Main { public static void main(String[] args) { ... } }` for you.
+LogIQ wraps them in `public class Main { public static void main(String[] args) { ... } }` for you.
 
 `System.out.println(x)` prints `x` and then moves to a new line. `System.out.print(x)` stays on the same line.
 Every statement ends with a semicolon `;`.
@@ -15,9 +15,9 @@ System.out.println("Hello");
 System.out.println("World");
 """, "Each `println` ends its line, so the words land on two lines.")
 u.predict("""
-System.out.print("Log");
-System.out.print("ic");
-System.out.println("Quest");
+System.out.print("Lo");
+System.out.print("g");
+System.out.println("IQ");
 """, "`print` doesn't add a newline, so the three pieces join into one word.")
 u.choice("Which line prints `Hi` and moves to the next line?",
          ["System.out.print(\"Hi\");", "System.out.println(\"Hi\");", "print(\"Hi\");", "System.println(\"Hi\");"], 1,
@@ -56,8 +56,8 @@ System.out.println(x);
 u.choice("Which type should hold the value `3.75`?", ["int", "double", "boolean", "char"], 1,
          "Decimals need `double`. Putting 3.75 in an `int` won't even compile.")
 u.predict("""
-String first = "Logic";
-String second = "Quest";
+String first = "Log";
+String second = "IQ";
 System.out.println(first + second);
 System.out.println(first + " " + second);
 """, "`+` joins Strings. Spaces only appear where you add them.")
@@ -179,7 +179,7 @@ String w = sc.next();      // next word
 String line = sc.nextLine(); // rest of the line
 ```
 
-In LogicQuest's problems the input is read for you, but you'll need this everywhere else.
+In LogIQ's problems the input is read for you, but you'll need this everywhere else.
 """)
 u.predict("""
 Scanner sc = new Scanner(System.in);
@@ -413,7 +413,7 @@ System.out.println(count);
 
 # 9 ---------------------------------------------------------------- functions
 u = unit(L, "Methods (functions)", """
-A method packs logic under a name. In LogicQuest problems you write `solve`:
+A method packs logic under a name. In LogIQ problems you write `solve`:
 
 ```java
 static int square(int x) {   // return type, name, parameters

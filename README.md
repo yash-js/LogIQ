@@ -1,4 +1,4 @@
-# LogicQuest
+# LogIQ
 
 **Learn a language, then build programming logic before you start DSA.** A desktop app with a Basecamp that teaches Java, Python or JavaScript from zero, then 145 hand-picked problems across six worlds, a short guide before each one, and a game layer (XP, levels, streaks, daily quests) that keeps you practicing. Solve in **Java, Python or JavaScript**; your code runs on your own computer.
 
@@ -24,7 +24,7 @@ No account, no internet needed, no server. Your progress stays on your machine.
 
 | Phase | World | Topic | Problems |
 | --- | --- | --- | --- |
-| 0 | Basecamp | Language basics (separate track for Java, Python, JavaScript) | 10 units, 60 exercises per language |
+| 0 | Basecamp | Language basics, then objects (separate track for Java, Python, JavaScript) | 10 core units + 10 OOP units per language |
 | 1 | The Crossroads | Conditional logic | 20 |
 | 2 | The Looping Woods | Loops, repetition and patterns | 26 |
 | 3 | The Mirror Caves | Recursive thinking | 19 |
@@ -45,6 +45,13 @@ Every problem has its own statement, examples, hidden tests, three hints and sta
    - multiple choice
 
    You get 3 lives per unit and a combo bonus for answers in a row. The answer is only revealed after two wrong tries. Already know the language? A 10-question **placement test** (8 to pass) marks Basecamp complete.
+
+### OOP section
+
+Below the core units, **Objects (OOP)** is a second track of ten units: classes and objects, constructors, encapsulation, static members, inheritance, overriding, abstract types, equality, composition, and a small bank-account project. The exercises are written separately for Java, Python and JavaScript.
+
+The section is always open. Until you finish the functions unit, Basecamp shows "Recommended after Functions". OOP progress does not change the "Basecamp complete" status, the placement test, or when The Crossroads unlocks. Finishing all ten OOP units in any one language earns the **Object Thinker** badge.
+
 1. **Study first.** Every world opens with a guide. Code examples appear in the language you picked. A 5-question check at the end (4 correct to pass) unlocks that world's problems.
 2. **Solve.** You only write the `solve()` function. Reading input and printing output are already done for you.
    - **Run** checks the visible examples (`Ctrl+Enter`).
@@ -105,10 +112,10 @@ cargo --version
 node --version
 ```
 
-**4. Run LogicQuest**
+**4. Run LogIQ**
 
 ```powershell
-cd D:\path\to\logicquest
+cd D:\path\to\logiq
 npm install
 npm run tauri dev
 ```
@@ -179,10 +186,10 @@ sudo pacman -S --needed jdk21-openjdk python
 
 JavaScript uses the Node.js you installed above.
 
-**4. Run LogicQuest**
+**4. Run LogIQ**
 
 ```bash
-cd ~/path/to/logicquest
+cd ~/path/to/logiq
 npm install
 npm run tauri dev
 ```
@@ -204,7 +211,7 @@ Installers land in `src-tauri/target/release/bundle/`:
 | Windows | `.exe` (setup) and `.msi` | `nsis/`, `msi/` |
 | Linux | `.deb`, `.rpm`, `.AppImage` | `deb/`, `rpm/`, `appimage/` |
 
-On Linux, the `.AppImage` runs on almost any distro: `chmod +x LogicQuest*.AppImage && ./LogicQuest*.AppImage`.
+On Linux, the `.AppImage` runs on almost any distro: `chmod +x LogIQ*.AppImage && ./LogIQ*.AppImage`.
 
 **Build on GitHub instead.** Push this repo to GitHub and push a tag:
 
@@ -219,12 +226,14 @@ git push origin v0.1.0
 
 ## Your data and backups
 
+Renamed from LogicQuest: existing progress carries over automatically.
+
 Everything is saved in a local **SQLite** database:
 
 | OS | Location |
 | --- | --- |
-| Windows | `%APPDATA%\in.yashpurani.logicquest\logicquest.db` |
-| Linux | `~/.local/share/in.yashpurani.logicquest/logicquest.db` |
+| Windows | `%APPDATA%\in.yashpurani.logicquest\logicquest.db` // legacy name kept so existing progress loads |
+| Linux | `~/.local/share/in.yashpurani.logicquest/logicquest.db` // legacy name kept so existing progress loads |
 
 It stores your XP, solved problems, quiz results, streak, settings and the code you wrote for every problem.
 
@@ -245,7 +254,7 @@ From **Settings → Your data**:
 | `cargo metadata ... program not found` | Rust isn't installed or the terminal is old. Install Rust (see above), then open a **new** terminal. |
 | `link.exe not found` (Windows) | Install the C++ build tools (step 1 for Windows). |
 | `webkit2gtk-4.1 not found` (Linux) | Install the system libraries for your distro (step 1 for Linux). |
-| "JDK not found" / "Python 3 not found" / "Node.js not found" when you Run | Install that language, restart LogicQuest, or set its path in **Settings → Code runners**. |
+| "JDK not found" / "Python 3 not found" / "Node.js not found" when you Run | Install that language, restart LogIQ, or set its path in **Settings → Code runners**. |
 | `python` opens the Microsoft Store (Windows) | Install Python from python.org or winget and tick **Add python.exe to PATH**, or set the full path in Settings. |
 | Blank or flickering window on Linux in a VM | Start with `WEBKIT_DISABLE_COMPOSITING_MODE=1 npm run tauri dev`. |
 | Code always "Time limit exceeded" | Look for a loop whose condition never becomes false. Java gets an extra 1.5 s for JVM start-up. |
@@ -259,7 +268,7 @@ From **Settings → Your data**:
 
 ```
 content/                 problem sources (Python) and the build/verify scripts
-  basecamp/              Basecamp units per language (bc.py + java.py, python.py, javascript.py)
+  basecamp/              Basecamp units (bc.py, java.py, python.py, javascript.py, java_oop.py, python_oop.py, javascript_oop.py)
   phase1.py … phase6.py  each problem: statement, tests, 3 hints, reference solution
   core.py                input/output formats and starter-code generators
   build.py               writes src/content/problems.json; --verify runs every check
@@ -276,7 +285,7 @@ tests/builtins.test.ts   shortcut detector tests
 
 ### Basecamp content
 
-Basecamp units live in `content/basecamp/java.py`, `python.py` and `javascript.py`. Each exercise is one call on a unit:
+Core units live in `content/basecamp/java.py`, `python.py` and `javascript.py`, built with `unit(...)`. The OOP track lives in `java_oop.py`, `python_oop.py` and `javascript_oop.py`, built with `oop_unit(...)`. Each unit has `"section": "core"` or `"section": "oop"`. Each exercise is one call on a unit:
 
 ```python
 u = unit("python", "Loops", "intro markdown")
@@ -290,7 +299,7 @@ u.write("prompt", starter, solution, ["5\n", "0\n"], "why")   # stdin tests
 python3 content/build_basecamp.py   # runs every snippet with real Java/Python/Node and writes src/content/basecamp.json
 ```
 
-The build fills in expected outputs from real runs. It fails if a buggy "fix" already works, a starter already passes, or an alternative blank answer changes the output. Java snippets are statements that get wrapped in `class Main { main() }`, unless the exercise uses `full=True`.
+The build fills in expected outputs from real runs. It fails if a buggy "fix" already works, a starter already passes, or an alternative blank answer changes the output. Java snippets are statements that get wrapped in `class Main { main() }`, unless the exercise uses `full=True`. OOP Java exercises are complete programs (`full=True`): one `public class Main`, plus other classes in the same file with no `public` modifier.
 
 ### Adding a problem
 
@@ -335,7 +344,7 @@ cargo test --manifest-path src-tauri/Cargo.toml          # runner + SQLite store
 node --experimental-strip-types tests/builtins.test.ts   # shortcut detector
 npx tsc --noEmit                                         # types
 python3 content/build.py --verify                        # all 145 problems in 3 languages
-python3 content/build_basecamp.py                        # all 180 Basecamp exercises
+python3 content/build_basecamp.py                        # all 360 Basecamp exercises (core + OOP)
 python3 content/lint_lang.py                             # no other-language text in any language's view
 
 # Desktop end-to-end (Linux). Needs tauri-driver and webkit2gtk-driver.

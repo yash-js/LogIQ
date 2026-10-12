@@ -19,7 +19,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-APP = os.path.join(ROOT, "src-tauri", "target", "debug", "logicquest")
+APP = os.path.join(ROOT, "src-tauri", "target", "debug", "logiq")
 OUT = os.environ.get("E2E_OUT", os.path.join(ROOT, "e2e", "out"))
 os.makedirs(OUT, exist_ok=True)
 

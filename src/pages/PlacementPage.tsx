@@ -41,7 +41,7 @@ export function PlacementPage() {
         {label} placement test
       </h1>
       <p className="muted">
-        One question from each Basecamp unit. {PLACEMENT_PASS} of {qs.length} correct marks Basecamp complete for {label} and gives {PLACEMENT_XP} XP.
+        One question from each core unit. {PLACEMENT_PASS} of {qs.length} correct marks Basecamp complete for {label} and gives {PLACEMENT_XP} XP.
       </p>
 
       {result && (

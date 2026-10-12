@@ -12,11 +12,13 @@ export interface DataInfo {
 }
 
 interface BackupFile {
-  app: "logicquest";
+  app: "LogIQ";
   format: 1;
   exportedAt: string;
   state: ProgressState;
 }
+
+const LEGACY_APP_NAMES = new Set(["logicquest", "LogicQuest"]); // legacy name kept so existing progress loads
 
 export function dataInfo() {
   return invoke<DataInfo>("data_info");
@@ -31,12 +33,12 @@ export async function revealData(info: DataInfo) {
 export async function exportBackup(): Promise<string | null> {
   await flushProgress();
   const path = await save({
-    title: "Save LogicQuest backup",
-    defaultPath: `logicquest-backup-${dayKey()}.json`,
-    filters: [{ name: "LogicQuest backup", extensions: ["json"] }],
+    title: "Save LogIQ backup",
+    defaultPath: `logiq-backup-${dayKey()}.json`,
+    filters: [{ name: "LogIQ backup", extensions: ["json"] }],
   });
   if (!path) return null;
-  const file: BackupFile = { app: "logicquest", format: 1, exportedAt: new Date().toISOString(), state: snapshot() };
+  const file: BackupFile = { app: "LogIQ", format: 1, exportedAt: new Date().toISOString(), state: snapshot() };
   await invoke("write_text_file", { path, contents: JSON.stringify(file, null, 1) });
   return path;
 }
@@ -48,11 +50,15 @@ function parseBackup(text: string): ProgressState {
   } catch {
     throw new Error("That file isn't valid JSON.");
   }
-  const d = data as Partial<BackupFile> & { state?: unknown };
+  const d = data as Partial<BackupFile> & { app?: string; state?: unknown };
   // Accept our export format and the raw persisted format ({ state, version }).
+  // Old exports used the names in LEGACY_APP_NAMES. Missing app is the raw persist blob.
+  if (d.app != null && d.app !== "LogIQ" && !LEGACY_APP_NAMES.has(d.app)) {
+    throw new Error("That file isn't a LogIQ backup.");
+  }
   const st = d.state as ProgressState | undefined;
   if (!st || typeof st !== "object" || typeof st.problems !== "object") {
-    throw new Error("That file isn't a LogicQuest backup.");
+    throw new Error("That file isn't a LogIQ backup.");
   }
   return {
     ...initialState,
@@ -65,7 +71,7 @@ export type ImportMode = "merge" | "replace";
 
 /** Loads a backup file. Merge keeps everything from both sides; replace overwrites this computer's progress. */
 export async function importBackup(mode: ImportMode): Promise<{ path: string; solved: number } | null> {
-  const path = await open({ title: "Open LogicQuest backup", multiple: false, directory: false, filters: [{ name: "LogicQuest backup", extensions: ["json"] }] });
+  const path = await open({ title: "Open LogIQ backup", multiple: false, directory: false, filters: [{ name: "LogIQ backup", extensions: ["json"] }] });
   if (!path || Array.isArray(path)) return null;
   const text = await invoke<string>("read_text_file", { path });
   const incoming = parseBackup(text);

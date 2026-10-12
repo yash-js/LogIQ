@@ -189,7 +189,7 @@ function ways(n) {
 ## 7. Recursion limits
 
 :::only java
-Several thousand nested calls are allowed. LogicQuest runs your program with a larger stack, and the tests in this phase stay inside that limit.
+Several thousand nested calls are allowed. LogIQ runs your program with a larger stack, and the tests in this phase stay inside that limit.
 :::
 
 :::only python
@@ -197,7 +197,7 @@ About 1000 nested calls are allowed by default. The tests in this phase stay bel
 :::
 
 :::only javascript
-Several thousand nested calls are allowed. LogicQuest runs your program with a larger stack, and the tests in this phase stay inside that limit.
+Several thousand nested calls are allowed. LogIQ runs your program with a larger stack, and the tests in this phase stay inside that limit.
 :::
 
 ## 8. The leap of faith

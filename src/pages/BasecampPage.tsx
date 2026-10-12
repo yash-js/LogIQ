@@ -1,18 +1,47 @@
 import { Link } from "react-router-dom";
 import { LANGS } from "../content";
 import { useProgress } from "../lib/progress";
-import { basecampDone, PLACEMENT_PASS, unitsFor } from "../lib/basecamp";
+import { basecampDone, oopDone, PLACEMENT_PASS, unitsIn, type Unit } from "../lib/basecamp";
+import type { UnitProgress } from "../lib/progress";
 import { WorldGlyph } from "../components/WorldGlyph";
 import { Topo } from "../components/Topo";
+
+function UnitGrid({ units, progress, nextIdx }: { units: Unit[]; progress?: Record<string, UnitProgress>; nextIdx: number }) {
+  return (
+    <div className="unit-grid">
+      {units.map((u, i) => {
+        const p = progress?.[u.id];
+        const isNext = i === nextIdx;
+        return (
+          <Link key={u.id} to={`/basecamp/${u.id}`} className={`card unit-card ${p?.done ? "done" : ""} ${isNext ? "next" : ""}`}>
+            <span className="unit-num">{p?.done ? "✓" : i + 1}</span>
+            <span className="unit-text">
+              <b>{u.title}</b>
+              <span className="small muted">
+                {u.exercises.length} exercises
+                {p?.done ? ` · ${p.xp} XP${p.perfect ? " · perfect" : ""}` : ""}
+              </span>
+            </span>
+            {isNext && <span className="pill xp">Up next</span>}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 export function BasecampPage() {
   const state = useProgress();
   const lang = state.settings.lang;
   const label = LANGS.find((l) => l.id === lang)!.label;
-  const units = unitsFor(lang);
+  const core = unitsIn(lang, "core");
+  const oop = unitsIn(lang, "oop");
   const bc = state.basecamp[lang];
   const st = basecampDone(lang, state);
-  const nextIdx = units.findIndex((u) => !bc?.units[u.id]?.done);
+  const oopSt = oopDone(lang, state);
+  const nextCore = core.findIndex((u) => !bc?.units[u.id]?.done);
+  const nextOop = oop.findIndex((u) => !bc?.units[u.id]?.done);
+  const functionsDone = !!bc?.units[`${lang}-09`]?.done;
 
   return (
     <div style={{ ["--c" as string]: "#ffc24b" }}>
@@ -60,25 +89,23 @@ export function BasecampPage() {
           </div>
         )}
 
-        <div className="unit-grid">
-          {units.map((u, i) => {
-            const p = bc?.units[u.id];
-            const isNext = i === nextIdx;
-            return (
-              <Link key={u.id} to={`/basecamp/${u.id}`} className={`card unit-card ${p?.done ? "done" : ""} ${isNext ? "next" : ""}`}>
-                <span className="unit-num">{p?.done ? "✓" : i + 1}</span>
-                <span className="unit-text">
-                  <b>{u.title}</b>
-                  <span className="small muted">
-                    {u.exercises.length} exercises
-                    {p?.done ? ` · ${p.xp} XP${p.perfect ? " · perfect" : ""}` : ""}
-                  </span>
-                </span>
-                {isNext && <span className="pill xp">Up next</span>}
-              </Link>
-            );
-          })}
+        <UnitGrid units={core} progress={bc?.units} nextIdx={nextCore} />
+
+        <div className="section-title">
+          <h2>Objects (OOP)</h2>
+          <span className="small muted">
+            {oopSt.done} / {oopSt.total} units
+          </span>
         </div>
+        <div className="bar" style={{ margin: "0 0 14px" }}>
+          <span style={{ width: `${oopSt.total ? (oopSt.done / oopSt.total) * 100 : 0}%` }} />
+        </div>
+        {!functionsDone && (
+          <p className="small muted" style={{ margin: "0 0 14px" }}>
+            Recommended after Functions
+          </p>
+        )}
+        <UnitGrid units={oop} progress={bc?.units} nextIdx={nextOop} />
       </div>
     </div>
   );

@@ -178,7 +178,7 @@ pub async fn check_toolchain(prefs: ToolchainPrefs) -> ToolchainStatus {
 fn work_dir() -> std::io::Result<PathBuf> {
     let nanos = SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0);
     let dir = std::env::temp_dir()
-        .join("logicquest")
+        .join("logiq")
         .join(format!("run-{}-{}", std::process::id(), nanos));
     std::fs::create_dir_all(&dir)?;
     Ok(dir)

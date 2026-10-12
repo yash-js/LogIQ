@@ -46,7 +46,7 @@ fn write_text_file(path: String, contents: String) -> Result<(), String> {
 fn read_text_file(path: String) -> Result<String, String> {
     let meta = std::fs::metadata(&path).map_err(|e| e.to_string())?;
     if meta.len() > 50 * 1024 * 1024 {
-        return Err("That file is too large to be a LogicQuest backup.".into());
+        return Err("That file is too large to be a LogIQ backup.".into());
     }
     std::fs::read_to_string(path).map_err(|e| e.to_string())
 }
@@ -73,5 +73,5 @@ pub fn run() {
             read_text_file
         ])
         .run(tauri::generate_context!())
-        .expect("error while running LogicQuest");
+        .expect("error while running LogIQ");
 }

@@ -1,9 +1,10 @@
 """Basecamp: language lessons as small exercises.
 
-Each language file (java.py, python.py, javascript.py) declares units with
-`unit(...)` and adds exercises to it. build_basecamp.py runs every runnable
-snippet with the real compiler/interpreter to fill in expected outputs and to
-check that blanks, line orders, fixes and reference solutions are correct.
+Each language file (java.py, python.py, javascript.py) declares core units with
+`unit(...)`. The OOP track (java_oop.py, python_oop.py, javascript_oop.py) uses
+`oop_unit(...)`. build_basecamp.py runs every runnable snippet with the real
+compiler/interpreter to fill in expected outputs and to check that blanks, line
+orders, fixes and reference solutions are correct.
 
 Exercise kinds
   choice   multiple choice                          (no code run)
@@ -35,6 +36,7 @@ class Unit:
     id: str
     title: str
     intro: str
+    section: str = "core"
     exercises: list[dict] = field(default_factory=list)
 
     def choice(self, prompt, options, answer, why, code=None):
@@ -61,9 +63,12 @@ class Unit:
         self.exercises.append({"kind": "order", "prompt": _d(prompt), "lines": lines, "why": _d(why), "stdin": stdin, "full": full})
         return self
 
-    def fix(self, prompt, buggy, fixed, why, stdin="", full=False):
-        self.exercises.append({"kind": "fix", "prompt": _d(prompt), "code": _d(buggy), "solution": _d(fixed),
-                               "why": _d(why), "stdin": stdin, "full": full})
+    def fix(self, prompt, buggy, fixed, why, stdin="", full=False, tests=None):
+        ex = {"kind": "fix", "prompt": _d(prompt), "code": _d(buggy), "solution": _d(fixed),
+              "why": _d(why), "stdin": stdin, "full": full}
+        if tests:
+            ex["tests"] = list(tests)
+        self.exercises.append(ex)
         return self
 
     def write(self, prompt, starter, solution, tests, why, full=False):
@@ -73,6 +78,14 @@ class Unit:
 
 
 def unit(lang: str, title: str, intro: str) -> Unit:
-    u = Unit(lang=lang, id=f"{lang}-{len(UNITS[lang]) + 1:02d}", title=title, intro=_d(intro))
+    n = sum(1 for u in UNITS[lang] if u.section == "core") + 1
+    u = Unit(lang=lang, id=f"{lang}-{n:02d}", title=title, intro=_d(intro), section="core")
+    UNITS[lang].append(u)
+    return u
+
+
+def oop_unit(lang: str, title: str, intro: str) -> Unit:
+    n = sum(1 for u in UNITS[lang] if u.section == "oop") + 1
+    u = Unit(lang=lang, id=f"{lang}-oop-{n:02d}", title=title, intro=_d(intro), section="oop")
     UNITS[lang].append(u)
     return u

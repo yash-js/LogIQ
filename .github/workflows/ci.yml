@@ -26,7 +26,7 @@ jobs:
       - run: npm ci
       - name: Content builds and every reference solution passes (Python + Java I/O)
         run: python3 content/build.py --verify
-      - name: Basecamp exercises run and check out
+      - name: Basecamp core and OOP exercises run and check out
         run: python3 content/build_basecamp.py
       - name: Generated content is up to date
         run: git diff --exit-code src/content/problems.json src/content/basecamp.json

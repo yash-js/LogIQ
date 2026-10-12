@@ -68,7 +68,7 @@ async function runRaw(lang: Lang, code: string, inputs: string[], timeLimitMs: n
   if (!inTauri) {
     return {
       compileError: null,
-      setupError: "Code runs on your machine through the LogicQuest desktop app. Start it with `npm run tauri dev`.",
+      setupError: "Code runs on your machine through the LogIQ desktop app. Start it with `npm run tauri dev`.",
       results: [],
     } satisfies RawResponse;
   }

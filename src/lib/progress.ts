@@ -200,7 +200,7 @@ export const useProgress = create<ProgressState & Actions>()(
       },
     }),
     {
-      name: "logicquest-progress",
+      name: "logicquest-progress", // legacy name kept so existing progress loads
       version: 3,
       storage: createJSONStorage(() => progressStorage),
       migrate: (old) => {

@@ -14,9 +14,9 @@ print("Hello")
 print("World")
 """, "Each `print` ends with a newline, so the words land on two lines.")
 u.predict("""
-print("Log", end="")
-print("ic", end="")
-print("Quest")
+print("Lo", end="")
+print("g", end="")
+print("IQ")
 """, "`end=\"\"` replaces the newline with nothing, so the pieces join.")
 u.choice("What does `print(\"a\", \"b\", \"c\")` show?", ["abc", "a b c", "a,b,c", "('a', 'b', 'c')"], 1,
          "Commas in `print` separate values with one space by default.")
@@ -54,8 +54,8 @@ print(x)
 u.choice("Which value is a `bool` in Python?", ["true", "\"True\"", "True", "1.0"], 2,
          "Booleans are `True` and `False`, capitalised. `\"True\"` in quotes is a string.")
 u.predict("""
-first = "Logic"
-second = "Quest"
+first = "Log"
+second = "IQ"
 print(first + second)
 print(first, second)
 """, "`+` joins strings with no space; a comma in `print` adds one.")
@@ -167,7 +167,7 @@ n = int(input())                    # one number
 a, b = map(int, input().split())    # two numbers on one line
 ```
 
-In LogicQuest's problems the input is read for you, but you'll need this everywhere else.
+In LogIQ's problems the input is read for you, but you'll need this everywhere else.
 """)
 u.predict("""
 a, b = map(int, input().split())
@@ -378,7 +378,7 @@ def square(x):
 print(square(4))   # 16
 ```
 
-A function without `return` gives back `None`. In LogicQuest problems you write `solve`.
+A function without `return` gives back `None`. In LogIQ problems you write `solve`.
 """)
 u.predict("""
 def twice(x):

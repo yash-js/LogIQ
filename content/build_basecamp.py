@@ -6,6 +6,7 @@
 import importlib
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -102,11 +103,27 @@ def check_exercise(lang, uid, i, ex):
         if len(ex["lines"]) < 3:
             errs.append(f"{where}: needs at least 3 lines")
     elif k == "fix":
-        good = ok_run(ex["solution"], ex["stdin"])
-        ex["expected"] = good["out"]
-        bad = run(lang, ex["code"], ex["stdin"], full)
-        if bad["rc"] == 0 and check(good["out"], bad["out"], True):
-            errs.append(f"{where}: the buggy version already produces the right output")
+        if ex.get("tests"):
+            built = []
+            for stdin in ex["tests"]:
+                good = ok_run(ex["solution"], stdin)
+                built.append({"input": stdin, "output": good["out"]})
+            ex["tests"] = built
+            ex["stdin"] = built[0]["input"]
+            ex["expected"] = built[0]["output"]
+            passes = 0
+            for t in built:
+                bad = run(lang, ex["code"], t["input"], full)
+                if bad["rc"] == 0 and check(t["output"], bad["out"], True):
+                    passes += 1
+            if passes == len(built):
+                errs.append(f"{where}: the buggy version already produces the right output")
+        else:
+            good = ok_run(ex["solution"], ex["stdin"])
+            ex["expected"] = good["out"]
+            bad = run(lang, ex["code"], ex["stdin"], full)
+            if bad["rc"] == 0 and check(good["out"], bad["out"], True):
+                errs.append(f"{where}: the buggy version already produces the right output")
     elif k == "write":
         tests = []
         for stdin in ex["tests"]:
@@ -125,22 +142,57 @@ def check_exercise(lang, uid, i, ex):
     return errs
 
 
+def structural_errors():
+    """Shape checks that don't need a compiler. Exercise runners add their own."""
+    errs = []
+    for lang in LANGS:
+        units = bc.UNITS[lang]
+        core = [u for u in units if u.section == "core"]
+        oop = [u for u in units if u.section == "oop"]
+        exercises = sum(len(u.exercises) for u in units)
+        if len(units) != 20 or exercises != 120 or len(core) != 10 or len(oop) != 10:
+            errs.append(f"{lang}: expected 20 units (10 core + 10 oop) and 120 exercises, "
+                        f"got {len(units)} units ({len(core)} core, {len(oop)} oop) and {exercises} exercises")
+        for u in oop:
+            kinds = [e["kind"] for e in u.exercises]
+            if len(u.exercises) != 6:
+                errs.append(f"{u.id}: expected 6 exercises, got {len(u.exercises)}")
+            for need in ("predict", "fix", "write"):
+                if need not in kinds:
+                    errs.append(f"{u.id}: missing a {need} exercise")
+            words = len(re.findall(r"\b\w+\b", u.intro))
+            if words > 180:
+                errs.append(f"{u.id}: intro is {words} words (keep it under 180)")
+            if lang == "java":
+                for i, ex in enumerate(u.exercises):
+                    if ex["kind"] != "choice" and not ex.get("full"):
+                        errs.append(f"{u.id} #{i + 1}: Java OOP exercise must set full=True")
+            if u.id.endswith("-oop-10"):
+                for ex in u.exercises:
+                    if ex["kind"] == "write" and len(ex.get("tests") or []) < 3:
+                        errs.append(f"{u.id}: write needs 3+ tests")
+                    if ex["kind"] == "fix" and len(ex.get("tests") or []) < 3:
+                        errs.append(f"{u.id}: fix needs 3+ tests")
+    return errs
+
+
 def main():
     for lang in LANGS:
         importlib.import_module(lang)
+        importlib.import_module(f"{lang}_oop")
+    errors = structural_errors()
     jobs = []
     for lang in LANGS:
         for u in bc.UNITS[lang]:
             for i, ex in enumerate(u.exercises):
                 jobs.append((lang, u.id, i, ex))
-    errors = []
     with ThreadPoolExecutor(max_workers=max(2, (os.cpu_count() or 2))) as pool:
         for errs in pool.map(lambda j: check_exercise(*j), jobs):
             errors += errs
     out = {}
     for lang in LANGS:
         out[lang] = [
-            {"id": u.id, "title": u.title, "intro": u.intro, "exercises": u.exercises}
+            {"id": u.id, "title": u.title, "intro": u.intro, "section": u.section, "exercises": u.exercises}
             for u in bc.UNITS[lang]
         ]
     counts = {l: (len(out[l]), sum(len(u["exercises"]) for u in out[l])) for l in LANGS}
@@ -148,7 +200,7 @@ def main():
         print("\n\n".join(errors))
         print(f"\n{len(errors)} problem(s); basecamp.json not written")
         sys.exit(1)
-    with open(OUT, "w") as f:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     print("basecamp ok (units, exercises):", counts)
 
