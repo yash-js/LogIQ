@@ -123,8 +123,15 @@ def main():
     ok = True
     try:
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".sidebar")))
-        d.execute_script("localStorage.setItem('logicquest-progress', arguments[0]); location.reload();", json.dumps(seed()))
+        # Progress lives in SQLite; seed it through the same command the app uses.
+        d.execute_async_script(
+            "const done = arguments[arguments.length - 1];"
+            "window.__TAURI_INTERNALS__.invoke('save_state', {value: arguments[0]}).then(() => done(true), (e) => done(String(e)));",
+            json.dumps(seed()),
+        )
+        d.execute_script("location.reload()")
         time.sleep(1.5)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".sidebar")))
 
         # 1. Correct Java solution -> Accepted + XP.
         d.execute_script("location.hash = '#/problem/p1-01'")
@@ -210,6 +217,23 @@ def main():
         found = "Python 3." in src and ("javac 2" in src or "javac 1" in src) and "Node.js v" in src
         print("toolchain detected:", found)
         ok &= found
+        # 7. Restart the app: progress must come back from SQLite.
+        time.sleep(1)  # let the debounced save land
+        d.quit()
+        d = webdriver.Remote(command_executor="http://127.0.0.1:4444", options=opts)
+        WebDriverWait(d, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".side-level-xp")))
+        d.execute_script("location.hash = '#/profile'")
+        time.sleep(1)
+        xp_text = d.find_element(By.CSS_SELECTOR, ".profile-head").text
+        print("after restart:", " ".join(xp_text.split()[-8:]))
+        ok &= "55 XP total" in xp_text  # 15 + 15 + 5 + 20 earned above
+        info = d.execute_async_script(
+            "const done = arguments[arguments.length - 1];"
+            "window.__TAURI_INTERNALS__.invoke('data_info').then(done, (e) => done(String(e)));"
+        )
+        print("daily backups:", info.get("backups"))
+        ok &= bool(info.get("backups"))
+        d.save_screenshot(os.path.join(OUT, "8-after-restart.png"))
     finally:
         d.quit()
     print("E2E", "PASSED" if ok else "FAILED")

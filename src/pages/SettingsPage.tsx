@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProgress } from "../lib/progress";
-import { checkToolchain, type ToolchainStatus } from "../lib/runner";
-import { sendEmailCode, signInWithGithub, signOut, supabaseConfigured, verifyEmailCode } from "../lib/supabase";
-import { syncNow, useSync } from "../lib/sync";
+import { checkToolchain, inTauri, type ToolchainStatus } from "../lib/runner";
+import { dataInfo, exportBackup, importBackup, restoreDaily, revealData, type DataInfo } from "../lib/backup";
 
 function Tool({ name, info }: { name: string; info?: { found: boolean; command: string | null; version: string | null } }) {
   return (
@@ -21,25 +20,26 @@ function Tool({ name, info }: { name: string; info?: { found: boolean; command: 
   );
 }
 
-function Account() {
-  const sync = useSync();
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [sent, setSent] = useState(false);
+function YourData() {
+  const [info, setInfo] = useState<DataInfo | null>(null);
   const [msg, setMsg] = useState<{ bad: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [daily, setDaily] = useState("");
 
   useEffect(() => {
-    const onErr = (e: Event) => setMsg({ bad: true, text: (e as CustomEvent<string>).detail });
-    window.addEventListener("lq-auth-error", onErr);
-    return () => window.removeEventListener("lq-auth-error", onErr);
+    if (inTauri) void dataInfo().then((i) => {
+      setInfo(i);
+      setDaily(i.backups[0] ?? "");
+    });
   }, []);
 
-  async function act(f: () => Promise<unknown>) {
+  async function act(f: () => Promise<string | null>) {
     setBusy(true);
     setMsg(null);
     try {
-      await f();
+      const text = await f();
+      if (text) setMsg({ bad: false, text });
+      if (inTauri) setInfo(await dataInfo());
     } catch (e) {
       setMsg({ bad: true, text: e instanceof Error ? e.message : String(e) });
     } finally {
@@ -47,76 +47,81 @@ function Account() {
     }
   }
 
-  if (!supabaseConfigured) {
-    return (
-      <p className="muted">
-        Sync is off. Add <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> to <code>.env</code> and restart
-        the app to sync progress between your computers. Everything still works offline.
-      </p>
-    );
-  }
-
-  if (sync.session) {
-    return (
-      <>
-        <p>
-          Signed in as <strong>{sync.session.user.email ?? sync.session.user.user_metadata?.user_name}</strong>.{" "}
-          <span className="muted">
-            {sync.status === "synced" && sync.lastSynced ? `Synced ${new Date(sync.lastSynced).toLocaleTimeString()}` : sync.status}
-            {sync.error && `: ${sync.error}`}
-          </span>
-        </p>
-        <div style={{ display: "flex", gap: 10 }}>
-          <button className="btn" onClick={() => void syncNow()}>
-            Sync now
-          </button>
-          <button className="btn btn-ghost" onClick={() => void signOut()}>
-            Sign out
-          </button>
-        </div>
-      </>
-    );
-  }
+  if (!inTauri) return <p className="muted">Open the desktop app to manage your data.</p>;
 
   return (
     <>
       <p className="muted" style={{ marginTop: 0 }}>
-        Sign in to sync XP, progress and saved code between your Windows and Linux machines.
+        Everything is stored on this computer in a local SQLite database. No account, nothing uploaded. A copy is saved
+        automatically once a day (last 14 days kept).
       </p>
-      <button className="btn btn-primary" disabled={busy} onClick={() => act(signInWithGithub)}>
-        Continue with GitHub
-      </button>
-      <p className="small muted">Your browser opens, then sends you back to LogicQuest.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end", marginTop: 14 }}>
-        <div className="field">
-          <label htmlFor="email">Or get a 6-digit code by email</label>
-          <input id="email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
-        </div>
-        <button
-          className="btn"
-          disabled={busy || !email}
-          onClick={() =>
-            act(async () => {
-              await sendEmailCode(email);
-              setSent(true);
-              setMsg({ bad: false, text: `Code sent to ${email}.` });
-            })
-          }
-        >
-          Send code
-        </button>
-        {sent && (
-          <>
-            <div className="field">
-              <label htmlFor="otp">Code</label>
-              <input id="otp" className="input" inputMode="numeric" value={code} onChange={(e) => setCode(e.target.value.trim())} />
-            </div>
-            <button className="btn btn-primary" disabled={busy || code.length < 6} onClick={() => act(() => verifyEmailCode(email, code))}>
-              Sign in
+      {info && (
+        <div className="tool-row" style={{ borderBottom: 0 }}>
+          <span>Database</span>
+          <span style={{ display: "flex", gap: 10, alignItems: "center", minWidth: 0 }}>
+            <code style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 12.5 }}>{info.dbPath}</code>
+            <button className="btn btn-sm" onClick={() => void revealData(info)}>
+              Show in folder
             </button>
-          </>
-        )}
+          </span>
+        </div>
+      )}
+
+      <h3 style={{ margin: "18px 0 8px" }}>Backup file</h3>
+      <p className="small muted" style={{ margin: "0 0 10px" }}>
+        Export saves XP, solved problems, quiz results and your saved code to one .json file. Import it on another
+        computer, or after reinstalling.
+      </p>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        <button className="btn btn-primary" disabled={busy} onClick={() => act(async () => {
+          const path = await exportBackup();
+          return path ? `Backup saved to ${path}` : null;
+        })}>
+          Export backup
+        </button>
+        <button className="btn" disabled={busy} onClick={() => act(async () => {
+          const r = await importBackup("merge");
+          return r ? `Merged ${r.solved} solved problems from ${r.path}. Nothing on this computer was lost.` : null;
+        })}>
+          Import and merge
+        </button>
+        <button className="btn btn-ghost" disabled={busy} onClick={() => {
+          if (!confirm("Replace all progress on this computer with the backup file?")) return;
+          void act(async () => {
+            const r = await importBackup("replace");
+            return r ? `Progress replaced with ${r.path}.` : null;
+          });
+        }}>
+          Import and replace
+        </button>
       </div>
+
+      {info && info.backups.length > 0 && (
+        <>
+          <h3 style={{ margin: "22px 0 8px" }}>Automatic daily copies</h3>
+          <div style={{ display: "flex", gap: 10, alignItems: "end", flexWrap: "wrap" }}>
+            <div className="field" style={{ minWidth: 260 }}>
+              <label htmlFor="daily">Restore progress from</label>
+              <select id="daily" className="input" value={daily} onChange={(e) => setDaily(e.target.value)}>
+                {info.backups.map((b) => (
+                  <option key={b} value={b}>
+                    {b.replace(/^progress-|\.db$/g, "")}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button className="btn" disabled={busy || !daily} onClick={() => {
+              if (!confirm(`Replace current progress with the copy from ${daily.replace(/^progress-|\.db$/g, "")}?`)) return;
+              void act(async () => {
+                await restoreDaily(daily, "replace");
+                return `Restored progress from ${daily.replace(/^progress-|\.db$/g, "")}.`;
+              });
+            }}>
+              Restore
+            </button>
+          </div>
+        </>
+      )}
       {msg && <p className={`notice ${msg.bad ? "bad" : "good"}`} style={{ marginTop: 14 }}>{msg.text}</p>}
     </>
   );
@@ -206,15 +211,14 @@ export function SettingsPage() {
       </section>
 
       <section className="card pad">
-        <h2 style={{ marginBottom: 12 }}>Account and sync</h2>
-        <Account />
+        <h2 style={{ marginBottom: 12 }}>Your data</h2>
+        <YourData />
       </section>
 
       <section className="card pad">
         <h2 style={{ marginBottom: 12 }}>Start over</h2>
         <p className="muted" style={{ marginTop: 0 }}>
-          Clears XP, solved problems, quiz results and saved code on this computer. If you are signed in, the next sync will
-          bring synced progress back.
+          Clears XP, solved problems, quiz results and saved code on this computer. Export a backup first if you might want it back.
         </p>
         <button
           className="btn btn-danger"

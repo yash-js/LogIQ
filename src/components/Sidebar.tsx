@@ -2,8 +2,6 @@ import { NavLink } from "react-router-dom";
 import { LANGS } from "../content";
 import { useProgress } from "../lib/progress";
 import { levelFromXp, levelTitle, streak } from "../lib/game";
-import { useSync } from "../lib/sync";
-import { supabaseConfigured } from "../lib/supabase";
 
 export function Logo({ className }: { className?: string }) {
   return (
@@ -72,7 +70,6 @@ export function Sidebar() {
   const activity = useProgress((s) => s.activity);
   const lang = useProgress((s) => s.settings.lang);
   const setSettings = useProgress((s) => s.setSettings);
-  const sync = useSync();
   const lv = levelFromXp(xp);
   const st = streak(activity);
 
@@ -121,12 +118,6 @@ export function Sidebar() {
           <Flame lit={st > 0} />
           <span className="txt">{st ? `${st}-day streak` : "No streak yet"}</span>
           <span className="num">{st || ""}</span>
-          {supabaseConfigured && (
-            <span
-              className={`syncdot ${sync.status}`}
-              title={sync.session ? `Sync: ${sync.status}${sync.error ? ` (${sync.error})` : ""}` : "Not signed in: progress is saved on this computer"}
-            />
-          )}
         </div>
       </div>
     </aside>

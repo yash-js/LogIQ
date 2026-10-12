@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useProgress } from "./lib/progress";
 import { Sidebar } from "./components/Sidebar";
 import { MapPage } from "./pages/MapPage";
 import { PhasePage } from "./pages/PhasePage";
@@ -28,7 +30,20 @@ function Shell() {
   );
 }
 
+function useHydrated() {
+  const [ok, setOk] = useState(() => useProgress.persist.hasHydrated());
+  useEffect(() => {
+    if (ok) return;
+    const off = useProgress.persist.onFinishHydration(() => setOk(true));
+    if (useProgress.persist.hasHydrated()) setOk(true);
+    return off;
+  }, [ok]);
+  return ok;
+}
+
 export default function App() {
+  // Progress loads asynchronously from SQLite; wait so locked pages don't redirect early.
+  if (!useHydrated()) return <div className="app-loading" />;
   return (
     <HashRouter>
       <Shell />

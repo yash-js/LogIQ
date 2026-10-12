@@ -37,17 +37,12 @@ npm run tauri build     # installers in src-tauri/target/release/bundle
 
 Windows builds produce `.msi` and `.exe` (NSIS); Linux builds produce `.deb`, `.rpm` and `.AppImage`. Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which builds both and attaches them to a draft GitHub release.
 
-## Sign-in and sync (optional)
+## Your data
 
-Without Supabase everything works offline and progress is saved on that computer. To sync between machines:
+No account and no server. Progress (XP, solves, quiz results, saved code) is stored in a SQLite database in the app's data folder (`%APPDATA%\in.yashpurani.logicquest` on Windows, `~/.local/share/in.yashpurani.logicquest` on Linux).
 
-1. Create a Supabase project and run `supabase/migrations/0001_user_progress.sql` in the SQL editor.
-2. Copy `.env.example` to `.env` and fill in the project URL and anon key. For release builds, add them as repository secrets with the same names.
-3. **Auth → URL Configuration → Redirect URLs:** add `logicquest://auth-callback`.
-4. **GitHub login:** Auth → Providers → GitHub, using a GitHub OAuth app whose callback URL is `https://<project>.supabase.co/auth/v1/callback`.
-5. **Email code login:** Auth → Email Templates → Magic Link, include `{{ .Token }}` in the template so the email contains the 6-digit code.
-
-Progress is one JSON document per user (`user_progress`, protected by row-level security). When two machines disagree, the app merges them: solves, quiz passes and activity are never lost.
+- A copy of the database is saved automatically once a day; the last 14 are kept and can be restored from Settings.
+- **Export backup** writes everything to one `.json` file. **Import and merge** combines a backup with this computer's progress without losing anything; **Import and replace** overwrites it.
 
 ## Project layout
 
@@ -58,8 +53,7 @@ content/           problem sources (Python) and the build/verify script
 src/content/       generated problems, phase metadata + quizzes, guides (Markdown)
 src/               React UI (map, guides, workspace, profile, settings)
   lib/builtins.ts  shortcut detector behind the Pure challenge
-src-tauri/src/     Rust: runner.rs compiles/runs Java, Python and JavaScript with time limits
-supabase/          database migration
+src-tauri/src/     Rust: runner.rs runs Java/Python/JavaScript with time limits; store.rs keeps progress in SQLite
 e2e/               WebDriver test that drives the real desktop app
 ```
 

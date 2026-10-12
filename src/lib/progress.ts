@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { progressStorage } from "./storage";
 import type { Lang } from "../content";
 import { dayKey, streak } from "./game";
 
@@ -155,6 +156,7 @@ export const useProgress = create<ProgressState & Actions>()(
     {
       name: "logicquest-progress",
       version: 2,
+      storage: createJSONStorage(() => progressStorage),
       migrate: (old) => {
         const st = old as ProgressState;
         return { ...st, settings: { ...initialState.settings, ...st.settings } } as ProgressState & Actions;

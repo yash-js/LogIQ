@@ -43,14 +43,5 @@
     ],
     "shortDescription": "Logic building before DSA, in Java and Python",
     "category": "Education"
-  },
-  "plugins": {
-    "deep-link": {
-      "desktop": {
-        "schemes": [
-          "logicquest"
-        ]
-      }
-    }
   }
 }
