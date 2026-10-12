@@ -23,6 +23,14 @@ def solve(n):
     return "Zero"
 ```
 
+```javascript
+function solve(n) {
+  if (n > 0) return "Positive";
+  if (n < 0) return "Negative";
+  return "Zero";
+}
+```
+
 **Run** checks the examples you can see. **Submit** checks hidden tests too, and that is where edge cases live.
 
 ## 2. if / else if / else
@@ -47,15 +55,23 @@ else:
     result = "Neither"
 ```
 
+```javascript
+if (n % 15 === 0) result = "Both";      // most specific first
+else if (n % 3 === 0) result = "Three";
+else if (n % 5 === 0) result = "Five";
+else result = "Neither";
+```
+
 > **Rule of thumb:** put the most specific condition first. If `n % 3 == 0` came first, 15 would print "Three".
 
 ## 3. Combining conditions
 
-| Meaning | Java | Python |
-| --- | --- | --- |
-| and | `a && b` | `a and b` |
-| or | `a \|\| b` | `a or b` |
-| not | `!a` | `not a` |
+| Meaning | Java | Python | JavaScript |
+| --- | --- | --- | --- |
+| and | `a && b` | `a and b` | `a && b` |
+| or | `a \|\| b` | `a or b` | `a \|\| b` |
+| not | `!a` | `not a` | `!a` |
+| equal | `a == b` | `a == b` | `a === b` (always three `=`) |
 
 Leap years combine all three: divisible by 400, **or** (divisible by 4 **and not** divisible by 100).
 
@@ -70,6 +86,11 @@ System.out.println(-7 % 2);  // -1, not 1!
 ```python
 print(-7 % 2)   # 1 (Python follows the right number)
 print(-7 // 2)  # -4 (floor division rounds DOWN, Java's -7 / 2 is -3)
+```
+
+```javascript
+console.log(-7 % 2);             // -1, like Java
+console.log(Math.trunc(-7 / 2)); // -3: "/" gives -3.5, so drop the decimals yourself
 ```
 
 So `n % 2 == 1` breaks for negative odd numbers in Java. Use `n % 2 != 0` or `n % 2 == 0` instead.
@@ -88,6 +109,12 @@ char lower = (char) (ch + 32);       // 'A' -> 'a'
 upper = "A" <= ch <= "Z"
 digit_value = ord(ch) - ord("0")     # '7' -> 7
 lower = chr(ord(ch) + 32)            # 'A' -> 'a'
+```
+
+```javascript
+const upper = ch >= "A" && ch <= "Z";
+const digitValue = ch.charCodeAt(0) - 48;              // '7' -> 7
+const lower = String.fromCharCode(ch.charCodeAt(0) + 32); // 'A' -> 'a'
 ```
 
 ## 6. switch for one value, many cases
@@ -110,10 +137,22 @@ match op:              # Python 3.10+; an if/elif chain works everywhere
         return "Error"
 ```
 
+```javascript
+switch (op) {
+  case "+": return String(a + b);
+  case "-": return String(a - b);
+  default:  return "Error";
+}
+```
+
 ## 7. Overflow
 
-A Java `int` holds about ±2.1 billion. `100000 * 100000 * 100000` does not fit, and Java will silently give a wrong number. Use `long` when a product can get big. Python integers never overflow, but the problem may still ask you to *detect* when a value leaves the 32-bit range.
+A Java `int` holds about ±2.1 billion. `100000 * 100000 * 100000` does not fit, and Java will silently give a wrong number. Use `long` when a product can get big. Python integers never overflow, but the problem may still ask you to *detect* when a value leaves the 32-bit range. JavaScript numbers stay exact only up to 2^53 (about 9 × 10^15); past that, use `BigInt` (`10n`, `BigInt(x)`). The starter code tells you when a problem needs it.
 
-## 8. A habit to keep
+## 8. Shortcuts and the Pure challenge
+
+Library helpers like `sort`, `Set`, `max()` or `reverse()` do the thinking for you, and this course is about doing the thinking yourself. You can still use them: a correct answer is accepted and earns XP. But LogicQuest notices them and opens a **Pure challenge** for that problem: solve it again with only loops, conditions, arrays and strings for **+50% bonus XP**. The editor shows which shortcuts it spotted while you type.
+
+## 9. A habit to keep
 
 Before you code, write down 3–4 inputs and their answers: a normal one, zero, a negative, and the boundary (like exactly 38 marks, or exactly 100 units). Most wrong answers in this phase come from boundaries.

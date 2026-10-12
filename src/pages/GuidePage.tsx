@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { docFor, phaseById } from "../content";
-import { Markdown } from "../components/Markdown";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
+import { docFor, LANGS, phaseById } from "../content";
+import { Markdown, slug } from "../components/Markdown";
 import { useProgress } from "../lib/progress";
 import { isPhaseOpen } from "../lib/game";
 
@@ -9,6 +9,7 @@ const PASS = 4;
 
 export function GuidePage() {
   const id = Number(useParams().id);
+  const loc = useLocation();
   const phase = phaseById(id);
   const state = useProgress();
   const { markDocRead, recordQuiz } = state;
@@ -17,7 +18,6 @@ export function GuidePage() {
   const [picks, setPicks] = useState<(number | null)[]>(() => phase?.quiz.map(() => null) ?? []);
   const [checked, setChecked] = useState(false);
 
-  // The guide counts as read once the quiz section scrolls into view.
   useEffect(() => {
     const el = endRef.current;
     if (!el) return;
@@ -26,86 +26,113 @@ export function GuidePage() {
     return () => io.disconnect();
   }, [id, markDocRead]);
 
+  useEffect(() => {
+    if (loc.hash === "#check") endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [loc.hash]);
+
   if (!phase || !isPhaseOpen(state, id)) return <Navigate to="/" replace />;
 
+  const md = docFor(id);
+  const sections = md.split("\n").filter((l) => l.startsWith("## ")).map((l) => l.slice(3));
   const score = phase.quiz.reduce((s, q, i) => s + (picks[i] === q.answer ? 1 : 0), 0);
   const passed = score >= PASS;
-  const allPicked = picks.every((p) => p !== null);
 
-  function check() {
-    setChecked(true);
-    recordQuiz(id, score, score >= PASS);
-  }
-
-  function retry() {
-    setChecked(false);
-    setPicks(phase!.quiz.map(() => null));
-  }
+  const scrollTo = (sid: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.getElementById(sid)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div className="page page-narrow" style={{ ["--c" as string]: phase.color }}>
-      <p className="small">
-        <Link to={`/phase/${id}`} className="muted">
+    <div className="guide" style={{ ["--c" as string]: phase.color }}>
+      <nav className="toc" aria-label="Sections">
+        <Link to={`/phase/${id}`} className="back muted">
           ← {phase.world}
         </Link>
-      </p>
-      <Markdown text={docFor(id)} lang={lang} />
-
-      <section className="quiz" ref={endRef}>
-        <h2>Check your understanding</h2>
-        <p className="muted">Get {PASS} of {phase.quiz.length} right to open the problems. You can retry as often as you like.</p>
-        {phase.quiz.map((q, qi) => (
-          <div className="quiz-q" key={qi}>
-            <p>
-              {qi + 1}. {q.q}
-            </p>
-            <div className="quiz-opts">
-              {q.options.map((o, oi) => {
-                let cls = "quiz-opt";
-                if (checked) {
-                  if (oi === q.answer) cls += " right";
-                  else if (picks[qi] === oi) cls += " wrong";
-                } else if (picks[qi] === oi) cls += " picked";
-                return (
-                  <button
-                    key={oi}
-                    className={cls}
-                    disabled={checked}
-                    onClick={() => setPicks((p) => p.map((v, k) => (k === qi ? oi : v)))}
-                  >
-                    {o}
-                  </button>
-                );
-              })}
-            </div>
-            {checked && <div className="quiz-why">{q.why}</div>}
-          </div>
+        {sections.map((s) => (
+          <a key={s} href={`#${slug(s)}`} onClick={scrollTo(slug(s))}>
+            {s.replace(/^\d+\.\s*/, "")}
+          </a>
         ))}
-        {!checked ? (
-          <button className="btn btn-primary" disabled={!allPicked} onClick={check}>
-            Check answers
-          </button>
-        ) : passed ? (
-          <div className="notice good">
-            <strong>
-              {score}/{phase.quiz.length}. The trail is open.
-            </strong>{" "}
-            <Link to={`/phase/${id}`} className="btn btn-gold" style={{ marginLeft: 12 }}>
-              Start solving
-            </Link>
+        <a href="#check" onClick={scrollTo("check")} style={{ color: "var(--c)", fontWeight: 700 }}>
+          The check
+        </a>
+      </nav>
+
+      <article>
+        <div className="lang-note">
+          Code examples are in {LANGS.find((l) => l.id === lang)?.label}. Switch the language in the sidebar.
+        </div>
+        <Markdown text={md} lang={lang} />
+
+        <section className="card quiz" id="check" ref={endRef}>
+          <div className="quiz-head">
+            <h2>Check your understanding</h2>
+            <span className="small muted">
+              {PASS} of {phase.quiz.length} to pass · {state.docs[id]?.quizPassed ? "already passed" : "unlimited tries"}
+            </span>
           </div>
-        ) : (
-          <div className="notice bad">
-            <strong>
-              {score}/{phase.quiz.length}.
-            </strong>{" "}
-            Read the explanations above, then try again.{" "}
-            <button className="btn" style={{ marginLeft: 12 }} onClick={retry}>
-              Try again
+          {phase.quiz.map((q, qi) => (
+            <div className="quiz-q" key={qi}>
+              <p>
+                {qi + 1}. {q.q}
+              </p>
+              <div className="quiz-opts">
+                {q.options.map((o, oi) => {
+                  let cls = "quiz-opt";
+                  if (checked) {
+                    if (oi === q.answer) cls += " right";
+                    else if (picks[qi] === oi) cls += " wrong";
+                  } else if (picks[qi] === oi) cls += " picked";
+                  return (
+                    <button key={oi} className={cls} disabled={checked} onClick={() => setPicks((p) => p.map((v, k) => (k === qi ? oi : v)))}>
+                      <span className="k">{"ABCD"[oi]}</span>
+                      {o}
+                    </button>
+                  );
+                })}
+              </div>
+              {checked && <div className="quiz-why">{q.why}</div>}
+            </div>
+          ))}
+          {!checked ? (
+            <button
+              className="btn btn-primary btn-lg"
+              disabled={picks.some((p) => p === null)}
+              onClick={() => {
+                setChecked(true);
+                recordQuiz(id, score, score >= PASS);
+              }}
+            >
+              Check answers
             </button>
-          </div>
-        )}
-      </section>
+          ) : passed ? (
+            <div className="notice good">
+              <strong>
+                {score}/{phase.quiz.length} correct. The trail is open.
+              </strong>
+              <Link to={`/phase/${id}`} className="btn btn-gold">
+                Start solving
+              </Link>
+            </div>
+          ) : (
+            <div className="notice bad">
+              <strong>
+                {score}/{phase.quiz.length} correct.
+              </strong>
+              <span>Read the explanations, then try again.</span>
+              <button
+                className="btn btn-sm"
+                onClick={() => {
+                  setChecked(false);
+                  setPicks(phase.quiz.map(() => null));
+                }}
+              >
+                Try again
+              </button>
+            </div>
+          )}
+        </section>
+      </article>
     </div>
   );
 }

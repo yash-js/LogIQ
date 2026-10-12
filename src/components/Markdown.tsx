@@ -1,29 +1,44 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import type { ReactElement } from "react";
+import { Children, isValidElement, type ReactElement, type ReactNode } from "react";
 import type { Lang } from "../content";
 
+const LABEL: Record<string, string> = { java: "Java", python: "Python", javascript: "JavaScript", js: "JavaScript" };
+const LANG_OF: Record<string, Lang> = { java: "java", python: "python", javascript: "javascript", js: "javascript" };
+
+function text(node: ReactNode): string {
+  return Children.toArray(node)
+    .map((c) => (typeof c === "string" ? c : isValidElement(c) ? text((c.props as { children?: ReactNode }).children) : ""))
+    .join("");
+}
+
+export function slug(s: string) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 /**
- * Renders guide/statement markdown. Code blocks tagged java or python are shown
- * only for the learner's chosen language, so each guide reads in one language.
+ * Renders guide/statement markdown. Code blocks tagged java / python / javascript
+ * are shown only for the learner's chosen language.
  */
-export function Markdown({ text, lang }: { text: string; lang?: Lang }) {
+export function Markdown({ text: src, lang }: { text: string; lang?: Lang }) {
   return (
     <div className="prose">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
+        rehypePlugins={[[rehypeHighlight, { detect: false }]]}
         components={{
+          h2({ children }) {
+            return <h2 id={slug(text(children))}>{children}</h2>;
+          },
           pre({ children, ...rest }) {
             const child = (Array.isArray(children) ? children[0] : children) as ReactElement<{ className?: string }>;
-            const cls = child?.props?.className ?? "";
-            const m = /language-(\w+)/.exec(cls);
+            const m = /language-(\w+)/.exec(child?.props?.className ?? "");
             const blockLang = m?.[1];
-            if (lang && (blockLang === "java" || blockLang === "python") && blockLang !== lang) return null;
-            const label = blockLang === "java" ? "Java" : blockLang === "python" ? "Python" : undefined;
+            if (lang && blockLang && LANG_OF[blockLang] && LANG_OF[blockLang] !== lang) return null;
+            const { node: _node, ...props } = rest as typeof rest & { node?: unknown };
             return (
-              <pre {...rest} data-lang={label}>
+              <pre {...props} data-lang={blockLang ? LABEL[blockLang] : undefined}>
                 {children}
               </pre>
             );
@@ -37,7 +52,7 @@ export function Markdown({ text, lang }: { text: string; lang?: Lang }) {
           },
         }}
       >
-        {text}
+        {src}
       </ReactMarkdown>
     </div>
   );

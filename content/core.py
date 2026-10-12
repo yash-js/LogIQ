@@ -100,7 +100,9 @@ def fmt_num(v) -> str:
     if isinstance(v, bool):
         return "true" if v else "false"
     if isinstance(v, float):
-        if v == int(v) and abs(v) < 1e15:
+        if abs(v) >= 1e15:
+            return repr(v)  # keeps an exponent so checkers compare with tolerance
+        if v == int(v):
             return f"{v:.1f}"
         s = f"{v:.6f}".rstrip("0").rstrip(".")
         return s
@@ -352,6 +354,87 @@ def py_starter(p: Problem, body: str | None = None) -> str:
 # ---------- input / output is handled below, no need to change it ----------
 
 {reads}
+{out}
+"""
+
+
+# ------------------------------------------------------------------ JavaScript
+
+JS_HELPERS = {
+    "readLine": 'const readLine = () => __lines[__at++] ?? "";',
+    "readInt": "const readInt = () => Number(readLine().trim());",
+    "readDouble": "const readDouble = () => Number(readLine().trim());",
+    "readInts": 'const readInts = () => {\n  const s = readLine().trim();\n  return s ? s.split(/\\s+/).map(Number) : [];\n};',
+    "readIntArray": "const readIntArray = () => {\n  readLine(); // length\n  return readInts();\n};",
+    "readStringArray": "const readStringArray = () => {\n  const n = readInt();\n  return Array.from({ length: n }, () => readLine());\n};",
+    "readMatrix": "const readMatrix = () => {\n  const rows = readInts()[0];\n  return Array.from({ length: rows }, () => readInts());\n};",
+}
+JS_DEPS = {
+    "readInt": ["readLine"], "readDouble": ["readLine"], "readInts": ["readLine"],
+    "readIntArray": ["readLine", "readInts"], "readStringArray": ["readInt", "readLine"],
+    "readMatrix": ["readInts"],
+}
+
+
+def js_reader(t: str) -> str:
+    if t.startswith("int[") and t[4:-1].isdigit():
+        return "readInts()"
+    return {
+        "int": "readInt()", "long": "readInt()", "double": "readDouble()", "char": "readLine()[0]",
+        "str": "readLine()", "int[]": "readIntArray()", "str[]": "readStringArray()", "int[][]": "readMatrix()",
+    }[t]
+
+
+def js_print(rt: str) -> str:
+    if rt in ("int", "long", "double", "bool", "str"):
+        return "console.log(String(ans));"
+    if rt in ("int[]", "int_list", "long_list", "bool_list", "double_list"):
+        return 'console.log(ans.join(" "));'
+    if rt == "str_list":
+        return 'console.log(ans.join("\\n"));'
+    if rt in ("int[][]", "int_list_2d"):
+        return 'for (const row of ans) console.log(row.join(" "));'
+    raise ValueError(rt)
+
+
+JS_DEFAULT = {"int": "0", "long": "0", "double": "0", "bool": "false", "str": '""'}
+
+
+def js_starter(p: Problem, body: str | None = None, big: bool = False) -> str:
+    sig = ", ".join(n for n, _ in p.params)
+    if body is None:
+        if p.mode == "print":
+            body = "  // Print your output here with console.log\n"
+        else:
+            tip = ("  // The answer can be larger than Number.MAX_SAFE_INTEGER.\n"
+                   "  // Use BigInt (e.g. 1n, BigInt(x)) to keep it exact.\n") if big else ""
+            body = f"{tip}  // Write your logic here\n\n  return {JS_DEFAULT.get(p.returns, '[]')};\n"
+    needed: list[str] = []
+
+    def need(h):
+        for d in JS_DEPS.get(h, []):
+            need(d)
+        if h not in needed:
+            needed.append(h)
+
+    reads = []
+    for n, t in p.params:
+        r = js_reader(t)
+        need(r.split("(")[0])
+        reads.append(f"const {n} = {r};")
+    out = f"solve({sig});" if p.mode == "print" else f"const ans = solve({sig});\n{js_print(p.returns)}"
+    helpers = "\n".join(JS_HELPERS[h] for h in needed)
+    return f"""function solve({sig}) {{
+{body.rstrip()}
+}}
+
+// ---------- input / output is handled below, no need to change it ----------
+
+const __lines = require("fs").readFileSync(0, "utf8").split(/\\r?\\n/);
+let __at = 0;
+{helpers}
+
+{chr(10).join(reads)}
 {out}
 """
 

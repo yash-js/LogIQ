@@ -36,6 +36,14 @@ def expected_for(p, args):
     return core.format_output(p.returns, val)
 
 
+def needs_bigint(tests):
+    for t in tests:
+        for tok in t["output"].split():
+            if tok.lstrip("-").isdigit() and abs(int(tok)) > 2**53:
+                return True
+    return False
+
+
 def build(problems):
     out = []
     for p in problems:
@@ -62,7 +70,8 @@ def build(problems):
             "tests": tests,
             "hints": p.hints,
             "practice": p.practice,
-            "starter": {"java": core.java_starter(p), "python": core.py_starter(p)},
+            "starter": {"java": core.java_starter(p), "python": core.py_starter(p),
+                        "javascript": core.js_starter(p, big=p.returns in ("long", "long_list") and needs_bigint(tests))},
         })
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
@@ -137,6 +146,38 @@ def java_io_program(p, args):
     return core.java_starter(p, body)
 
 
+def js_literal(rt, v):
+    def num(x):
+        if isinstance(x, bool):
+            return "true" if x else "false"
+        if isinstance(x, int) and abs(x) > 2**53:
+            return f"{x}n"
+        if isinstance(x, float):
+            return repr(x)
+        return str(x)
+    if rt in ("int", "long", "double", "bool"):
+        return num(v)
+    if rt == "str":
+        return json.dumps(v)
+    if rt in ("int[]", "int_list", "long_list", "bool_list", "double_list"):
+        return "[" + ", ".join(num(x) for x in v) + "]"
+    if rt in ("str_list", "lines"):
+        return json.dumps(v)
+    if rt in ("int[][]", "int_list_2d"):
+        return "[" + ", ".join("[" + ", ".join(num(x) for x in r) + "]" for r in v) + "]"
+    raise ValueError(rt)
+
+
+def js_io_program(p, args):
+    import copy
+    val = p.ref(*copy.deepcopy(args))
+    if p.mode == "print":
+        body = "".join(f"  console.log({json.dumps(l)});\n" for l in val)
+    else:
+        body = f"  return {js_literal(p.returns, val)};\n"
+    return core.js_starter(p, body)
+
+
 def verify(problems, built):
     by_id = {b["id"]: b for b in built}
     failures = []
@@ -175,6 +216,19 @@ def verify(problems, built):
                 if r.returncode != 0 or not check(t["output"], r.stdout, p.strict):
                     errs.append(f"java test {i}: got={r.stdout[:200]!r} want={t['output'][:200]!r} err={r.stderr[-400:]}")
                     break
+            # JavaScript: same check as Java, through Node.
+            for i, (args, t) in enumerate(zip(p.tests, b["tests"])):
+                with open(os.path.join(d, "main.js"), "w") as f:
+                    f.write(js_io_program(p, args))
+                r = run(["node", "main.js"], d, t["input"])
+                if r.returncode != 0 or not check(t["output"], r.stdout, p.strict):
+                    errs.append(f"js test {i}: got={r.stdout[:200]!r} want={t['output'][:200]!r} err={r.stderr[-400:]}")
+                    break
+            with open(os.path.join(d, "blank.js"), "w") as f:
+                f.write(b["starter"]["javascript"])
+            c = run(["node", "--check", "blank.js"], d, "")
+            if c.returncode != 0:
+                errs.append(f"blank js starter does not parse: {c.stderr[:400]}")
             # Untouched starters must compile / parse.
             with open(os.path.join(d, "Main.java"), "w") as f:
                 f.write(b["starter"]["java"])

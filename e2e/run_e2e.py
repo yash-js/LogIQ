@@ -49,6 +49,40 @@ ans = solve(n)
 print(ans)
 """
 
+PY_MAX = """def solve(a, b, c):
+    return max(a, b, c)
+"""
+
+PY_PURE = """def solve(a, b, c):
+    best = a
+    if b > best:
+        best = b
+    if c > best:
+        best = c
+    return best
+"""
+
+PY_TAIL = """
+
+# ---------- input / output is handled below, no need to change it ----------
+
+a = int(input())
+b = int(input())
+c = int(input())
+ans = solve(a, b, c)
+print(ans)
+"""
+
+JS_LEAP = """function solve(year) {
+  return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+}
+
+// ---------- input / output is handled below, no need to change it ----------
+
+const lines = require("fs").readFileSync(0, "utf8").split(/\\r?\\n/);
+console.log(String(solve(Number(lines[0]))));
+"""
+
 PY_LOOP = """def solve(n):
     while True:
         pass
@@ -66,15 +100,17 @@ def seed():
                 "p1-01": {"attempts": 0, "hintsUsed": 0, "xpEarned": 0, "code": {"java": JAVA_SOLUTION}},
                 "p1-02": {"attempts": 0, "hintsUsed": 0, "xpEarned": 0, "code": {"python": PY_BUGGY}},
                 "p1-03": {"attempts": 0, "hintsUsed": 0, "xpEarned": 0, "code": {"python": PY_LOOP}},
+                "p1-04": {"attempts": 0, "hintsUsed": 0, "xpEarned": 0, "code": {"python": PY_MAX + PY_TAIL}},
+                "p1-05": {"attempts": 0, "hintsUsed": 0, "xpEarned": 0, "code": {"javascript": JS_LEAP}},
             },
             "docs": {"1": {"read": True, "quizPassed": True, "bestScore": 5}},
             "xp": 0,
             "activity": {},
             "bestStreak": 0,
-            "settings": {"lang": "java", "pythonCmd": "", "javaHome": "", "fontSize": 14},
+            "settings": {"lang": "java", "pythonCmd": "", "javaHome": "", "nodeCmd": "", "fontSize": 14},
             "updatedAt": "2026-01-01T00:00:00.000Z",
         },
-        "version": 1,
+        "version": 2,
     }
 
 
@@ -86,7 +122,7 @@ def main():
     wait = WebDriverWait(d, 60)
     ok = True
     try:
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".topbar")))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".sidebar")))
         d.execute_script("localStorage.setItem('logicquest-progress', arguments[0]); location.reload();", json.dumps(seed()))
         time.sleep(1.5)
 
@@ -97,12 +133,12 @@ def main():
         big = d.find_element(By.CSS_SELECTOR, ".celebrate .big").text
         d.save_screenshot(os.path.join(OUT, "1-java-accepted.png"))
         print("java accepted, celebration shows", big)
-        ok &= big == "+15"  # 10 base + 5 clean-solve bonus
+        ok &= big == "+15"  # 10 base + 5 clean; no Pure bonus because this file's own main() uses .trim()
 
         # 2. Buggy Python -> Wrong answer on a hidden negative test.
         d.execute_script("location.hash = '#/problem/p1-02'")
         time.sleep(0.5)
-        d.find_element(By.XPATH, "//div[@class='editor-bar']//button[normalize-space()='Python']").click()
+        d.find_element(By.XPATH, "//div[@class='lang-tabs']//button[normalize-space()='Python']").click()
         wait.until(EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Submit']"))).click()
         verdict = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".verdict"))).text
         d.save_screenshot(os.path.join(OUT, "2-python-wrong.png"))
@@ -120,12 +156,58 @@ def main():
         print("infinite loop verdict:", verdict.splitlines()[0])
         ok &= verdict.startswith("Time limit")
 
-        # 4. Settings page detects the toolchain through Rust.
+        # 4. Python with max() -> accepted + Pure challenge offered; then pure version -> bonus.
+        def submit_and_celebrate():
+            wait.until(EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Submit']"))).click()
+            return wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".celebrate")))
+
+        d.execute_script("location.hash = '#/problem/p1-04'")
+        time.sleep(0.6)
+        d.find_element(By.XPATH, "//div[@class='lang-tabs']//button[normalize-space()='Python']").click()
+        time.sleep(0.8)
+        chip = d.find_element(By.CSS_SELECTOR, ".sc-chip").text
+        print("shortcut chip:", chip)
+        ok &= "max" in chip
+        cel = submit_and_celebrate()
+        time.sleep(0.6)
+        d.save_screenshot(os.path.join(OUT, "4-shortcut-challenge.png"))
+        offered = "without shortcuts" in cel.text
+        print("pure challenge offered:", offered, "| xp", cel.find_element(By.CSS_SELECTOR, ".big").text)
+        ok &= offered and cel.find_element(By.CSS_SELECTOR, ".big").text == "+15"
+        d.find_element(By.XPATH, "//button[normalize-space()='Take the Pure challenge']").click()
+        # Replace the code through the editor: select all, type the pure version.
+        from selenium.webdriver.common.keys import Keys
+        editor = d.find_element(By.CSS_SELECTOR, ".cm-content")
+        editor.click()
+        editor.send_keys(Keys.CONTROL, "a")
+        # Paste the new code, the way a person would.
+        d.execute_script(
+            "const dt = new DataTransfer(); dt.setData('text/plain', arguments[0]);"
+            "document.querySelector('.cm-content').dispatchEvent(new ClipboardEvent('paste', {clipboardData: dt, bubbles: true, cancelable: true}));",
+            PY_PURE + PY_TAIL,
+        )
+        time.sleep(0.6)
+        cel = submit_and_celebrate()
+        time.sleep(0.6)
+        d.save_screenshot(os.path.join(OUT, "5-pure-solve.png"))
+        print("pure solve:", cel.find_element(By.CSS_SELECTOR, "h2").text, cel.find_element(By.CSS_SELECTOR, ".big").text)
+        ok &= cel.find_element(By.CSS_SELECTOR, ".big").text == "+5"
+
+        # 5. JavaScript through Node.
+        d.execute_script("location.hash = '#/problem/p1-05'")
+        time.sleep(0.6)
+        d.find_element(By.XPATH, "//div[@class='lang-tabs']//button[normalize-space()='JavaScript']").click()
+        cel = submit_and_celebrate()
+        print("javascript accepted:", cel.find_element(By.CSS_SELECTOR, ".big").text)
+        ok &= cel.find_element(By.CSS_SELECTOR, ".big").text == "+20"  # 10 base + 5 clean + 5 pure
+        d.save_screenshot(os.path.join(OUT, "6-javascript.png"))
+
+        # 6. Settings page detects the toolchain through Rust.
         d.execute_script("location.hash = '#/settings'")
         WebDriverWait(d, 20).until(lambda drv: "checking…" not in drv.page_source)
-        d.save_screenshot(os.path.join(OUT, "4-settings.png"))
+        d.save_screenshot(os.path.join(OUT, "7-settings.png"))
         src = d.page_source
-        found = "Python 3." in src and ("javac 2" in src or "javac 1" in src)
+        found = "Python 3." in src and ("javac 2" in src or "javac 1" in src) and "Node.js v" in src
         print("toolchain detected:", found)
         ok &= found
     finally:

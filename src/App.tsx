@@ -1,5 +1,5 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { TopBar } from "./components/TopBar";
+import { HashRouter, Route, Routes, useLocation } from "react-router-dom";
+import { Sidebar } from "./components/Sidebar";
 import { MapPage } from "./pages/MapPage";
 import { PhasePage } from "./pages/PhasePage";
 import { GuidePage } from "./pages/GuidePage";
@@ -7,12 +7,13 @@ import { ProblemPage } from "./pages/ProblemPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SettingsPage } from "./pages/SettingsPage";
 
-export default function App() {
+function Shell() {
+  const loc = useLocation();
+  const flush = loc.pathname.startsWith("/problem/");
   return (
-    <HashRouter>
-      <div className="app">
-        <TopBar />
-        <main className="app-main">
+      <div className={`app ${flush ? "compact" : ""}`}>
+        <Sidebar />
+        <main className={`app-main ${flush ? "flush" : ""}`} key={flush ? "ws" : loc.pathname}>
           <Routes>
             <Route path="/" element={<MapPage />} />
             <Route path="/phase/:id" element={<PhasePage />} />
@@ -24,6 +25,13 @@ export default function App() {
           </Routes>
         </main>
       </div>
+  );
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <Shell />
     </HashRouter>
   );
 }

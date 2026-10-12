@@ -117,7 +117,7 @@ function Account() {
           </>
         )}
       </div>
-      {msg && <p className={`notice ${msg.bad ? "bad" : "good"}`}>{msg.text}</p>}
+      {msg && <p className={`notice ${msg.bad ? "bad" : "good"}`} style={{ marginTop: 14 }}>{msg.text}</p>}
     </>
   );
 }
@@ -129,8 +129,9 @@ export function SettingsPage() {
   const [tools, setTools] = useState<ToolchainStatus | null>(null);
   const [py, setPy] = useState(settings.pythonCmd);
   const [jh, setJh] = useState(settings.javaHome);
+  const [nc, setNc] = useState(settings.nodeCmd);
 
-  async function detect(prefs = { pythonCmd: settings.pythonCmd, javaHome: settings.javaHome }) {
+  async function detect(prefs = { pythonCmd: settings.pythonCmd, javaHome: settings.javaHome, nodeCmd: settings.nodeCmd }) {
     setTools(null);
     setTools(await checkToolchain(prefs));
   }
@@ -141,22 +142,25 @@ export function SettingsPage() {
   }, []);
 
   return (
-    <div className="page page-narrow settings-grid">
+    <div className="page page-narrow settings">
       <h1>Settings</h1>
 
-      <section className="panel">
+      <section className="card pad">
         <h2 style={{ marginBottom: 12 }}>Code runners</h2>
         <Tool name="Python" info={tools?.python} />
         <Tool name="java" info={tools?.java} />
         <Tool name="javac" info={tools?.javac} />
-        {tools && (!tools.python.found || !tools.javac.found) && (
-          <p className="notice" style={{ marginTop: 14 }}>
+        <Tool name="Node.js" info={tools?.node} />
+        {tools && (!tools.python.found || !tools.javac.found || !tools.node.found) && (
+          <p className="notice warn" style={{ marginTop: 14, display: "block" }}>
             {!tools.javac.found && (
               <>
                 Java needs a JDK 17 or newer (Temurin from adoptium.net works).{" "}
               </>
             )}
             {!tools.python.found && <>Python needs Python 3 from python.org; tick "Add python.exe to PATH" on Windows. </>}
+            {!tools.node.found && <>JavaScript needs Node.js (the LTS version from nodejs.org). </>}
+            You only need the language you plan to use.
             Restart LogicQuest after installing, or point to it below.
           </p>
         )}
@@ -169,12 +173,16 @@ export function SettingsPage() {
             <label htmlFor="jh">JDK folder, JAVA_HOME (optional)</label>
             <input id="jh" className="input" value={jh} onChange={(e) => setJh(e.target.value)} placeholder="C:\Program Files\Eclipse Adoptium\jdk-21 or /usr/lib/jvm/java-21-openjdk" />
           </div>
+          <div className="field">
+            <label htmlFor="nc">Node.js command or path (optional)</label>
+            <input id="nc" className="input" value={nc} onChange={(e) => setNc(e.target.value)} placeholder="node, or C:\Program Files\nodejs\node.exe" />
+          </div>
           <div>
             <button
               className="btn"
               onClick={() => {
-                setSettings({ pythonCmd: py.trim(), javaHome: jh.trim() });
-                void detect({ pythonCmd: py.trim(), javaHome: jh.trim() });
+                setSettings({ pythonCmd: py.trim(), javaHome: jh.trim(), nodeCmd: nc.trim() });
+                void detect({ pythonCmd: py.trim(), javaHome: jh.trim(), nodeCmd: nc.trim() });
               }}
             >
               Save and check again
@@ -183,7 +191,7 @@ export function SettingsPage() {
         </div>
       </section>
 
-      <section className="panel">
+      <section className="card pad">
         <h2 style={{ marginBottom: 12 }}>Editor</h2>
         <div className="field" style={{ maxWidth: 220 }}>
           <label htmlFor="fs">Font size</label>
@@ -197,12 +205,12 @@ export function SettingsPage() {
         </div>
       </section>
 
-      <section className="panel">
+      <section className="card pad">
         <h2 style={{ marginBottom: 12 }}>Account and sync</h2>
         <Account />
       </section>
 
-      <section className="panel">
+      <section className="card pad">
         <h2 style={{ marginBottom: 12 }}>Start over</h2>
         <p className="muted" style={{ marginTop: 0 }}>
           Clears XP, solved problems, quiz results and saved code on this computer. If you are signed in, the next sync will

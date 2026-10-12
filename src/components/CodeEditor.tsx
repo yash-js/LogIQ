@@ -1,6 +1,7 @@
 import CodeMirror from "@uiw/react-codemirror";
 import { java } from "@codemirror/lang-java";
 import { python } from "@codemirror/lang-python";
+import { javascript } from "@codemirror/lang-javascript";
 import { EditorView, keymap } from "@codemirror/view";
 import { HighlightStyle, syntaxHighlighting, indentUnit } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
@@ -10,12 +11,12 @@ import type { Lang } from "../content";
 
 const theme = EditorView.theme(
   {
-    "&": { backgroundColor: "#12162a", color: "#ece8df", height: "100%" },
+    "&": { backgroundColor: "#0f1526", color: "#ece8df", height: "100%" },
     ".cm-content": { fontFamily: "var(--mono)", fontFeatureSettings: "\"liga\" 0, \"calt\" 0", caretColor: "#f2b544", padding: "12px 0" },
     ".cm-cursor": { borderLeftColor: "#f2b544", borderLeftWidth: "2px" },
-    ".cm-gutters": { backgroundColor: "#12162a", color: "#555d7d", border: "none" },
-    ".cm-activeLine": { backgroundColor: "#1a1f36" },
-    ".cm-activeLineGutter": { backgroundColor: "#1a1f36", color: "#9aa0b8" },
+    ".cm-gutters": { backgroundColor: "#0f1526", color: "#4a5380", border: "none", fontFamily: "var(--mono)" },
+    ".cm-activeLine": { backgroundColor: "#161e38" },
+    ".cm-activeLineGutter": { backgroundColor: "#161e38", color: "#9aa0b8" },
     "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection": { backgroundColor: "#34406a !important" },
     ".cm-matchingBracket": { backgroundColor: "#34406a", outline: "none" },
     ".cm-tooltip": { backgroundColor: "#1f2438", border: "1px solid #343b58" },
@@ -27,7 +28,7 @@ const theme = EditorView.theme(
 const highlight = HighlightStyle.define([
   { tag: [t.keyword, t.modifier, t.controlKeyword], color: "#c4a7ff" },
   { tag: [t.typeName, t.className, t.standard(t.typeName)], color: "#7dd3fc" },
-  { tag: [t.function(t.variableName), t.function(t.propertyName)], color: "#f2b544" },
+  { tag: [t.function(t.variableName), t.function(t.propertyName)], color: "#ffc24b" },
   { tag: [t.string, t.character], color: "#86efac" },
   { tag: [t.number, t.bool, t.null], color: "#fda4af" },
   { tag: [t.comment, t.lineComment, t.blockComment], color: "#6b7394", fontStyle: "italic" },
@@ -46,11 +47,10 @@ export function CodeEditor(props: {
   const { lang, onRun, onSubmit } = props;
   const extensions = useMemo(
     () => [
-      lang === "java" ? java() : python(),
-      indentUnit.of("    "),
+      lang === "java" ? java() : lang === "python" ? python() : javascript(),
+      indentUnit.of(lang === "javascript" ? "  " : "    "),
       theme,
       syntaxHighlighting(highlight),
-      EditorView.lineWrapping,
       Prec.highest(
         keymap.of([
           { key: "Mod-Enter", run: () => (onRun(), true) },

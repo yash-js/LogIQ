@@ -21,13 +21,20 @@ def fact(n):
     return n * fact(n - 1)          # smaller problem
 ```
 
+```javascript
+function fact(n) {
+  if (n === 0) return 1;          // base case
+  return n * fact(n - 1);         // smaller problem
+}
+```
+
 The hardest habit to build: **do not trace every call in your head.** Assume `fact(n - 1)` is correct and only check that your step is right.
 
 ## 2. What happens in memory
 
 Each call gets its own box (a stack frame) with its own `n`. `fact(3)` waits for `fact(2)`, which waits for `fact(1)`, which waits for `fact(0)`. Then the answers flow back up: 1 → 1 → 2 → 6.
 
-No base case, or a step that does not shrink the input, means infinite calls and a **StackOverflowError** (Java) or **RecursionError** (Python).
+No base case, or a step that does not shrink the input, means infinite calls and a **StackOverflowError** (Java), **RecursionError** (Python) or **RangeError: Maximum call stack size exceeded** (JavaScript).
 
 ## 3. Before or after the call?
 
@@ -61,6 +68,20 @@ def down(n):        # prints n ... 3 2 1
     down(n - 1)
 ```
 
+```javascript
+let out = "";
+function up(n) {     // 1 2 3 ... n
+  if (n === 0) return;
+  up(n - 1);
+  out += n + " ";
+}
+function down(n) {   // n ... 3 2 1
+  if (n === 0) return;
+  out += n + " ";
+  down(n - 1);
+}
+```
+
 ## 4. Helper parameters
 
 Sometimes the function needs extra information. Write a helper with more parameters and call it from `solve`.
@@ -79,6 +100,14 @@ def reverse(n, rev):
         return rev
     return reverse(n // 10, rev * 10 + n % 10)
 # solve(n) returns reverse(n, 0)
+```
+
+```javascript
+function reverse(n, rev) {
+  if (n === 0) return rev;
+  return reverse(Math.floor(n / 10), rev * 10 + (n % 10));
+}
+// solve(n) returns reverse(n, 0)
 ```
 
 For arrays, pass an **index** instead of shrinking the array: `sum(arr, i) = arr[i] + sum(arr, i + 1)`.
@@ -101,6 +130,14 @@ def power(x, n):
         return 1.0
     half = power(x, n // 2)
     return half * half if n % 2 == 0 else half * half * x
+```
+
+```javascript
+function power(x, n) {
+  if (n === 0) return 1;
+  const half = power(x, Math.trunc(n / 2));
+  return n % 2 === 0 ? half * half : half * half * x;
+}
 ```
 
 Careful with negative `n`: handle it once at the top with `1 / pow(x, -n)`.
@@ -128,9 +165,18 @@ def ways(n):
     return memo[n]
 ```
 
-## 7. Python's recursion limit
+```javascript
+const memo = new Array(100).fill(0);
+function ways(n) {
+  if (n <= 1) return 1;
+  if (memo[n] !== 0) return memo[n];
+  return (memo[n] = ways(n - 1) + ways(n - 2));
+}
+```
 
-Python stops at about 1000 nested calls by default. Phase 3 tests stay below that. If you ever need more, `import sys; sys.setrecursionlimit(10000)`.
+## 7. Recursion limits
+
+Python stops at about 1000 nested calls by default. Phase 3 tests stay below that. If you ever need more, `import sys; sys.setrecursionlimit(10000)`. Java and JavaScript allow several thousand levels; LogicQuest runs them with a larger stack.
 
 ## 8. The leap of faith
 

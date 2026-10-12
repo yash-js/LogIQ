@@ -1,7 +1,13 @@
 import problemsJson from "./problems.json";
 import phasesJson from "./phases.json";
 
-export type Lang = "java" | "python";
+export type Lang = "java" | "python" | "javascript";
+
+export const LANGS: { id: Lang; label: string }[] = [
+  { id: "java", label: "Java" },
+  { id: "python", label: "Python" },
+  { id: "javascript", label: "JavaScript" },
+];
 
 export interface TestCase {
   input: string;

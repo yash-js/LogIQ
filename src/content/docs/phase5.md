@@ -18,9 +18,16 @@ n = len(s)
 arr = list(s)     # when you need to modify
 ```
 
+```javascript
+const s = "hello";
+const c = s[0];            // "h" (a one-letter string)
+const n = s.length;        // property, no ()
+const arr = s.split("");   // when you need to modify
+```
+
 ## 2. Strings are immutable
 
-You cannot change a character inside a Java `String` or Python `str`. Every `s = s + c` creates a whole new string, which gets slow inside a loop. Build with:
+You cannot change a character inside a Java `String`, Python `str` or JavaScript string. Every `s = s + c` creates a whole new string, which gets slow inside a loop. Build with:
 
 ```java
 StringBuilder sb = new StringBuilder();
@@ -38,9 +45,16 @@ for c in s:
 result = "".join(parts)
 ```
 
+```javascript
+let result = "";
+for (const c of s) {
+  if (c !== " ") result += c;   // fine in modern JS engines; an array + join("") also works
+}
+```
+
 ## 3. Comparing strings
 
-In Java, `==` compares **references**, not text. Always use `a.equals(b)`. For single characters, `==` is fine because `char` is a number.
+In Java, `==` compares **references**, not text. Always use `a.equals(b)`. For single characters, `==` is fine because `char` is a number. In JavaScript, `===` compares string contents, so `a === b` is correct.
 
 ```java
 if (word.equals("Google")) ...       // correct
@@ -49,12 +63,12 @@ if (word == "Google") ...            // bug that sometimes "works"
 
 ## 4. Character arithmetic
 
-| Task | Java | Python |
-| --- | --- | --- |
-| letter → 0..25 | `c - 'a'` | `ord(c) - ord('a')` |
-| 0..25 → letter | `(char)('a' + i)` | `chr(ord('a') + i)` |
-| digit char → int | `c - '0'` | `int(c)` |
-| upper → lower | `(char)(c + 32)` | `chr(ord(c) + 32)` |
+| Task | Java | Python | JavaScript |
+| --- | --- | --- | --- |
+| letter → 0..25 | `c - 'a'` | `ord(c) - ord('a')` | `c.charCodeAt(0) - 97` |
+| 0..25 → letter | `(char)('a' + i)` | `chr(ord('a') + i)` | `String.fromCharCode(97 + i)` |
+| digit char → int | `c - '0'` | `int(c)` | `c.charCodeAt(0) - 48` |
+| upper → lower | `(char)(c + 32)` | `chr(ord(c) + 32)` | `String.fromCharCode(c.charCodeAt(0) + 32)` |
 
 ## 5. Frequency arrays
 
@@ -70,6 +84,11 @@ for (char c : s.toCharArray()) freq[c - 'a']++;
 freq = [0] * 26
 for c in s:
     freq[ord(c) - ord("a")] += 1
+```
+
+```javascript
+const freq = new Array(26).fill(0);
+for (const c of s) freq[c.charCodeAt(0) - 97]++;
 ```
 
 For any ASCII character, use size 128 and index directly with `c`.
@@ -99,6 +118,16 @@ while l < r:
     r -= 1
 ```
 
+```javascript
+const ok = (c) => /[a-z0-9]/i.test(c);   // or compare character codes yourself
+while (l < r) {
+  while (l < r && !ok(s[l])) l++;
+  while (l < r && !ok(s[r])) r--;
+  if (s[l].toLowerCase() !== s[r].toLowerCase()) return false;
+  l++; r--;
+}
+```
+
 ## 7. Runs and words
 
 To process a run (same character repeated, or a word between spaces), use an inner loop that finds where it ends:
@@ -121,6 +150,16 @@ while i < n:
         j += 1
     # the run is s[i:j], length j - i
     i = j
+```
+
+```javascript
+let i = 0;
+while (i < n) {
+  let j = i;
+  while (j < n && s[j] === s[i]) j++;
+  // the run is s.slice(i, j), length j - i
+  i = j;
+}
 ```
 
 ## 8. Grade-school arithmetic on strings

@@ -43,6 +43,19 @@ for m in moves:
 return x == 0 and y == 0
 ```
 
+```javascript
+let x = 0, y = 0;
+for (const m of moves) {
+  switch (m) {
+    case "U": y++; break;
+    case "D": y--; break;
+    case "L": x--; break;
+    case "R": x++; break;
+  }
+}
+return x === 0 && y === 0;
+```
+
 Robot moves, lemonade change, zigzag rows and tic-tac-toe are all this shape.
 
 ## 3. Base conversion, one more time
@@ -88,11 +101,23 @@ while top <= bottom and left <= right:
         left += 1
 ```
 
+```javascript
+let top = 0, bottom = rows - 1, left = 0, right = cols - 1;
+while (top <= bottom && left <= right) {
+  for (let j = left; j <= right; j++) out.push(m[top][j]);
+  top++;
+  for (let i = top; i <= bottom; i++) out.push(m[i][right]);
+  right--;
+  if (top <= bottom) { for (let j = right; j >= left; j--) out.push(m[bottom][j]); bottom--; }
+  if (left <= right) { for (let i = bottom; i >= top; i--) out.push(m[i][left]); left++; }
+}
+```
+
 The two `if` checks handle single rows and single columns, the edge cases that break most first attempts.
 
 ## 6. Clamping and overflow
 
-`atoi` and similar problems must stay inside 32-bit limits. Build the number in a `long`, and as soon as it passes `Integer.MAX_VALUE`, clamp and stop reading. Python has no overflow, so you must clamp yourself with `max(-2**31, min(2**31 - 1, value))`.
+`atoi` and similar problems must stay inside 32-bit limits. Build the number in a `long`, and as soon as it passes `Integer.MAX_VALUE`, clamp and stop reading. Python has no overflow, so you must clamp yourself with `max(-2**31, min(2**31 - 1, value))`. JavaScript numbers are exact up to 2^53, so you can build the value normally and clamp with two `if` checks.
 
 ## 7. Stretch problems
 

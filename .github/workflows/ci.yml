@@ -29,4 +29,6 @@ jobs:
       - name: Problems JSON is up to date
         run: git diff --exit-code src/content/problems.json
       - run: npx tsc --noEmit
+      - name: Shortcut detector
+        run: node --experimental-strip-types --no-warnings tests/builtins.test.ts
       - run: cargo test --manifest-path src-tauri/Cargo.toml

@@ -5,6 +5,7 @@ import { outputsMatch } from "./checker";
 export interface ToolchainPrefs {
   pythonCmd?: string;
   javaHome?: string;
+  nodeCmd?: string;
 }
 
 interface RawRun {
@@ -50,6 +51,7 @@ export interface ToolchainStatus {
   python: ToolInfo;
   java: ToolInfo;
   javac: ToolInfo;
+  node: ToolInfo;
 }
 
 export const inTauri = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
@@ -57,7 +59,7 @@ export const inTauri = typeof window !== "undefined" && "__TAURI_INTERNALS__" in
 export async function checkToolchain(prefs: ToolchainPrefs): Promise<ToolchainStatus> {
   if (!inTauri) {
     const none = { found: false, command: null, version: "Open the desktop app to run code" };
-    return { python: none, java: none, javac: none };
+    return { python: none, java: none, javac: none, node: none };
   }
   return invoke<ToolchainStatus>("check_toolchain", { prefs });
 }

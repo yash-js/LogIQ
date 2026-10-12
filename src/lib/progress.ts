@@ -9,6 +9,8 @@ export interface ProblemProgress {
   solvedAt?: string;
   xpEarned: number;
   solvedIn?: Lang[];
+  /** Solved at least once without library shortcuts. */
+  pure?: boolean;
   code?: Partial<Record<Lang, string>>;
 }
 
@@ -22,6 +24,7 @@ export interface Settings {
   lang: Lang;
   pythonCmd: string;
   javaHome: string;
+  nodeCmd: string;
   fontSize: number;
 }
 
@@ -31,6 +34,7 @@ export interface ProgressState {
   xp: number;
   activity: Record<string, number>;
   bestStreak: number;
+  lastOpened?: string;
   settings: Settings;
   updatedAt: string;
 }
@@ -39,7 +43,9 @@ interface Actions {
   saveCode(id: string, lang: Lang, code: string): void;
   takeHint(id: string): void;
   recordAttempt(id: string): void;
-  recordSolve(id: string, lang: Lang, xp: number): boolean;
+  recordSolve(id: string, lang: Lang, xp: number, pure: boolean): boolean;
+  recordPure(id: string, bonus: number): void;
+  setLastOpened(id: string): void;
   markDocRead(phase: number): void;
   recordQuiz(phase: number, score: number, passed: boolean): void;
   setSettings(s: Partial<Settings>): void;
@@ -53,7 +59,7 @@ export const initialState: ProgressState = {
   xp: 0,
   activity: {},
   bestStreak: 0,
-  settings: { lang: "java", pythonCmd: "", javaHome: "", fontSize: 14 },
+  settings: { lang: "java", pythonCmd: "", javaHome: "", nodeCmd: "", fontSize: 14 },
   updatedAt: new Date(0).toISOString(),
 };
 
@@ -85,7 +91,22 @@ export const useProgress = create<ProgressState & Actions>()(
       },
 
       /** Returns true if this is the first solve (XP awarded). */
-      recordSolve(id, lang, xp) {
+      recordPure(id, bonus) {
+        const s = get();
+        const p = s.problems[id];
+        if (!p?.solvedAt || p.pure) return;
+        set({
+          problems: { ...s.problems, [id]: { ...p, pure: true, xpEarned: p.xpEarned + bonus } },
+          xp: s.xp + bonus,
+          updatedAt: now(),
+        });
+      },
+
+      setLastOpened(id) {
+        if (get().lastOpened !== id) set({ lastOpened: id });
+      },
+
+      recordSolve(id, lang, xp, pure) {
         const s = get();
         const p = s.problems[id] ?? blank();
         const solvedIn = Array.from(new Set([...(p.solvedIn ?? []), lang]));
@@ -95,7 +116,7 @@ export const useProgress = create<ProgressState & Actions>()(
         set({
           problems: {
             ...s.problems,
-            [id]: { ...p, solvedIn, solvedAt: p.solvedAt ?? now(), xpEarned: first ? xp : p.xpEarned },
+            [id]: { ...p, solvedIn, pure: p.pure || (first && pure), solvedAt: p.solvedAt ?? now(), xpEarned: first ? xp : p.xpEarned },
           },
           xp: first ? s.xp + xp : s.xp,
           activity,
@@ -131,7 +152,14 @@ export const useProgress = create<ProgressState & Actions>()(
         set({ ...initialState, settings: get().settings, updatedAt: now() });
       },
     }),
-    { name: "logicquest-progress", version: 1 },
+    {
+      name: "logicquest-progress",
+      version: 2,
+      migrate: (old) => {
+        const st = old as ProgressState;
+        return { ...st, settings: { ...initialState.settings, ...st.settings } } as ProgressState & Actions;
+      },
+    },
   ),
 );
 
@@ -143,6 +171,7 @@ export function snapshot(): ProgressState {
     xp: s.xp,
     activity: s.activity,
     bestStreak: s.bestStreak,
+    lastOpened: s.lastOpened,
     settings: s.settings,
     updatedAt: s.updatedAt,
   };
@@ -163,7 +192,8 @@ export function mergeStates(a: ProgressState, b: ProgressState): ProgressState {
       attempts: Math.max(pa.attempts, pb.attempts),
       hintsUsed: firstSolve ? solvedFrom.hintsUsed : Math.max(pa.hintsUsed, pb.hintsUsed),
       solvedAt: firstSolve,
-      xpEarned: firstSolve ? solvedFrom.xpEarned : 0,
+      xpEarned: firstSolve ? Math.max(pa.xpEarned || 0, pb.xpEarned || 0, solvedFrom.xpEarned || 0) : 0,
+      pure: !!(pa.pure || pb.pure),
       solvedIn: Array.from(new Set([...(pa.solvedIn ?? []), ...(pb.solvedIn ?? [])])),
       code: a.updatedAt >= b.updatedAt ? { ...pb.code, ...pa.code } : { ...pa.code, ...pb.code },
     };
@@ -184,7 +214,8 @@ export function mergeStates(a: ProgressState, b: ProgressState): ProgressState {
     xp,
     activity,
     bestStreak: Math.max(a.bestStreak, b.bestStreak, streak(activity)),
-    settings: a.updatedAt >= b.updatedAt ? a.settings : b.settings,
+    lastOpened: a.lastOpened ?? b.lastOpened,
+    settings: { ...initialState.settings, ...(a.updatedAt >= b.updatedAt ? a.settings : b.settings) },
     updatedAt: a.updatedAt > b.updatedAt ? a.updatedAt : b.updatedAt,
   };
 }

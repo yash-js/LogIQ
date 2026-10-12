@@ -188,7 +188,7 @@ def palin_num(x):
          tests=[(153,), (370,), (9474,), (9475,), (0,), (7,), (10,), (548834,), (100,)],
          hints=["You need the number of digits before you can compute any power. How many passes over the digits is that?",
                 "First loop: count digits. Second loop: add each digit^count.",
-                "Write your own power loop or use Math.pow carefully (cast to long)."])
+                "Write your own power loop: multiply the digit by itself `count` times."])
 def armstrong(n):
     k = len(str(n))
     return sum(int(d) ** k for d in str(n)) == n

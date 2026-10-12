@@ -20,7 +20,14 @@ for x in b:            # when you don't need i
     print(x)
 ```
 
-The last index is `length - 1`. Reading `a[a.length]` throws **ArrayIndexOutOfBoundsException**; in Python, **IndexError**.
+```javascript
+const a = new Array(5).fill(0);
+const b = [3, 1, 4];
+for (let i = 0; i < b.length; i++) console.log(b[i]);
+for (const x of b) console.log(x);   // when you don't need i
+```
+
+The last index is `length - 1`. Reading `a[a.length]` throws **ArrayIndexOutOfBoundsException**; in Python, **IndexError**. JavaScript silently gives `undefined`, which is worse: the bug shows up later as `NaN`.
 
 ## 2. Track a value while you walk
 
@@ -40,6 +47,13 @@ for x in arr[1:]:
         best = x
 ```
 
+```javascript
+let best = arr[0];
+for (let i = 1; i < arr.length; i++) {
+  if (arr[i] > best) best = arr[i];
+}
+```
+
 The same idea gives you: minimum so far (stock prices), current streak + best streak (consecutive ones), running total (prefix sums).
 
 ## 3. Every pair
@@ -57,6 +71,12 @@ for i in range(n):
     for j in range(i + 1, n):
         if nums[i] == nums[j]:
             count += 1
+```
+
+```javascript
+for (let i = 0; i < n; i++)
+  for (let j = i + 1; j < n; j++)
+    if (nums[i] === nums[j]) count++;
 ```
 
 This is O(n²): fine for a few thousand elements. DSA will teach faster tools; here, correct comes first.
@@ -81,6 +101,14 @@ while l < r:
     r -= 1
 ```
 
+```javascript
+let l = 0, r = arr.length - 1;
+while (l < r) {
+  const t = arr[l]; arr[l] = arr[r]; arr[r] = t;
+  l++; r--;
+}
+```
+
 ## 5. The write pointer
 
 To keep only some elements, walk with `i` and write with `k`:
@@ -102,6 +130,14 @@ for i in range(n):
 while k < n:                       # move zeroes
     nums[k] = 0
     k += 1
+```
+
+```javascript
+let k = 0;
+for (let i = 0; i < n; i++) {
+  if (nums[i] !== 0) nums[k++] = nums[i];
+}
+while (k < n) nums[k++] = 0;   // move zeroes
 ```
 
 ## 6. Index arithmetic
@@ -129,6 +165,13 @@ m = [[0] * cols for _ in range(rows)]   # NOT [[0] * cols] * rows
 for i in range(len(m)):
     for j in range(len(m[i])):
         total += m[i][j]
+```
+
+```javascript
+const m = Array.from({ length: rows }, () => new Array(cols).fill(0)); // NOT new Array(rows).fill([])
+for (let i = 0; i < m.length; i++)
+  for (let j = 0; j < m[i].length; j++)
+    total += m[i][j];
 ```
 
 `[[0] * cols] * rows` in Python makes every row the **same** list, so changing one changes all.

@@ -1,4 +1,4 @@
-//! Local code runner: compiles/executes the learner's Java or Python code
+//! Local code runner: compiles/executes the learner's Java, Python or JavaScript code
 //! against a list of stdin inputs, with a per-test time limit and output cap.
 
 use serde::{Deserialize, Serialize};
@@ -20,12 +20,14 @@ pub struct ToolchainPrefs {
     pub python_cmd: Option<String>,
     /// JDK home; javac/java are taken from <home>/bin
     pub java_home: Option<String>,
+    /// e.g. "node", "C:\\Program Files\\nodejs\\node.exe"
+    pub node_cmd: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RunRequest {
-    pub language: String, // "java" | "python"
+    pub language: String, // "java" | "python" | "javascript"
     pub code: String,
     pub inputs: Vec<String>,
     pub time_limit_ms: Option<u64>,
@@ -67,6 +69,7 @@ pub struct ToolchainStatus {
     pub python: ToolInfo,
     pub java: ToolInfo,
     pub javac: ToolInfo,
+    pub node: ToolInfo,
 }
 
 fn base_command(program: &str) -> Command {
@@ -124,6 +127,22 @@ async fn find_python(prefs: &ToolchainPrefs) -> ToolInfo {
     ToolInfo { found: false, command: None, version: None }
 }
 
+async fn find_node(prefs: &ToolchainPrefs) -> ToolInfo {
+    let mut candidates: Vec<String> = Vec::new();
+    if let Some(p) = prefs.node_cmd.as_ref().filter(|p| !p.trim().is_empty()) {
+        candidates.push(p.trim().to_string());
+    }
+    candidates.extend(["node", "nodejs"].map(String::from));
+    for c in candidates {
+        if let Some(v) = probe(&c, &["--version"]).await {
+            if v.starts_with('v') {
+                return ToolInfo { found: true, command: Some(c), version: Some(format!("Node.js {v}")) };
+            }
+        }
+    }
+    ToolInfo { found: false, command: None, version: None }
+}
+
 fn jdk_tool(prefs: &ToolchainPrefs, tool: &str) -> Vec<String> {
     let exe = if cfg!(windows) { format!("{tool}.exe") } else { tool.to_string() };
     let mut out = Vec::new();
@@ -147,12 +166,13 @@ async fn find_jdk_tool(prefs: &ToolchainPrefs, tool: &str) -> ToolInfo {
 }
 
 pub async fn check_toolchain(prefs: ToolchainPrefs) -> ToolchainStatus {
-    let (python, java, javac) = tokio::join!(
+    let (python, java, javac, node) = tokio::join!(
         find_python(&prefs),
         find_jdk_tool(&prefs, "java"),
-        find_jdk_tool(&prefs, "javac")
+        find_jdk_tool(&prefs, "javac"),
+        find_node(&prefs)
     );
-    ToolchainStatus { python, java, javac }
+    ToolchainStatus { python, java, javac, node }
 }
 
 fn work_dir() -> std::io::Result<PathBuf> {
@@ -205,6 +225,7 @@ async fn run_one(program: String, args: Vec<String>, cwd: PathBuf, input: String
         .env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .env_remove("JAVA_TOOL_OPTIONS")
+        .env_remove("NODE_OPTIONS")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
@@ -287,6 +308,21 @@ pub async fn run_code(req: RunRequest) -> RunResponse {
             }
             a.push("main.py".to_string());
             (cmd, a)
+        }
+        "javascript" => {
+            let node = find_node(&req.prefs).await;
+            let Some(cmd) = node.command else {
+                let _ = std::fs::remove_dir_all(&dir);
+                return RunResponse {
+                    compile_error: None,
+                    setup_error: Some("Node.js not found. Install the LTS version from nodejs.org or set the path in Settings.".into()),
+                    results: vec![],
+                };
+            };
+            if let Err(e) = std::fs::write(dir.join("main.js"), &req.code) {
+                return RunResponse { compile_error: None, setup_error: Some(e.to_string()), results: vec![] };
+            }
+            (cmd, vec!["--stack-size=65500".to_string(), "main.js".to_string()])
         }
         "java" => {
             let (javac, java) = tokio::join!(find_jdk_tool(&req.prefs, "javac"), find_jdk_tool(&req.prefs, "java"));
@@ -395,6 +431,21 @@ mod tests {
         let st = serde_json::to_value(check_toolchain(serde_json::from_str(r#"{"pythonCmd":"","javaHome":""}"#).unwrap()).await).unwrap();
         assert_eq!(st["python"]["found"], true);
         assert_eq!(st["javac"]["found"], true);
+        assert_eq!(st["node"]["found"], true);
+    }
+
+    #[tokio::test]
+    async fn javascript_run() {
+        let r = run_code(RunRequest {
+            language: "javascript".into(),
+            code: "const l=require('fs').readFileSync(0,'utf8').split('\\n');console.log(Number(l[0])*3)".into(),
+            inputs: vec!["14\n".into()],
+            time_limit_ms: Some(2000),
+            prefs: Default::default(),
+        })
+        .await;
+        assert!(r.setup_error.is_none(), "{:?}", r.setup_error);
+        assert_eq!(r.results[0].stdout.trim(), "42");
     }
 
     #[test]

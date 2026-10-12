@@ -1,6 +1,6 @@
 # LogicQuest
 
-A desktop app for building programming logic **before** starting DSA. 145 problems across six worlds, each with a short guide and a check you must pass before its problems open. Solve in Java or Python; your code runs on your own machine.
+A desktop app for building programming logic **before** starting DSA. 145 problems across six worlds, each with a short guide and a check you must pass before its problems open. Solve in Java, Python or JavaScript; your code runs on your own machine.
 
 | Phase | World | Problems |
 | --- | --- | --- |
@@ -15,6 +15,7 @@ A desktop app for building programming logic **before** starting DSA. 145 proble
 
 - **Study first.** Each world opens with a guide (code shown in your chosen language) and a 5-question check. Score 4/5 to open the problems.
 - **Run and Submit.** Run checks the visible examples. Submit runs the hidden tests too and shows the first failing case.
+- **Pure challenge.** Library shortcuts (sort, Set/Map, max/min, reverse, pow, sum/reduce, indexOf/includes, toLowerCase, split/replace, bin/toString(2), BigInt/BigInteger, date libraries…) are detected as you type. A solution that uses them is still accepted, then the app asks you to solve it again without them for +50% bonus XP.
 - **Hints cost XP.** Three hints per problem, from a nudge to the approach. Each one opened before solving takes 25% off that problem's XP.
 - **Rewards.** XP and levels, a daily streak, a clean-solve bonus (first submit, no hints), and a daily quest worth double XP.
 - **Next world** opens after solving 60% of the current one.
@@ -23,7 +24,7 @@ A desktop app for building programming logic **before** starting DSA. 145 proble
 ## Requirements
 
 - Node 20+ and Rust (stable) to build.
-- To run code: **JDK 17+** (e.g. Temurin from adoptium.net) and/or **Python 3**. The app finds them on PATH, via `JAVA_HOME`, or via paths you set in Settings.
+- To run code, whichever languages you use: **JDK 17+** (e.g. Temurin from adoptium.net), **Python 3**, **Node.js 18+**. The app finds them on PATH, via `JAVA_HOME`, or via paths you set in Settings.
 - Linux build deps: `libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev`.
 
 ## Run it
@@ -56,14 +57,15 @@ content/           problem sources (Python) and the build/verify script
   build.py         generates src/content/problems.json
 src/content/       generated problems, phase metadata + quizzes, guides (Markdown)
 src/               React UI (map, guides, workspace, profile, settings)
-src-tauri/src/     Rust: runner.rs compiles/runs Java and Python with time limits
+  lib/builtins.ts  shortcut detector behind the Pure challenge
+src-tauri/src/     Rust: runner.rs compiles/runs Java, Python and JavaScript with time limits
 supabase/          database migration
 e2e/               WebDriver test that drives the real desktop app
 ```
 
 ## Adding or changing problems
 
-Problems are written once in Python. The reference solution produces every expected output, and starter code for Java and Python is generated from the parameter types.
+Problems are written once in Python. The reference solution produces every expected output, and starter code for Java, Python and JavaScript is generated from the parameter types.
 
 ```python
 @problem(phase=2, title="Steps to Zero", returns="int", concepts=["while loop"],
@@ -76,7 +78,7 @@ def steps_zero(n):
 
 ```bash
 python3 content/build.py            # regenerate problems.json
-python3 content/build.py --verify   # run every reference through real Python, compile and run the Java I/O for each problem
+python3 content/build.py --verify   # run every reference through real Python; check the Java and JavaScript I/O of every problem
 ```
 
 Supported parameter types: `int long double char str int[] int[K] str[] int[][]`. Return types: `int long double bool str int[] int_list long_list bool_list double_list str_list int[][] int_list_2d`, or `mode="print"` for problems where the learner prints the output.
@@ -84,7 +86,8 @@ Supported parameter types: `int long double char str int[] int[K] str[] int[][]`
 ## Tests
 
 ```bash
-cargo test --manifest-path src-tauri/Cargo.toml     # runner: Java, Python, timeouts, JSON contract
+cargo test --manifest-path src-tauri/Cargo.toml     # runner: Java, Python, JavaScript, timeouts, JSON contract
+node --experimental-strip-types tests/builtins.test.ts   # shortcut detector
 python3 content/build.py --verify                    # all 145 problems
 # desktop end-to-end (Linux): needs tauri-driver and webkit2gtk-driver
 npx tauri build --debug --no-bundle && tauri-driver & python3 e2e/run_e2e.py

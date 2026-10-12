@@ -5,9 +5,9 @@ Loops let one piece of code handle a thousand inputs. This phase covers three lo
 ## 1. The three loop shapes
 
 ```java
-for (int i = 1; i <= n; i++) { ... }     // you know how many times
-while (n > 0) { ... }                      // you know when to stop
-do { ... } while (cond);                   // runs at least once
+for (int i = 1; i <= n; i++) { ... }   // you know how many times
+while (n > 0) { ... }                   // you know when to stop
+do { ... } while (cond);                // runs at least once
 ```
 
 ```python
@@ -17,7 +17,13 @@ while n > 0:
     ...
 ```
 
-`range(a, b)` stops **before** `b`. Most off-by-one bugs come from forgetting that.
+```javascript
+for (let i = 1; i <= n; i++) { ... }   // you know how many times
+while (n > 0) { ... }                   // you know when to stop
+do { ... } while (cond);                // runs at least once
+```
+
+A loop that runs n times goes either from 1 to n (`<=`) or from 0 to n − 1 (`<`). Mixing the two up is the most common off-by-one bug. In Python, `range(a, b)` stops **before** `b`.
 
 ## 2. Accumulators
 
@@ -41,6 +47,11 @@ for i in range(1, n + 1):
     total += i
 ```
 
+```javascript
+let sum = 0;
+for (let i = 1; i <= n; i++) sum += i;
+```
+
 ## 3. Pulling digits apart
 
 `% 10` gives the last digit, `/ 10` removes it. This one loop powers digit sums, reversing numbers, palindromes and Armstrong numbers.
@@ -60,6 +71,15 @@ while temp > 0:
     d = temp % 10
     # use d
     temp //= 10
+```
+
+```javascript
+let temp = n;
+while (temp > 0) {
+  const d = temp % 10;
+  // use d
+  temp = Math.floor(temp / 10);   // "/" alone keeps the decimals
+}
 ```
 
 Work on a **copy** (`temp`) when you still need the original `n` later.
@@ -84,6 +104,13 @@ while d * d <= x:
         return False
     d += 1
 return True
+```
+
+```javascript
+for (let d = 2; d * d <= x; d++) {
+  if (x % d === 0) return false;
+}
+return true;
 ```
 
 ## 5. Nested loops and patterns
@@ -113,9 +140,18 @@ for i in range(1, n + 1):
     print(" " * (n - i) + "*" * (2 * i - 1))
 ```
 
+```javascript
+for (let i = 1; i <= n; i++) {
+  let row = "";
+  for (let s = 0; s < n - i; s++) row += " ";
+  for (let k = 0; k < 2 * i - 1; k++) row += "*";
+  console.log(row);
+}
+```
+
 ## 6. Print vs return
 
-Pattern problems use **print mode**: `solve` prints directly. In Java, `System.out.print` stays on the line and `System.out.println` ends it. In Python, `print(x, end=" ")` stays on the line.
+Pattern problems use **print mode**: `solve` prints directly. In Java, `System.out.print` stays on the line and `System.out.println` ends it. In Python, `print(x, end=" ")` stays on the line. In JavaScript every `console.log` ends the line, so build the row in a string first and log it once.
 
 ## 7. Loops that might never end
 
