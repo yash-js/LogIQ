@@ -30,7 +30,9 @@ def self_dividing(left, right):
          tests=[(100,), (-7,), (0,), (6,), (10000000,), (-10000000,), (49,)],
          hints=["You converted to base 2 in Phase 3. What changes for base 7?",
                 "Handle the sign separately.",
-                "Repeatedly take n % 7 and n /= 7; the digits come out in reverse."],
+                {"java": "Repeatedly take n % 7 and n /= 7; the digits come out reversed. Take the sign off first.",
+                 "python": "Repeatedly take n % 7 and n //= 7; the digits come out reversed. Take the sign off first.",
+                 "javascript": "Repeatedly take n % 7 and n = Math.floor(n / 7); the digits come out reversed. Take the sign off first, because floor division rounds the wrong way for negatives."}],
          practice=("LeetCode 504: Base 7", "https://leetcode.com/problems/base-7/"))
 def base7(num):
     if num == 0:
@@ -53,7 +55,9 @@ def base7(num):
          tests=[(5,), (1,), (2,), (7,), (10,), (2147483647,), (1073741824,)],
          hints=["How do you read the bits one by one?",
                 "Each flipped bit has a place value. Which power of 2 belongs to bit i?",
-                "For each bit b at position i, add (1 − b) * 2^i. Use a long for the place value."],
+                {"java": "For each bit b at position i, add (1 - b) times 2^i. Keep the place value in a long.",
+                 "python": "For each bit b at position i, add (1 - b) times 2**i. An integer will not overflow.",
+                 "javascript": "For each bit b at position i, add (1 - b) times 2**i. These values fit exactly in a normal number."}],
          practice=("LeetCode 476: Number Complement", "https://leetcode.com/problems/number-complement/"))
 def complement(num):
     return num ^ ((1 << num.bit_length()) - 1)
@@ -88,7 +92,9 @@ def excel_number(title):
          tests=[(1,), (28,), (701,), (26,), (52,), (2147483647,), (27,)],
          hints=["Try the normal base-26 loop on n = 26. What goes wrong?",
                 "There is no digit for zero here. How can you shift values so that A..Z become 0..25?",
-                "n--; char = 'A' + n % 26; n /= 26; repeat while n > 0, then reverse."],
+                {"java": "n--; the digit is (char)('A' + n % 26); then n /= 26. Repeat while n > 0, then reverse.",
+                 "python": "n -= 1; the digit is chr(ord('A') + n % 26); then n //= 26. Repeat while n > 0, then reverse.",
+                 "javascript": "n--; the digit is String.fromCharCode(65 + (n % 26)); then n = Math.floor(n / 26). Repeat while n > 0, then reverse."}],
          practice=("LeetCode 168: Excel Sheet Column Title", "https://leetcode.com/problems/excel-sheet-column-title/"))
 def excel_title(n):
     out = ""
@@ -130,7 +136,9 @@ def add_strings(num1, num2):
          tests=[([1, 2, 0, 0], 34), ([2, 7, 4], 181), ([2, 1, 5], 806), ([0], 10000), ([9, 9, 9, 9], 1)],
          hints=["Can k itself act as the carry?",
                 "Add k to the last digit. What do you keep, and what moves left?",
-                "From the right: k += num[i]; digit = k % 10; k /= 10. Keep going while k > 0 after the array ends."],
+                {"java": "From the right: k += num[i]; the digit is k % 10; then k /= 10. Continue while k > 0 after the array ends.",
+                 "python": "From the right: k += num[i]; the digit is k % 10; then k //= 10. Continue while k > 0 after the array ends.",
+                 "javascript": "From the right: k += num[i]; the digit is k % 10; then k = Math.floor(k / 10). Continue while k > 0 after the array ends."}],
          practice=("LeetCode 989: Add to Array-Form of Integer", "https://leetcode.com/problems/add-to-array-form-of-integer/"))
 def array_form(num, k):
     return [int(c) for c in str(int("".join(map(str, num))) + k)]
@@ -165,7 +173,7 @@ def weekday(day, month, year):
          gen=lambda r: ("".join(r.choice("UDLR") for _ in range(r.randint(1, 20000))),), gen_count=1,
          hints=["What state do you need to track?",
                 "How does each letter change that state?",
-                "Track x and y with a switch; return x == 0 && y == 0."],
+                "Track x and y, one branch per letter. Return whether both are back at 0."],
          practice=("LeetCode 657: Robot Return to Origin", "https://leetcode.com/problems/robot-return-to-origin/"))
 def robot(moves):
     return moves.count("U") == moves.count("D") and moves.count("L") == moves.count("R")
@@ -182,7 +190,9 @@ def robot(moves):
          tests=[("PPALLP",), ("PPALLL",), ("AA",), ("P",), ("LALL",), ("LLPLLPA",)],
          hints=["Which two things do you need to track?",
                 "One is a total, the other is a streak. How does each update?",
-                "absent++ on 'A'; late = (c == 'L') ? late + 1 : 0; fail if absent >= 2 or late >= 3."],
+                {"java": "absent++ on 'A'; late = (c == 'L') ? late + 1 : 0; fail if absent >= 2 or late >= 3.",
+                 "python": "absent += 1 on 'A'; late = late + 1 if c == 'L' else 0; fail if absent >= 2 or late >= 3.",
+                 "javascript": "absent++ on 'A'; late = (c === 'L') ? late + 1 : 0; fail if absent >= 2 or late >= 3."}],
          practice=("LeetCode 551: Student Attendance Record I", "https://leetcode.com/problems/student-attendance-record-i/"))
 def attendance(s):
     return s.count("A") < 2 and "LLL" not in s
@@ -237,7 +247,7 @@ def rev_chunks(s, k):
          gen=lambda r: ([5] * 50 + [r.choice([5, 10, 20]) for _ in range(r.randint(1, 10**4))],), gen_count=1,
          hints=["Which notes do you need to remember?",
                 "For a ₹20, which way of giving ₹15 change is smarter, and why?",
-                "Prefer one 10 + one 5; otherwise three 5s; otherwise return false."],
+                "Prefer one 10 plus one 5; otherwise three 5s; otherwise the answer is no."],
          practice=("LeetCode 860: Lemonade Change", "https://leetcode.com/problems/lemonade-change/"))
 def lemonade(bills):
     five = ten = 0
@@ -390,7 +400,9 @@ def pascal_row(k):
          tests=[(1,), (4,), (5,), (2,), (10,), (30,)],
          hints=["You already wrote run-length compression. How is this different?",
                 "Here the count comes before the digit.",
-                "Start with \"1\" and apply the describe step n − 1 times using a StringBuilder."],
+                {"java": "Start with \"1\" and apply the describe step n - 1 times, appending into a StringBuilder.",
+                 "python": "Start with \"1\" and apply the describe step n - 1 times, collecting characters in a list and joining.",
+                 "javascript": "Start with \"1\" and apply the describe step n - 1 times, building the next string as you go."}],
          practice=("LeetCode 38: Count and Say", "https://leetcode.com/problems/count-and-say/"))
 def count_say(n):
     s = "1"
@@ -438,6 +450,16 @@ def int_to_roman(num):
          3. Read digits until a non-digit or the end.
          4. No digits read → 0. Clamp the result to [−2^31, 2^31 − 1].
 
+         :::only java
+         Build the number in a `long` and clamp as soon as it leaves the `int` range.
+         :::
+         :::only python
+         Integers do not overflow, so compare with 2147483647 and -2147483648 and clamp yourself.
+         :::
+         :::only javascript
+         The value stays exact while you read it. Clamp to 2147483647 and -2147483648 before you return.
+         :::
+
          **Constraints:** 1 ≤ s.length ≤ 200, letters, digits, spaces, `+ - .`
          """,
          params=[("s", "str")],
@@ -445,7 +467,9 @@ def int_to_roman(num):
                 ("+1",), ("+-12",), ("2147483648",), ("   ",)],
          hints=["Follow the four steps literally, each with its own small loop or check.",
                 "When can the number overflow, and how do you notice before it does?",
-                "Build in a long and clamp as soon as it leaves the int range."],
+                {"java": "Build in a long and clamp as soon as it passes Integer.MAX_VALUE or Integer.MIN_VALUE.",
+                 "python": "Integers never overflow, so compare with 2147483647 and -2147483648 and clamp yourself.",
+                 "javascript": "A normal number stays exact past the 32-bit range. Compare with 2147483647 and -2147483648 and clamp."}],
          practice=("LeetCode 8: String to Integer (atoi)", "https://leetcode.com/problems/string-to-integer-atoi/"))
 def atoi(s):
     i, n = 0, len(s)
@@ -471,7 +495,9 @@ def atoi(s):
          """,
          params=[("s", "str"), ("rows", "int")],
          tests=[("PAYPALISHIRING", 3), ("PAYPALISHIRING", 4), ("A", 1), ("AB", 1), ("ABCDE", 10), ("ABCDEFG", 2)],
-         hints=["Keep one StringBuilder per row. Which row does each character go to?",
+         hints=[{"java": "Keep one StringBuilder per row. Which row does each character go to?",
+                 "python": "Keep one list of characters per row. Which row does each character go to?",
+                 "javascript": "Keep one string per row. Which row does each character go to?"},
                 "When does the direction flip?",
                 "row += dir; flip dir at row 0 and row rows−1. Special-case rows == 1."],
          practice=("LeetCode 6: Zigzag Conversion", "https://leetcode.com/problems/zigzag-conversion/"))
@@ -500,7 +526,9 @@ def zigzag(s, rows):
          tests=[("2", "3"), ("123", "456"), ("0", "52"), ("999", "999"), ("9" * 200, "9" * 200), ("1", "1")],
          hints=["How long can the product be?",
                 "Digit i of num1 times digit j of num2 lands in which position of the result?",
-                "int[] res of size m+n; res[i+j+1] += a*b; then fix carries from right to left; strip leading zeros."],
+                {"java": "int[] res of size m + n; res[i + j + 1] += a * b; then fix carries from the right; strip leading zeros.",
+                 "python": "res = [0] * (m + n); res[i + j + 1] += a * b; then fix carries from the right; strip leading zeros.",
+                 "javascript": "res = new Array(m + n).fill(0); res[i + j + 1] += a * b; then fix carries from the right; strip leading zeros."}],
          practice=("LeetCode 43: Multiply Strings", "https://leetcode.com/problems/multiply-strings/"))
 def multiply(num1, num2):
     return str(int(num1) * int(num2))
@@ -563,9 +591,13 @@ def rotate_image(matrix):
                 (["1........", ".........", ".........", ".........", ".........", ".........", ".........", ".........", "1........"],),
                 (["1........", ".1.......", ".........", ".........", ".........", ".........", ".........", ".........", "........."],),
                 (["123456789", "456789123", "789123456", "214365897", "365897214", "897214365", "531642978", "642978531", "978531642"],)],
-         hints=["Start with only the rows. How do you detect a repeat with a boolean[10]?",
+         hints=[{"java": "Start with only the rows. How do you detect a repeat with a boolean[10]?",
+                 "python": "Start with only the rows. How do you detect a repeat with a list of 10 flags?",
+                 "javascript": "Start with only the rows. How do you detect a repeat with an array of 10 flags?"},
                 "Columns are the same idea with i and j swapped.",
-                "Box index = (i / 3) * 3 + j / 3. Keep boolean[9][10] for rows, cols and boxes."],
+                {"java": "Box index = (i / 3) * 3 + j / 3. Keep boolean[9][10] for rows, columns and boxes.",
+                 "python": "Box index = (i // 3) * 3 + j // 3. Keep three lists of nine lists of ten flags: rows, columns and boxes.",
+                 "javascript": "Box index = Math.floor(i / 3) * 3 + Math.floor(j / 3). Keep a 9 by 10 array of flags for rows, columns and boxes."}],
          practice=("LeetCode 36: Valid Sudoku", "https://leetcode.com/problems/valid-sudoku/"))
 def sudoku(board):
     seen = set()

@@ -1,0 +1,2503 @@
+{
+ "java": [
+  {
+   "id": "java-01",
+   "title": "Hello, output",
+   "intro": "Every Java program starts in `main`. In Basecamp you only see the lines **inside** `main`;\nLogicQuest wraps them in `public class Main { public static void main(String[] args) { ... } }` for you.\n\n`System.out.println(x)` prints `x` and then moves to a new line. `System.out.print(x)` stays on the same line.\nEvery statement ends with a semicolon `;`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "System.out.println(\"Hello\");\nSystem.out.println(\"World\");",
+     "why": "Each `println` ends its line, so the words land on two lines.",
+     "stdin": "",
+     "full": false,
+     "expected": "Hello\nWorld\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "System.out.print(\"Log\");\nSystem.out.print(\"ic\");\nSystem.out.println(\"Quest\");",
+     "why": "`print` doesn't add a newline, so the three pieces join into one word.",
+     "stdin": "",
+     "full": false,
+     "expected": "LogicQuest\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which line prints `Hi` and moves to the next line?",
+     "options": [
+      "System.out.print(\"Hi\");",
+      "System.out.println(\"Hi\");",
+      "print(\"Hi\");",
+      "System.println(\"Hi\");"
+     ],
+     "answer": 1,
+     "why": "`println` = print + line break. `print` keeps the cursor on the same line.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Make it print `5 apples` on one line.",
+     "code": "System.out.___(\"5 \");\nSystem.out.println(\"apples\");",
+     "blanks": [
+      [
+       "print"
+      ]
+     ],
+     "why": "`print` keeps `5 ` and `apples` on the same line.",
+     "stdin": "",
+     "full": false,
+     "expected": "5 apples\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "System.out.println(\"2 + 3\");\nSystem.out.println(2 + 3);",
+     "why": "Inside quotes it's text and printed as-is. Without quotes Java does the maths first.",
+     "stdin": "",
+     "full": false,
+     "expected": "2 + 3\n5\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `Ready` but doesn't compile. Fix it.",
+     "code": "System.out.println(\"Ready\")",
+     "solution": "System.out.println(\"Ready\");",
+     "why": "Every Java statement ends with `;`. The compiler error says `';' expected`.",
+     "stdin": "",
+     "full": false,
+     "expected": "Ready\n"
+    }
+   ]
+  },
+  {
+   "id": "java-02",
+   "title": "Variables and types",
+   "intro": "A variable is a named box with a fixed **type**: `int` for whole numbers, `long` for big whole numbers,\n`double` for decimals, `boolean` for `true`/`false`, `char` for one character in single quotes, and\n`String` for text in double quotes.\n\n```java\nint age = 21;\ndouble price = 9.5;\nString name = \"Yash\";\n```",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int x = 10;\nx = x + 5;\nSystem.out.println(x);",
+     "why": "`x = x + 5` reads the old value (10), adds 5, and stores 15 back in `x`.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which type should hold the value `3.75`?",
+     "options": [
+      "int",
+      "double",
+      "boolean",
+      "char"
+     ],
+     "answer": 1,
+     "why": "Decimals need `double`. Putting 3.75 in an `int` won't even compile.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "String first = \"Logic\";\nString second = \"Quest\";\nSystem.out.println(first + second);\nSystem.out.println(first + \" \" + second);",
+     "why": "`+` joins Strings. Spaces only appear where you add them.",
+     "stdin": "",
+     "full": false,
+     "expected": "LogicQuest\nLogic Quest\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Declare a `boolean` called `done` set to true.",
+     "code": "___ done = ___;\nSystem.out.println(done);",
+     "blanks": [
+      [
+       "boolean"
+      ],
+      [
+       "true"
+      ]
+     ],
+     "why": "`boolean` holds exactly `true` or `false`, written in lowercase.",
+     "stdin": "",
+     "full": false,
+     "expected": "true\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `20`.",
+     "lines": [
+      "int a = 4;",
+      "int b = 5;",
+      "int product = a * b;",
+      "System.out.println(product);"
+     ],
+     "why": "A variable must be declared before it is used, so declarations come first.",
+     "stdin": "",
+     "full": false,
+     "expected": "20\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Swap the values so it prints `2 1`.",
+     "code": "int a = 1;\nint b = 2;\na = b;\nb = a;\nSystem.out.println(a + \" \" + b);",
+     "solution": "int a = 1;\nint b = 2;\nint temp = a;\na = b;\nb = temp;\nSystem.out.println(a + \" \" + b);",
+     "why": "After `a = b`, the old value of `a` is gone. Keep it in a `temp` variable first.",
+     "stdin": "",
+     "full": false,
+     "expected": "2 1\n"
+    }
+   ]
+  },
+  {
+   "id": "java-03",
+   "title": "Operators",
+   "intro": "`+ - * /` work as you'd expect, with one catch: **int / int gives an int**. `7 / 2` is `3`, the decimal part is dropped.\n`%` gives the remainder: `7 % 2` is `1`.\n\n`x += 3` is short for `x = x + 3`, and `x++` adds 1.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "System.out.println(7 / 2);\nSystem.out.println(7 % 2);\nSystem.out.println(7.0 / 2);",
+     "why": "Two ints → integer division (3). One double makes the result a double (3.5).",
+     "stdin": "",
+     "full": false,
+     "expected": "3\n1\n3.5\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int x = 5;\nx += 3;\nx *= 2;\nx--;\nSystem.out.println(x);",
+     "why": "5 → 8 → 16 → 15.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What is `2 + 3 * 4` in Java?",
+     "options": [
+      "20",
+      "14",
+      "24",
+      "9"
+     ],
+     "answer": 1,
+     "why": "`*` happens before `+`, just like in maths: 3 × 4 = 12, then 2 + 12.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "System.out.println(-7 % 2);\nSystem.out.println(-7 / 2);",
+     "why": "Java keeps the sign of the left number for `%` and drops the decimals for `/`, so you get -1 and -3.",
+     "stdin": "",
+     "full": false,
+     "expected": "-1\n-3\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print the last digit of `n`.",
+     "code": "int n = 1234;\nSystem.out.println(n ___ 10);",
+     "blanks": [
+      [
+       "%"
+      ]
+     ],
+     "why": "The remainder after dividing by 10 is always the last digit.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print the average `2.5`, but prints `2.0`. Fix the calculation.",
+     "code": "int a = 2, b = 3;\ndouble avg = (a + b) / 2;\nSystem.out.println(avg);",
+     "solution": "int a = 2, b = 3;\ndouble avg = (a + b) / 2.0;\nSystem.out.println(avg);",
+     "why": "`(a + b) / 2` is int / int = 2 before it is stored. Dividing by `2.0` makes it a decimal division.",
+     "stdin": "",
+     "full": false,
+     "expected": "2.5\n"
+    }
+   ]
+  },
+  {
+   "id": "java-04",
+   "title": "Strings and chars",
+   "intro": "A `String` is text; a `char` is one character in single quotes, like `'a'`.\n\n- `s.length()` → number of characters\n- `s.charAt(i)` → the character at index `i` (starting from 0)\n- Compare text with `a.equals(b)`, never `==`.\n- A `char` is a number underneath: `'b' - 'a'` is `1`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "String s = \"quest\";\nSystem.out.println(s.length());\nSystem.out.println(s.charAt(0));\nSystem.out.println(s.charAt(s.length() - 1));",
+     "why": "Indexes run from 0 to length − 1, so the last character is at `length() - 1`.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\nq\nt\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "char c = 'a';\nSystem.out.println(c + 1);\nSystem.out.println((char) (c + 1));",
+     "why": "`'a' + 1` is the number 98. Casting back to `char` turns it into `'b'`.",
+     "stdin": "",
+     "full": false,
+     "expected": "98\nb\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "How do you check if String `a` has the same text as String `b`?",
+     "options": [
+      "a == b",
+      "a.equals(b)",
+      "a = b",
+      "a.same(b)"
+     ],
+     "answer": 1,
+     "why": "`==` checks if they are the same object in memory. `.equals` compares the characters.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print every character of `word` on its own line.",
+     "code": "String word = \"abc\";\nfor (int i = 0; i < word.___(); i++) {\n    System.out.println(word.___(i));\n}",
+     "blanks": [
+      [
+       "length"
+      ],
+      [
+       "charAt"
+      ]
+     ],
+     "why": "`length()` gives the count; `charAt(i)` reads one character.",
+     "stdin": "",
+     "full": false,
+     "expected": "a\nb\nc\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "String s = \"Hi\";\ns = s + '!';\nSystem.out.println(s + s.length());",
+     "why": "Adding a char to a String appends it. Then `+ 3` turns the length into text too.",
+     "stdin": "",
+     "full": false,
+     "expected": "Hi!3\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Print the first and last character of the word you read, separated by a space. For `logic` print `l c`.",
+     "code": "Scanner sc = new Scanner(System.in);\nString w = sc.next();\n// print first and last character",
+     "solution": "Scanner sc = new Scanner(System.in);\nString w = sc.next();\nSystem.out.println(w.charAt(0) + \" \" + w.charAt(w.length() - 1));",
+     "tests": [
+      {
+       "input": "logic\n",
+       "output": "l c\n"
+      },
+      {
+       "input": "a\n",
+       "output": "a a\n"
+      },
+      {
+       "input": "java\n",
+       "output": "j a\n"
+      }
+     ],
+     "why": "First is `charAt(0)`, last is `charAt(w.length() - 1)`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "java-05",
+   "title": "Reading input",
+   "intro": "`Scanner` reads what the user types (stdin):\n\n```java\nScanner sc = new Scanner(System.in);\nint n = sc.nextInt();      // next whole number\nString w = sc.next();      // next word\nString line = sc.nextLine(); // rest of the line\n```\n\nIn LogicQuest's problems the input is read for you, but you'll need this everywhere else.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "The input is `6 7`. What does this print?",
+     "code": "Scanner sc = new Scanner(System.in);\nint a = sc.nextInt();\nint b = sc.nextInt();\nSystem.out.println(a * b);",
+     "why": "The two numbers 6 and 7 come from the input, so it prints 42.",
+     "stdin": "6 7\n",
+     "full": false,
+     "expected": "42\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which Scanner method reads the next whole number?",
+     "options": [
+      "sc.next()",
+      "sc.nextInt()",
+      "sc.readInt()",
+      "sc.nextLine()"
+     ],
+     "answer": 1,
+     "why": "`nextInt()` reads an int. `next()` reads a word as a String.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Read a name and greet it: input `Ana` → `Hello, Ana`.",
+     "code": "Scanner sc = new ___(System.in);\nString name = sc.___();\nSystem.out.println(\"Hello, \" + name);",
+     "blanks": [
+      [
+       "Scanner"
+      ],
+      [
+       "next",
+       "nextLine"
+      ]
+     ],
+     "why": "Create a `Scanner` on `System.in`, then `next()` reads one word.",
+     "stdin": "Ana\n",
+     "full": false,
+     "expected": "Hello, Ana\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to read two numbers and print their sum.",
+     "lines": [
+      "Scanner sc = new Scanner(System.in);",
+      "int x = sc.nextInt();",
+      "int y = sc.nextInt();",
+      "System.out.println(x + y);"
+     ],
+     "why": "Create the Scanner before reading, and read before printing.",
+     "stdin": "3 4\n",
+     "full": false,
+     "expected": "7\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read an integer `n` and print `n` squared.",
+     "code": "Scanner sc = new Scanner(System.in);\n// read n and print n * n",
+     "solution": "Scanner sc = new Scanner(System.in);\nint n = sc.nextInt();\nSystem.out.println(n * n);",
+     "tests": [
+      {
+       "input": "5\n",
+       "output": "25\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "-3\n",
+       "output": "9\n"
+      },
+      {
+       "input": "12\n",
+       "output": "144\n"
+      }
+     ],
+     "why": "`sc.nextInt()` then print `n * n`.",
+     "full": false
+    },
+    {
+     "kind": "fix",
+     "prompt": "Read two numbers and print their sum. It prints `57` for input `5 7`. Fix it.",
+     "code": "Scanner sc = new Scanner(System.in);\nString a = sc.next();\nString b = sc.next();\nSystem.out.println(a + b);",
+     "solution": "Scanner sc = new Scanner(System.in);\nint a = sc.nextInt();\nint b = sc.nextInt();\nSystem.out.println(a + b);",
+     "why": "`+` on Strings joins them. Read numbers with `nextInt()` so `+` adds.",
+     "stdin": "5 7\n",
+     "full": false,
+     "expected": "12\n"
+    }
+   ]
+  },
+  {
+   "id": "java-06",
+   "title": "Conditions",
+   "intro": "```java\nif (n > 0) {\n    System.out.println(\"positive\");\n} else if (n < 0) {\n    System.out.println(\"negative\");\n} else {\n    System.out.println(\"zero\");\n}\n```\n\nCompare with `== != < > <= >=`. Combine with `&&` (and), `||` (or), `!` (not).",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int n = 15;\nif (n % 3 == 0 && n % 5 == 0) {\n    System.out.println(\"both\");\n} else if (n % 3 == 0) {\n    System.out.println(\"three\");\n} else {\n    System.out.println(\"other\");\n}",
+     "why": "The first true branch wins. 15 is divisible by both, so `both` prints and the rest is skipped.",
+     "stdin": "",
+     "full": false,
+     "expected": "both\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which condition is true when `age` is between 13 and 19, inclusive?",
+     "options": [
+      "age > 13 || age < 19",
+      "age >= 13 && age <= 19",
+      "13 <= age <= 19",
+      "age >= 13 & age"
+     ],
+     "answer": 1,
+     "why": "Both limits must hold, so use `&&`. Java doesn't allow the chained `13 <= age <= 19`.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int a = 4, b = 9;\nString bigger = (a > b) ? \"a\" : \"b\";\nSystem.out.println(bigger);",
+     "why": "`cond ? x : y` picks `x` when true, `y` when false. 4 > 9 is false.",
+     "stdin": "",
+     "full": false,
+     "expected": "b\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print `even` or `odd`.",
+     "code": "int n = 8;\nif (n % 2 ___ 0) {\n    System.out.println(\"even\");\n} ___ {\n    System.out.println(\"odd\");\n}",
+     "blanks": [
+      [
+       "=="
+      ],
+      [
+       "else"
+      ]
+     ],
+     "why": "`==` compares; `=` would assign and not compile here.",
+     "stdin": "",
+     "full": false,
+     "expected": "even\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "It should print `adult` for 18 and above. For 18 it prints `minor`.",
+     "code": "int age = 18;\nif (age > 18) {\n    System.out.println(\"adult\");\n} else {\n    System.out.println(\"minor\");\n}",
+     "solution": "int age = 18;\nif (age >= 18) {\n    System.out.println(\"adult\");\n} else {\n    System.out.println(\"minor\");\n}",
+     "why": "\"18 and above\" includes 18, so the check is `>=`.",
+     "stdin": "",
+     "full": false,
+     "expected": "adult\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a number and print `big` if it is greater than 100, otherwise `small`.",
+     "code": "Scanner sc = new Scanner(System.in);\nint n = sc.nextInt();\n// your if / else here",
+     "solution": "Scanner sc = new Scanner(System.in);\nint n = sc.nextInt();\nif (n > 100) {\n    System.out.println(\"big\");\n} else {\n    System.out.println(\"small\");\n}",
+     "tests": [
+      {
+       "input": "150\n",
+       "output": "big\n"
+      },
+      {
+       "input": "100\n",
+       "output": "small\n"
+      },
+      {
+       "input": "7\n",
+       "output": "small\n"
+      },
+      {
+       "input": "101\n",
+       "output": "big\n"
+      }
+     ],
+     "why": "Exactly 100 is not greater than 100, so it's `small`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "java-07",
+   "title": "Loops",
+   "intro": "```java\nfor (int i = 1; i <= 5; i++) {   // start; keep going while; step\n    System.out.println(i);\n}\n\nint n = 10;\nwhile (n > 0) {\n    n = n / 2;\n}\n```\n\n`break` leaves the loop. `continue` jumps to the next round.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "for (int i = 0; i < 3; i++) {\n    System.out.print(i + \" \");\n}\nSystem.out.println();",
+     "why": "Starts at 0 and stops before 3: 0, 1, 2.",
+     "stdin": "",
+     "full": false,
+     "expected": "0 1 2 \n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int sum = 0;\nfor (int i = 1; i <= 4; i++) {\n    sum += i;\n}\nSystem.out.println(sum);",
+     "why": "1 + 2 + 3 + 4 = 10.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int n = 20;\nint steps = 0;\nwhile (n > 1) {\n    n = n / 2;\n    steps++;\n}\nSystem.out.println(steps);",
+     "why": "20 → 10 → 5 → 2 → 1: four halvings.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print the numbers 5, 4, 3, 2, 1 on separate lines.",
+     "code": "for (int i = 5; i ___ 1; i___) {\n    System.out.println(i);\n}",
+     "blanks": [
+      [
+       ">="
+      ],
+      [
+       "--"
+      ]
+     ],
+     "why": "Count down: keep going while `i >= 1`, and decrease with `i--`.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\n4\n3\n2\n1\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to print only the odd numbers from 1 to 5.",
+     "lines": [
+      "for (int i = 1; i <= 5; i++) {",
+      "    if (i % 2 == 0) {",
+      "        continue;",
+      "    }",
+      "    System.out.println(i);",
+      "}"
+     ],
+     "why": "`continue` skips the print for even numbers.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n3\n5\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "It should print 1 to 5 but stops at 4. Fix the loop.",
+     "code": "for (int i = 1; i < 5; i++) {\n    System.out.println(i);\n}",
+     "solution": "for (int i = 1; i <= 5; i++) {\n    System.out.println(i);\n}",
+     "why": "`i < 5` stops before 5. Use `<=` to include it. This off-by-one is the most common loop bug.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n2\n3\n4\n5\n"
+    }
+   ]
+  },
+  {
+   "id": "java-08",
+   "title": "Arrays",
+   "intro": "An array holds a fixed number of values of one type:\n\n```java\nint[] nums = {4, 8, 15};\nint[] zeros = new int[5];   // five zeros\nnums[0]          // first element\nnums.length      // 3, no brackets\n```",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int[] a = {3, 6, 9};\nSystem.out.println(a.length);\nSystem.out.println(a[1]);\na[1] = 100;\nSystem.out.println(a[0] + a[1]);",
+     "why": "Index 1 is the second element. After changing it to 100, 3 + 100 = 103.",
+     "stdin": "",
+     "full": false,
+     "expected": "3\n6\n103\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "int[] a = new int[4];\na[2] = 7;\nfor (int x : a) {\n    System.out.print(x + \" \");\n}\nSystem.out.println();",
+     "why": "`new int[4]` starts as four zeros; only index 2 changed.",
+     "stdin": "",
+     "full": false,
+     "expected": "0 0 7 0 \n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "For `int[] a = {5, 6, 7};`, which is the last element?",
+     "options": [
+      "a[3]",
+      "a[a.length]",
+      "a[a.length - 1]",
+      "a.last()"
+     ],
+     "answer": 2,
+     "why": "Indexes go 0..length − 1. `a[3]` throws ArrayIndexOutOfBoundsException.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Find the largest value.",
+     "code": "int[] a = {4, 11, 2, 9};\nint best = a[0];\nfor (int i = 1; i < a.___; i++) {\n    if (a[i] ___ best) {\n        best = a[i];\n    }\n}\nSystem.out.println(best);",
+     "blanks": [
+      [
+       "length"
+      ],
+      [
+       ">"
+      ]
+     ],
+     "why": "Walk the array and keep the biggest value seen so far.",
+     "stdin": "",
+     "full": false,
+     "expected": "11\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to print the sum of the array.",
+     "lines": [
+      "int[] a = {1, 2, 3, 4};",
+      "int sum = 0;",
+      "for (int x : a) {",
+      "    sum += x;",
+      "}",
+      "System.out.println(sum);"
+     ],
+     "why": "Create the array and the accumulator before the loop, print after it.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then `n` numbers. Print how many of them are negative.",
+     "code": "Scanner sc = new Scanner(System.in);\nint n = sc.nextInt();\nint[] a = new int[n];\n// fill the array, then count the negatives",
+     "solution": "Scanner sc = new Scanner(System.in);\nint n = sc.nextInt();\nint[] a = new int[n];\nfor (int i = 0; i < n; i++) a[i] = sc.nextInt();\nint count = 0;\nfor (int x : a) if (x < 0) count++;\nSystem.out.println(count);",
+     "tests": [
+      {
+       "input": "5\n1 -2 3 -4 -5\n",
+       "output": "3\n"
+      },
+      {
+       "input": "1\n7\n",
+       "output": "0\n"
+      },
+      {
+       "input": "3\n-1 -1 -1\n",
+       "output": "3\n"
+      }
+     ],
+     "why": "Read with a loop into `a[i]`, then count with a second loop.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "java-09",
+   "title": "Methods (functions)",
+   "intro": "A method packs logic under a name. In LogicQuest problems you write `solve`:\n\n```java\nstatic int square(int x) {   // return type, name, parameters\n    return x * x;\n}\n```\n\n`static` lets `main` call it directly. `void` means it returns nothing.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "public class Main {\n    static int twice(int x) {\n        return x * 2;\n    }\n\n    public static void main(String[] args) {\n        int a = twice(5);\n        System.out.println(a + twice(1));\n    }\n}",
+     "why": "twice(5) is 10, twice(1) is 2, so 12.",
+     "stdin": "",
+     "full": true,
+     "expected": "12\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "A method that only prints and gives nothing back has which return type?",
+     "options": [
+      "int",
+      "void",
+      "null",
+      "String"
+     ],
+     "answer": 1,
+     "why": "`void` means no return value.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Complete the method that returns the larger of two ints.",
+     "code": "public class Main {\n    static ___ max2(int a, int b) {\n        if (a > b) {\n            ___ a;\n        }\n        return b;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(max2(3, 8));\n    }\n}",
+     "blanks": [
+      [
+       "int"
+      ],
+      [
+       "return"
+      ]
+     ],
+     "why": "The method gives back an int, and `return` sends the value out.",
+     "stdin": "",
+     "full": true,
+     "expected": "8\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "public class Main {\n    static void greet(String name) {\n        System.out.println(\"Hi \" + name);\n    }\n\n    public static void main(String[] args) {\n        greet(\"Ana\");\n        greet(\"Ravi\");\n    }\n}",
+     "why": "Each call runs the method body once with a different `name`.",
+     "stdin": "",
+     "full": true,
+     "expected": "Hi Ana\nHi Ravi\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`isEven(4)` should return true, but this doesn't compile. Fix the method.",
+     "code": "public class Main {\n    static boolean isEven(int n) {\n        if (n % 2 == 0) {\n            return true;\n        }\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isEven(4));\n    }\n}",
+     "solution": "public class Main {\n    static boolean isEven(int n) {\n        if (n % 2 == 0) {\n            return true;\n        }\n        return false;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isEven(4));\n    }\n}",
+     "why": "Every path must return something. Java reports `missing return statement`.",
+     "stdin": "",
+     "full": true,
+     "expected": "true\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Complete `cube` so it returns `n * n * n`. The program reads `n` and prints `cube(n)`.",
+     "code": "import java.util.*;\n\npublic class Main {\n    static long cube(long n) {\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.println(cube(sc.nextLong()));\n    }\n}",
+     "solution": "import java.util.*;\n\npublic class Main {\n    static long cube(long n) {\n        return n * n * n;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.println(cube(sc.nextLong()));\n    }\n}",
+     "tests": [
+      {
+       "input": "3\n",
+       "output": "27\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "-2\n",
+       "output": "-8\n"
+      },
+      {
+       "input": "100\n",
+       "output": "1000000\n"
+      }
+     ],
+     "why": "Replace `return 0;` with the real calculation.",
+     "full": true
+    }
+   ]
+  },
+  {
+   "id": "java-10",
+   "title": "Reading errors",
+   "intro": "Errors are messages, not failures. Read the **first line** and the **line number**.\n\n- **Compile errors** (before running): `';' expected`, `cannot find symbol` (typo or undeclared variable),\n  `incompatible types` (wrong type).\n- **Runtime exceptions** (while running): `ArrayIndexOutOfBoundsException`, `ArithmeticException: / by zero`,\n  `NullPointerException`.",
+   "exercises": [
+    {
+     "kind": "choice",
+     "prompt": "`error: cannot find symbol  symbol: variable totl` most likely means…",
+     "options": [
+      "Java is broken",
+      "You misspelled a variable name or didn't declare it",
+      "The file is too long",
+      "You need more memory"
+     ],
+     "answer": 1,
+     "why": "Java doesn't know `totl`. Usually a typo of `total`.",
+     "code": null
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which line throws `ArrayIndexOutOfBoundsException`?",
+     "options": [
+      "int[] a = new int[3];",
+      "a[2] = 1;",
+      "a[3] = 1;",
+      "int x = a.length;"
+     ],
+     "answer": 2,
+     "why": "An array of 3 has indexes 0, 1, 2. Index 3 is outside.",
+     "code": "int[] a = new int[3];"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Fix the typo so it prints `30`.",
+     "code": "int total = 10;\ntotal = totl + 20;\nSystem.out.println(total);",
+     "solution": "int total = 10;\ntotal = total + 20;\nSystem.out.println(total);",
+     "why": "`cannot find symbol: totl`. Match the name you declared.",
+     "stdin": "",
+     "full": false,
+     "expected": "30\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This crashes with `/ by zero` when there are no items. Print `0` in that case instead.",
+     "code": "int sum = 0;\nint count = 0;\nSystem.out.println(sum / count);",
+     "solution": "int sum = 0;\nint count = 0;\nif (count == 0) {\n    System.out.println(0);\n} else {\n    System.out.println(sum / count);\n}",
+     "why": "Guard the division: check `count == 0` before dividing.",
+     "stdin": "",
+     "full": false,
+     "expected": "0\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`incompatible types: String cannot be converted to int`. Fix it so it prints `8`.",
+     "code": "String s = \"5\";\nint n = s;\nSystem.out.println(n + 3);",
+     "solution": "String s = \"5\";\nint n = Integer.parseInt(s);\nSystem.out.println(n + 3);",
+     "why": "Text isn't a number until you convert it: `Integer.parseInt(s)`.",
+     "stdin": "",
+     "full": false,
+     "expected": "8\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Your loop prints one value too few. What's the most likely cause?",
+     "options": [
+      "Using `<` where you needed `<=`",
+      "Missing semicolon",
+      "Wrong variable type",
+      "Java skipped a line"
+     ],
+     "answer": 0,
+     "why": "Off-by-one: check where the loop starts and whether the end should be included.",
+     "code": null
+    }
+   ]
+  }
+ ],
+ "python": [
+  {
+   "id": "python-01",
+   "title": "Hello, output",
+   "intro": "`print(x)` shows `x` and then moves to a new line. No semicolons, no `main` needed:\na Python file simply runs from top to bottom.\n\n`print(a, b)` puts a space between the values. `print(x, end=\"\")` stays on the same line.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "print(\"Hello\")\nprint(\"World\")",
+     "why": "Each `print` ends with a newline, so the words land on two lines.",
+     "stdin": "",
+     "full": false,
+     "expected": "Hello\nWorld\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "print(\"Log\", end=\"\")\nprint(\"ic\", end=\"\")\nprint(\"Quest\")",
+     "why": "`end=\"\"` replaces the newline with nothing, so the pieces join.",
+     "stdin": "",
+     "full": false,
+     "expected": "LogicQuest\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does `print(\"a\", \"b\", \"c\")` show?",
+     "options": [
+      "abc",
+      "a b c",
+      "a,b,c",
+      "('a', 'b', 'c')"
+     ],
+     "answer": 1,
+     "why": "Commas in `print` separate values with one space by default.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print `1-2-3` using one print call.",
+     "code": "print(1, 2, 3, sep=___)",
+     "blanks": [
+      [
+       "\"-\"",
+       "'-'"
+      ]
+     ],
+     "why": "`sep` sets what goes between the values (a space by default).",
+     "stdin": "",
+     "full": false,
+     "expected": "1-2-3\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "print(\"2 + 3\")\nprint(2 + 3)",
+     "why": "Inside quotes it's text and printed as-is. Without quotes Python does the maths first.",
+     "stdin": "",
+     "full": false,
+     "expected": "2 + 3\n5\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `Ready` but crashes. Fix it.",
+     "code": "Print(\"Ready\")",
+     "solution": "print(\"Ready\")",
+     "why": "Python is case-sensitive. The error says `NameError: name 'Print' is not defined`.",
+     "stdin": "",
+     "full": false,
+     "expected": "Ready\n"
+    }
+   ]
+  },
+  {
+   "id": "python-02",
+   "title": "Variables and types",
+   "intro": "A variable is a name pointing at a value. No type keyword is needed; Python works it out:\n\n```python\nage = 21          # int\nprice = 9.5       # float\nname = \"Yash\"     # str\ndone = True       # bool (capital T)\n```\n\n`type(x)` tells you what you have.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "x = 10\nx = x + 5\nprint(x)",
+     "why": "`x = x + 5` reads 10, adds 5, and stores 15 back in `x`.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which value is a `bool` in Python?",
+     "options": [
+      "true",
+      "\"True\"",
+      "True",
+      "1.0"
+     ],
+     "answer": 2,
+     "why": "Booleans are `True` and `False`, capitalised. `\"True\"` in quotes is a string.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "first = \"Logic\"\nsecond = \"Quest\"\nprint(first + second)\nprint(first, second)",
+     "why": "`+` joins strings with no space; a comma in `print` adds one.",
+     "stdin": "",
+     "full": false,
+     "expected": "LogicQuest\nLogic Quest\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Swap `a` and `b` in one line.",
+     "code": "a = 1\nb = 2\na, b = ___, ___\nprint(a, b)",
+     "blanks": [
+      [
+       "b"
+      ],
+      [
+       "a"
+      ]
+     ],
+     "why": "Python evaluates the right side first, then assigns: a gets old b, b gets old a.",
+     "stdin": "",
+     "full": false,
+     "expected": "2 1\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `20`.",
+     "lines": [
+      "a = 4",
+      "b = 5",
+      "product = a * b",
+      "print(product)"
+     ],
+     "why": "A name must have a value before you use it.",
+     "stdin": "",
+     "full": false,
+     "expected": "20\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `Age: 21` but crashes with a TypeError. Fix it.",
+     "code": "age = 21\nprint(\"Age: \" + age)",
+     "solution": "age = 21\nprint(\"Age: \" + str(age))",
+     "why": "You can't `+` a string and an int. Convert with `str(age)` (or use `print(\"Age:\", age)`).",
+     "stdin": "",
+     "full": false,
+     "expected": "Age: 21\n"
+    }
+   ]
+  },
+  {
+   "id": "python-03",
+   "title": "Operators",
+   "intro": "`/` always gives a float: `7 / 2` is `3.5`. Use `//` for whole-number division: `7 // 2` is `3`.\n`%` is the remainder, `**` is power.\n\n`x += 3` is short for `x = x + 3`. There is no `x++` in Python.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "print(7 / 2)\nprint(7 // 2)\nprint(7 % 2)\nprint(2 ** 5)",
+     "why": "`/` → 3.5, `//` → 3, `%` → 1, `**` → 32.",
+     "stdin": "",
+     "full": false,
+     "expected": "3.5\n3\n1\n32\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "x = 5\nx += 3\nx *= 2\nx -= 1\nprint(x)",
+     "why": "5 → 8 → 16 → 15.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What is `2 + 3 * 4` in Python?",
+     "options": [
+      "20",
+      "14",
+      "24",
+      "9"
+     ],
+     "answer": 1,
+     "why": "`*` happens before `+`: 3 × 4 = 12, then 2 + 12.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "print(-7 % 2)\nprint(-7 // 2)",
+     "why": "Python's `//` rounds **down** (to -4) and `%` follows the sign of the right number (1). Java and JavaScript give -1 and -3.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n-4\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print the last digit of `n`, then `n` without its last digit.",
+     "code": "n = 1234\nprint(n ___ 10)\nprint(n ___ 10)",
+     "blanks": [
+      [
+       "%"
+      ],
+      [
+       "//"
+      ]
+     ],
+     "why": "`% 10` gives the last digit; `// 10` removes it. `/ 10` would give 123.4.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n123\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `5`, the number of full boxes of 4 you can fill from 22 eggs, but prints `5.5`.",
+     "code": "eggs = 22\nprint(eggs / 4)",
+     "solution": "eggs = 22\nprint(eggs // 4)",
+     "why": "Full boxes is whole-number division: `//`.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\n"
+    }
+   ]
+  },
+  {
+   "id": "python-04",
+   "title": "Strings and characters",
+   "intro": "A `str` is text. A single character is just a string of length 1.\n\n- `len(s)` → number of characters\n- `s[i]` → character at index `i` (from 0); `s[-1]` is the last one\n- `ord(\"a\")` → 97, `chr(98)` → `\"b\"`\n- Compare text with `==`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "s = \"quest\"\nprint(len(s))\nprint(s[0])\nprint(s[-1])",
+     "why": "Negative indexes count from the end: `s[-1]` is the last character.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\nq\nt\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "c = \"a\"\nprint(ord(c) + 1)\nprint(chr(ord(c) + 1))",
+     "why": "`ord` turns a character into its code (97); `chr` turns a code back into a character.",
+     "stdin": "",
+     "full": false,
+     "expected": "98\nb\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which expression is True when `s` is `\"abc\"`?",
+     "options": [
+      "s[3] == \"c\"",
+      "s[len(s) - 1] == \"c\"",
+      "s.length == 3",
+      "s[1] == \"a\""
+     ],
+     "answer": 1,
+     "why": "Indexes go 0..len − 1. `s[3]` raises IndexError and strings have no `.length`.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print every character of `word` on its own line.",
+     "code": "word = \"abc\"\nfor i in range(___(word)):\n    print(word[___])",
+     "blanks": [
+      [
+       "len"
+      ],
+      [
+       "i"
+      ]
+     ],
+     "why": "`range(len(word))` gives the indexes 0, 1, 2.",
+     "stdin": "",
+     "full": false,
+     "expected": "a\nb\nc\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "s = \"Hi\"\ns = s + \"!\"\nprint(s * 2)",
+     "why": "`+` joins strings, and `* 2` repeats the string twice.",
+     "stdin": "",
+     "full": false,
+     "expected": "Hi!Hi!\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a word and print its first and last character separated by a space. For `logic` print `l c`.",
+     "code": "w = input()\n# print first and last character",
+     "solution": "w = input()\nprint(w[0], w[-1])",
+     "tests": [
+      {
+       "input": "logic\n",
+       "output": "l c\n"
+      },
+      {
+       "input": "a\n",
+       "output": "a a\n"
+      },
+      {
+       "input": "python\n",
+       "output": "p n\n"
+      }
+     ],
+     "why": "First is `w[0]`, last is `w[-1]`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-05",
+   "title": "Reading input",
+   "intro": "`input()` reads one line as a **string**. Convert it to use it as a number:\n\n```python\nn = int(input())                    # one number\na, b = map(int, input().split())    # two numbers on one line\n```\n\nIn LogicQuest's problems the input is read for you, but you'll need this everywhere else.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "The input is `6 7`. What does this print?",
+     "code": "a, b = map(int, input().split())\nprint(a * b)",
+     "why": "The two numbers 6 and 7 come from the input, so it prints 42.",
+     "stdin": "6 7\n",
+     "full": false,
+     "expected": "42\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What type does `input()` return?",
+     "options": [
+      "int",
+      "str",
+      "float",
+      "It depends on what you type"
+     ],
+     "answer": 1,
+     "why": "Always a string. `int(...)` converts it.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Read a name and greet it: input `Ana` → `Hello, Ana`.",
+     "code": "name = ___()\nprint(\"Hello, \" + name)",
+     "blanks": [
+      [
+       "input"
+      ]
+     ],
+     "why": "`input()` reads the line the user typed.",
+     "stdin": "Ana\n",
+     "full": false,
+     "expected": "Hello, Ana\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to read two numbers (one per line) and print their sum.",
+     "lines": [
+      "x = int(input())",
+      "y = int(input())",
+      "total = x + y",
+      "print(total)"
+     ],
+     "why": "Read both numbers before adding.",
+     "stdin": "3\n4\n",
+     "full": false,
+     "expected": "7\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read an integer `n` and print `n` squared.",
+     "code": "# read n and print n * n",
+     "solution": "n = int(input())\nprint(n * n)",
+     "tests": [
+      {
+       "input": "5\n",
+       "output": "25\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "-3\n",
+       "output": "9\n"
+      },
+      {
+       "input": "12\n",
+       "output": "144\n"
+      }
+     ],
+     "why": "`int(input())`, then print `n * n`.",
+     "full": false
+    },
+    {
+     "kind": "fix",
+     "prompt": "Read two numbers and print their sum. It prints `57` for input `5 7`. Fix it.",
+     "code": "a, b = input().split()\nprint(a + b)",
+     "solution": "a, b = map(int, input().split())\nprint(a + b)",
+     "why": "`split()` gives strings, and `+` joins strings. Convert with `map(int, ...)`.",
+     "stdin": "5 7\n",
+     "full": false,
+     "expected": "12\n"
+    }
+   ]
+  },
+  {
+   "id": "python-06",
+   "title": "Conditions",
+   "intro": "```python\nif n > 0:\n    print(\"positive\")\nelif n < 0:\n    print(\"negative\")\nelse:\n    print(\"zero\")\n```\n\nThe colon `:` and the **indentation** (4 spaces) mark the block. Combine conditions with `and`, `or`, `not`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "n = 15\nif n % 3 == 0 and n % 5 == 0:\n    print(\"both\")\nelif n % 3 == 0:\n    print(\"three\")\nelse:\n    print(\"other\")",
+     "why": "The first true branch wins. 15 is divisible by both.",
+     "stdin": "",
+     "full": false,
+     "expected": "both\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which condition is True when `age` is between 13 and 19, inclusive?",
+     "options": [
+      "age > 13 or age < 19",
+      "13 <= age <= 19",
+      "age >= 13 && age <= 19",
+      "13 < age < 19"
+     ],
+     "answer": 1,
+     "why": "Python allows chained comparisons. `&&` is not Python syntax; use `and`.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "a, b = 4, 9\nbigger = \"a\" if a > b else \"b\"\nprint(bigger)",
+     "why": "`x if cond else y` picks `x` when the condition is true. 4 > 9 is false.",
+     "stdin": "",
+     "full": false,
+     "expected": "b\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print `even` or `odd`.",
+     "code": "n = 8\nif n % 2 ___ 0:\n    print(\"even\")\n___:\n    print(\"odd\")",
+     "blanks": [
+      [
+       "=="
+      ],
+      [
+       "else"
+      ]
+     ],
+     "why": "`==` compares. `else:` needs its colon too.",
+     "stdin": "",
+     "full": false,
+     "expected": "even\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "It should print `adult` for 18 and above. For 18 it prints `minor`.",
+     "code": "age = 18\nif age > 18:\n    print(\"adult\")\nelse:\n    print(\"minor\")",
+     "solution": "age = 18\nif age >= 18:\n    print(\"adult\")\nelse:\n    print(\"minor\")",
+     "why": "\"18 and above\" includes 18, so the check is `>=`.",
+     "stdin": "",
+     "full": false,
+     "expected": "adult\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a number and print `big` if it is greater than 100, otherwise `small`.",
+     "code": "n = int(input())\n# your if / else here",
+     "solution": "n = int(input())\nif n > 100:\n    print(\"big\")\nelse:\n    print(\"small\")",
+     "tests": [
+      {
+       "input": "150\n",
+       "output": "big\n"
+      },
+      {
+       "input": "100\n",
+       "output": "small\n"
+      },
+      {
+       "input": "7\n",
+       "output": "small\n"
+      },
+      {
+       "input": "101\n",
+       "output": "big\n"
+      }
+     ],
+     "why": "Exactly 100 is not greater than 100, so it's `small`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-07",
+   "title": "Loops",
+   "intro": "```python\nfor i in range(1, 6):     # 1, 2, 3, 4, 5  (stops BEFORE 6)\n    print(i)\n\nn = 10\nwhile n > 0:\n    n = n // 2\n```\n\n`range(5)` is 0..4, `range(a, b)` is a..b−1, `range(a, b, step)` jumps by step. `break` and `continue` work as usual.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "for i in range(3):\n    print(i, end=\" \")\nprint()",
+     "why": "`range(3)` is 0, 1, 2.",
+     "stdin": "",
+     "full": false,
+     "expected": "0 1 2 \n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "total = 0\nfor i in range(1, 5):\n    total += i\nprint(total)",
+     "why": "1 + 2 + 3 + 4 = 10. The 5 is not included.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "n = 20\nsteps = 0\nwhile n > 1:\n    n = n // 2\n    steps += 1\nprint(steps)",
+     "why": "20 → 10 → 5 → 2 → 1: four halvings.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print 5, 4, 3, 2, 1 on separate lines.",
+     "code": "for i in range(5, ___, ___):\n    print(i)",
+     "blanks": [
+      [
+       "0"
+      ],
+      [
+       "-1"
+      ]
+     ],
+     "why": "Count down with step −1. The stop value 0 is not included.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\n4\n3\n2\n1\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to print only the odd numbers from 1 to 5.",
+     "lines": [
+      "for i in range(1, 6):",
+      "    if i % 2 == 0:",
+      "        continue",
+      "    print(i)"
+     ],
+     "why": "`continue` skips the print for even numbers.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n3\n5\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "It should print 1 to 5 but stops at 4. Fix the loop.",
+     "code": "for i in range(1, 5):\n    print(i)",
+     "solution": "for i in range(1, 6):\n    print(i)",
+     "why": "`range` stops before its end value. To include 5, the end must be 6.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n2\n3\n4\n5\n"
+    }
+   ]
+  },
+  {
+   "id": "python-08",
+   "title": "Lists",
+   "intro": "A list holds values in order:\n\n```python\nnums = [4, 8, 15]\nzeros = [0] * 5       # five zeros\nnums[0]               # first\nnums[-1]              # last\nlen(nums)             # 3\nnums.append(16)       # add to the end\n```",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "a = [3, 6, 9]\nprint(len(a))\nprint(a[1])\na[1] = 100\nprint(a[0] + a[1])",
+     "why": "Index 1 is the second element. After changing it, 3 + 100 = 103.",
+     "stdin": "",
+     "full": false,
+     "expected": "3\n6\n103\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "a = [0] * 4\na[2] = 7\nfor x in a:\n    print(x, end=\" \")\nprint()",
+     "why": "`[0] * 4` is four zeros; only index 2 changed.",
+     "stdin": "",
+     "full": false,
+     "expected": "0 0 7 0 \n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "For `a = [5, 6, 7]`, which expression raises IndexError?",
+     "options": [
+      "a[-1]",
+      "a[2]",
+      "a[3]",
+      "a[0]"
+     ],
+     "answer": 2,
+     "why": "Valid indexes are 0, 1, 2 (and −1, −2, −3). 3 is outside.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Find the largest value without using `max()`.",
+     "code": "a = [4, 11, 2, 9]\nbest = a[0]\nfor x in ___:\n    if x ___ best:\n        best = x\nprint(best)",
+     "blanks": [
+      [
+       "a"
+      ],
+      [
+       ">"
+      ]
+     ],
+     "why": "Walk the list and keep the biggest value seen so far.",
+     "stdin": "",
+     "full": false,
+     "expected": "11\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to print the sum of the list without `sum()`.",
+     "lines": [
+      "a = [1, 2, 3, 4]",
+      "total = 0",
+      "for x in a:",
+      "    total += x",
+      "print(total)"
+     ],
+     "why": "Create the list and the accumulator before the loop, print after it.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then a line of `n` numbers. Print how many of them are negative.",
+     "code": "n = int(input())\na = list(map(int, input().split()))\n# count the negatives",
+     "solution": "n = int(input())\na = list(map(int, input().split()))\ncount = 0\nfor x in a:\n    if x < 0:\n        count += 1\nprint(count)",
+     "tests": [
+      {
+       "input": "5\n1 -2 3 -4 -5\n",
+       "output": "3\n"
+      },
+      {
+       "input": "1\n7\n",
+       "output": "0\n"
+      },
+      {
+       "input": "3\n-1 -1 -1\n",
+       "output": "3\n"
+      }
+     ],
+     "why": "Loop over the list and add 1 for each value below zero.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-09",
+   "title": "Functions",
+   "intro": "```python\ndef square(x):\n    return x * x\n\nprint(square(4))   # 16\n```\n\nA function without `return` gives back `None`. In LogicQuest problems you write `solve`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "def twice(x):\n    return x * 2\n\na = twice(5)\nprint(a + twice(1))",
+     "why": "twice(5) is 10, twice(1) is 2, so 12.",
+     "stdin": "",
+     "full": false,
+     "expected": "12\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "def shout(word):\n    print(word + \"!\")\n\nresult = shout(\"hey\")\nprint(result)",
+     "why": "`shout` prints, but it doesn't return anything, so `result` is `None`.",
+     "stdin": "",
+     "full": false,
+     "expected": "hey!\nNone\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Complete the function that returns the larger of two numbers.",
+     "code": "___ max2(a, b):\n    if a > b:\n        ___ a\n    return b\n\nprint(max2(3, 8))",
+     "blanks": [
+      [
+       "def"
+      ],
+      [
+       "return"
+      ]
+     ],
+     "why": "`def` starts a function; `return` sends the value back.",
+     "stdin": "",
+     "full": false,
+     "expected": "8\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does a Python function return if it has no `return` statement?",
+     "options": [
+      "0",
+      "None",
+      "False",
+      "It's an error"
+     ],
+     "answer": 1,
+     "why": "It returns `None`.",
+     "code": null
+    },
+    {
+     "kind": "fix",
+     "prompt": "`is_even(4)` should print `True`, but it prints `None`. Fix it.",
+     "code": "def is_even(n):\n    if n % 2 == 0:\n        print(True)\n\nprint(is_even(4))",
+     "solution": "def is_even(n):\n    return n % 2 == 0\n\nprint(is_even(4))",
+     "why": "Printing inside a function isn't returning. Use `return`.",
+     "stdin": "",
+     "full": false,
+     "expected": "True\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Complete `cube` so it returns `n * n * n`. The program reads `n` and prints `cube(n)`.",
+     "code": "def cube(n):\n    return 0\n\nprint(cube(int(input())))",
+     "solution": "def cube(n):\n    return n * n * n\n\nprint(cube(int(input())))",
+     "tests": [
+      {
+       "input": "3\n",
+       "output": "27\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "-2\n",
+       "output": "-8\n"
+      },
+      {
+       "input": "100\n",
+       "output": "1000000\n"
+      }
+     ],
+     "why": "Replace `return 0` with the real calculation.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "python-10",
+   "title": "Reading errors",
+   "intro": "Python prints a **traceback**. Read the **last line** first: it names the error. The line above shows where.\n\n- `NameError` → a name doesn't exist (typo, or used before defining)\n- `TypeError` → wrong type for the operation (e.g. `\"a\" + 1`)\n- `IndexError` → index outside the list or string\n- `ZeroDivisionError`, `ValueError` (e.g. `int(\"abc\")`)\n- `IndentationError` → the spaces at the start of a line don't line up",
+   "exercises": [
+    {
+     "kind": "choice",
+     "prompt": "`NameError: name 'totl' is not defined` most likely means…",
+     "options": [
+      "Python is broken",
+      "A typo or a variable used before it was created",
+      "The list is empty",
+      "You need an import"
+     ],
+     "answer": 1,
+     "why": "Python doesn't know `totl`; usually a typo of `total`.",
+     "code": null
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which line raises `IndexError`?",
+     "options": [
+      "a = [0] * 3",
+      "a[2] = 1",
+      "a[3] = 1",
+      "a[-3] = 1"
+     ],
+     "answer": 2,
+     "why": "A list of 3 has indexes 0, 1, 2 (and −1..−3). 3 is outside.",
+     "code": "a = [0] * 3"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Fix the typo so it prints `30`.",
+     "code": "total = 10\ntotal = totl + 20\nprint(total)",
+     "solution": "total = 10\ntotal = total + 20\nprint(total)",
+     "why": "`NameError: name 'totl' is not defined`. Match the name you created.",
+     "stdin": "",
+     "full": false,
+     "expected": "30\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This crashes with `ZeroDivisionError` when there are no items. Print `0` in that case instead.",
+     "code": "total = 0\ncount = 0\nprint(total // count)",
+     "solution": "total = 0\ncount = 0\nif count == 0:\n    print(0)\nelse:\n    print(total // count)",
+     "why": "Check `count == 0` before dividing.",
+     "stdin": "",
+     "full": false,
+     "expected": "0\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`IndentationError: expected an indented block`. Fix it so it prints 1, 2, 3.",
+     "code": "for i in range(1, 4):\nprint(i)",
+     "solution": "for i in range(1, 4):\n    print(i)",
+     "why": "The body of a loop must be indented (4 spaces).",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n2\n3\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Your loop prints one value too few. What's the most likely cause?",
+     "options": [
+      "`range(1, n)` where you needed `range(1, n + 1)`",
+      "Missing colon",
+      "Wrong variable type",
+      "Python skipped a line"
+     ],
+     "answer": 0,
+     "why": "`range` stops before its end value.",
+     "code": null
+    }
+   ]
+  }
+ ],
+ "javascript": [
+  {
+   "id": "javascript-01",
+   "title": "Hello, output",
+   "intro": "`console.log(x)` prints `x` and then moves to a new line. A JavaScript file runs from top to bottom.\n\n`console.log(a, b)` puts a space between values. There is no \"print without newline\" in `console.log`;\nbuild the whole line as a string first, then log it once.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "console.log(\"Hello\");\nconsole.log(\"World\");",
+     "why": "Each `console.log` ends its line, so the words land on two lines.",
+     "stdin": "",
+     "full": false,
+     "expected": "Hello\nWorld\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let line = \"Log\";\nline += \"ic\";\nline += \"Quest\";\nconsole.log(line);",
+     "why": "Build the string first, then log it once.",
+     "stdin": "",
+     "full": false,
+     "expected": "LogicQuest\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does `console.log(\"a\", \"b\", \"c\")` show?",
+     "options": [
+      "abc",
+      "a b c",
+      "a,b,c",
+      "[ 'a', 'b', 'c' ]"
+     ],
+     "answer": 1,
+     "why": "Separate arguments are printed with one space between them.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print `1-2-3` using one console.log.",
+     "code": "console.log([1, 2, 3].___(\"-\"));",
+     "blanks": [
+      [
+       "join"
+      ]
+     ],
+     "why": "`join(sep)` turns an array into one string with `sep` between items.",
+     "stdin": "",
+     "full": false,
+     "expected": "1-2-3\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "console.log(\"2 + 3\");\nconsole.log(2 + 3);\nconsole.log(\"2\" + 3);",
+     "why": "In quotes it's text. Numbers add. But a string `+` a number **joins** them: \"23\".",
+     "stdin": "",
+     "full": false,
+     "expected": "2 + 3\n5\n23\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `Ready` but crashes. Fix it.",
+     "code": "Console.log(\"Ready\");",
+     "solution": "console.log(\"Ready\");",
+     "why": "JavaScript is case-sensitive. The error says `ReferenceError: Console is not defined`.",
+     "stdin": "",
+     "full": false,
+     "expected": "Ready\n"
+    }
+   ]
+  },
+  {
+   "id": "javascript-02",
+   "title": "Variables and types",
+   "intro": "Declare with `let` (can change) or `const` (can't be reassigned). Never use the old `var`.\n\n```js\nlet age = 21;          // number\nconst price = 9.5;     // number too: JS has one number type\nconst name = \"Yash\";   // string\nlet done = true;       // boolean\n```\n\n`typeof x` tells you the type.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let x = 10;\nx = x + 5;\nconsole.log(x);",
+     "why": "`x = x + 5` reads 10, adds 5, and stores 15 back in `x`.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What happens with `const n = 1; n = 2;`?",
+     "options": [
+      "n becomes 2",
+      "TypeError: Assignment to constant variable",
+      "n stays 1 silently",
+      "n becomes undefined"
+     ],
+     "answer": 1,
+     "why": "`const` can't be reassigned. Use `let` for values that change.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const first = \"Logic\";\nconst second = \"Quest\";\nconsole.log(first + second);\nconsole.log(`${first} ${second}`);",
+     "why": "Template strings in backticks put values inside `${...}`.",
+     "stdin": "",
+     "full": false,
+     "expected": "LogicQuest\nLogic Quest\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Swap `a` and `b` in one line.",
+     "code": "let a = 1;\nlet b = 2;\n[a, b] = [___, ___];\nconsole.log(a, b);",
+     "blanks": [
+      [
+       "b"
+      ],
+      [
+       "a"
+      ]
+     ],
+     "why": "Array destructuring: the right side is built first, then unpacked into a and b.",
+     "stdin": "",
+     "full": false,
+     "expected": "2 1\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines so the program prints `20`.",
+     "lines": [
+      "const a = 4;",
+      "const b = 5;",
+      "const product = a * b;",
+      "console.log(product);"
+     ],
+     "why": "A `const` must be declared before it's used.",
+     "stdin": "",
+     "full": false,
+     "expected": "20\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "Print `Age: 21` and then update the age to 22 and print `Age: 22`. It crashes. Fix it.",
+     "code": "const age = 21;\nconsole.log(\"Age: \" + age);\nage = 22;\nconsole.log(\"Age: \" + age);",
+     "solution": "let age = 21;\nconsole.log(\"Age: \" + age);\nage = 22;\nconsole.log(\"Age: \" + age);",
+     "why": "A value that changes must be declared with `let`.",
+     "stdin": "",
+     "full": false,
+     "expected": "Age: 21\nAge: 22\n"
+    }
+   ]
+  },
+  {
+   "id": "javascript-03",
+   "title": "Operators",
+   "intro": "`/` always gives a decimal: `7 / 2` is `3.5`. For whole-number division use `Math.trunc(7 / 2)` (or `Math.floor` for non-negative numbers).\n`%` is the remainder, `**` is power.\n\n`x += 3` is short for `x = x + 3`, `x++` adds 1. Compare with `===` and `!==`; avoid `==`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "console.log(7 / 2);\nconsole.log(Math.trunc(7 / 2));\nconsole.log(7 % 2);\nconsole.log(2 ** 5);",
+     "why": "`/` → 3.5, truncated → 3, `%` → 1, `**` → 32.",
+     "stdin": "",
+     "full": false,
+     "expected": "3.5\n3\n1\n32\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let x = 5;\nx += 3;\nx *= 2;\nx--;\nconsole.log(x);",
+     "why": "5 → 8 → 16 → 15.",
+     "stdin": "",
+     "full": false,
+     "expected": "15\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What is `\"5\" == 5` versus `\"5\" === 5`?",
+     "options": [
+      "true, true",
+      "true, false",
+      "false, false",
+      "false, true"
+     ],
+     "answer": 1,
+     "why": "`==` converts types before comparing; `===` doesn't. Always use `===`.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "console.log(-7 % 2);\nconsole.log(Math.trunc(-7 / 2));\nconsole.log(Math.floor(-7 / 2));",
+     "why": "`%` keeps the sign of the left number (-1). `trunc` cuts toward zero (-3); `floor` rounds down (-4).",
+     "stdin": "",
+     "full": false,
+     "expected": "-1\n-3\n-4\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print the last digit of `n`, then `n` without its last digit.",
+     "code": "const n = 1234;\nconsole.log(n ___ 10);\nconsole.log(Math.___(n / 10));",
+     "blanks": [
+      [
+       "%"
+      ],
+      [
+       "floor",
+       "trunc"
+      ]
+     ],
+     "why": "`% 10` is the last digit. `n / 10` is 123.4, so drop the decimals.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n123\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "This should print `5`, the number of full boxes of 4 you can fill from 22 eggs, but prints `5.5`.",
+     "code": "const eggs = 22;\nconsole.log(eggs / 4);",
+     "solution": "const eggs = 22;\nconsole.log(Math.floor(eggs / 4));",
+     "why": "Full boxes is whole-number division: `Math.floor(eggs / 4)`.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\n"
+    }
+   ]
+  },
+  {
+   "id": "javascript-04",
+   "title": "Strings and characters",
+   "intro": "A string is text. A single character is a string of length 1.\n\n- `s.length` → number of characters (a property, no brackets)\n- `s[i]` → character at index `i` (from 0); `s[s.length - 1]` is the last\n- `s.charCodeAt(i)` → code number, `String.fromCharCode(98)` → `\"b\"`\n- Compare text with `===`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const s = \"quest\";\nconsole.log(s.length);\nconsole.log(s[0]);\nconsole.log(s[s.length - 1]);",
+     "why": "Indexes run from 0 to length − 1.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\nq\nt\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const c = \"a\";\nconsole.log(c.charCodeAt(0) + 1);\nconsole.log(String.fromCharCode(c.charCodeAt(0) + 1));",
+     "why": "`charCodeAt` gives 97; adding 1 and converting back gives \"b\".",
+     "stdin": "",
+     "full": false,
+     "expected": "98\nb\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What is `\"abc\"[3]`?",
+     "options": [
+      "\"c\"",
+      "an error",
+      "undefined",
+      "\"\""
+     ],
+     "answer": 2,
+     "why": "Reading past the end doesn't throw in JavaScript; it gives `undefined`. That's why off-by-one bugs hide.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print every character of `word` on its own line.",
+     "code": "const word = \"abc\";\nfor (let i = 0; i < word.___; i++) {\n  console.log(word[___]);\n}",
+     "blanks": [
+      [
+       "length"
+      ],
+      [
+       "i"
+      ]
+     ],
+     "why": "`length` is a property; `word[i]` reads one character.",
+     "stdin": "",
+     "full": false,
+     "expected": "a\nb\nc\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let s = \"Hi\";\ns = s + \"!\";\nconsole.log(s.repeat(2));",
+     "why": "`+` joins strings, and `repeat(2)` repeats the string twice.",
+     "stdin": "",
+     "full": false,
+     "expected": "Hi!Hi!\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a word and print its first and last character separated by a space. For `logic` print `l c`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst w = lines[0].trim();\n// print first and last character",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst w = lines[0].trim();\nconsole.log(w[0] + \" \" + w[w.length - 1]);",
+     "tests": [
+      {
+       "input": "logic\n",
+       "output": "l c\n"
+      },
+      {
+       "input": "a\n",
+       "output": "a a\n"
+      },
+      {
+       "input": "script\n",
+       "output": "s t\n"
+      }
+     ],
+     "why": "First is `w[0]`, last is `w[w.length - 1]`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-05",
+   "title": "Reading input",
+   "intro": "Node reads everything the user typed (stdin) at once. Split it into lines, then convert:\n\n```js\nconst lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);                       // one number\nconst [a, b] = lines[1].split(\" \").map(Number);   // two numbers on one line\n```\n\nIn LogicQuest's problems the input is read for you, but you'll need this everywhere else.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "The input is `6 7`. What does this print?",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst [a, b] = lines[0].split(\" \").map(Number);\nconsole.log(a * b);",
+     "why": "The two numbers 6 and 7 come from the input, so it prints 42.",
+     "stdin": "6 7\n",
+     "full": false,
+     "expected": "42\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What type is `lines[0]` after reading stdin?",
+     "options": [
+      "number",
+      "string",
+      "array",
+      "It depends on what was typed"
+     ],
+     "answer": 1,
+     "why": "Always a string. `Number(...)` converts it.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Read a name and greet it: input `Ana` → `Hello, Ana`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst name = lines[___].trim();\nconsole.log(\"Hello, \" + name);",
+     "blanks": [
+      [
+       "0"
+      ]
+     ],
+     "why": "The first line is `lines[0]`. `trim()` removes the trailing newline or spaces.",
+     "stdin": "Ana\n",
+     "full": false,
+     "expected": "Hello, Ana\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to read two numbers (one per line) and print their sum.",
+     "lines": [
+      "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");",
+      "const x = Number(lines[0]);",
+      "const y = Number(lines[1]);",
+      "const total = x + y;",
+      "console.log(total);"
+     ],
+     "why": "Read the input before using it.",
+     "stdin": "3\n4\n",
+     "full": false,
+     "expected": "7\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read an integer `n` and print `n` squared.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\n// read n and print n * n",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);\nconsole.log(n * n);",
+     "tests": [
+      {
+       "input": "5\n",
+       "output": "25\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "-3\n",
+       "output": "9\n"
+      },
+      {
+       "input": "12\n",
+       "output": "144\n"
+      }
+     ],
+     "why": "`Number(lines[0])`, then print `n * n`.",
+     "full": false
+    },
+    {
+     "kind": "fix",
+     "prompt": "Read two numbers and print their sum. It prints `57` for input `5 7`. Fix it.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst [a, b] = lines[0].split(\" \");\nconsole.log(a + b);",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst [a, b] = lines[0].split(\" \").map(Number);\nconsole.log(a + b);",
+     "why": "`split` gives strings, and `+` joins strings. Convert with `.map(Number)`.",
+     "stdin": "5 7\n",
+     "full": false,
+     "expected": "12\n"
+    }
+   ]
+  },
+  {
+   "id": "javascript-06",
+   "title": "Conditions",
+   "intro": "```js\nif (n > 0) {\n  console.log(\"positive\");\n} else if (n < 0) {\n  console.log(\"negative\");\n} else {\n  console.log(\"zero\");\n}\n```\n\nCompare with `=== !== < > <= >=`. Combine with `&&` (and), `||` (or), `!` (not).",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const n = 15;\nif (n % 3 === 0 && n % 5 === 0) {\n  console.log(\"both\");\n} else if (n % 3 === 0) {\n  console.log(\"three\");\n} else {\n  console.log(\"other\");\n}",
+     "why": "The first true branch wins. 15 is divisible by both.",
+     "stdin": "",
+     "full": false,
+     "expected": "both\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Which condition is true when `age` is between 13 and 19, inclusive?",
+     "options": [
+      "age > 13 || age < 19",
+      "age >= 13 && age <= 19",
+      "13 <= age <= 19",
+      "age >= 13 and age <= 19"
+     ],
+     "answer": 1,
+     "why": "`13 <= age <= 19` runs but is wrong in JS: it compares `true`/`false` with 19. Use `&&`.",
+     "code": null
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const a = 4, b = 9;\nconst bigger = a > b ? \"a\" : \"b\";\nconsole.log(bigger);",
+     "why": "`cond ? x : y` picks `x` when true. 4 > 9 is false.",
+     "stdin": "",
+     "full": false,
+     "expected": "b\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print `even` or `odd`.",
+     "code": "const n = 8;\nif (n % 2 ___ 0) {\n  console.log(\"even\");\n} ___ {\n  console.log(\"odd\");\n}",
+     "blanks": [
+      [
+       "===",
+       "=="
+      ],
+      [
+       "else"
+      ]
+     ],
+     "why": "Compare with `===`.",
+     "stdin": "",
+     "full": false,
+     "expected": "even\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "It should print `adult` for 18 and above. For 18 it prints `minor`.",
+     "code": "const age = 18;\nif (age > 18) {\n  console.log(\"adult\");\n} else {\n  console.log(\"minor\");\n}",
+     "solution": "const age = 18;\nif (age >= 18) {\n  console.log(\"adult\");\n} else {\n  console.log(\"minor\");\n}",
+     "why": "\"18 and above\" includes 18, so the check is `>=`.",
+     "stdin": "",
+     "full": false,
+     "expected": "adult\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read a number and print `big` if it is greater than 100, otherwise `small`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);\n// your if / else here",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);\nif (n > 100) {\n  console.log(\"big\");\n} else {\n  console.log(\"small\");\n}",
+     "tests": [
+      {
+       "input": "150\n",
+       "output": "big\n"
+      },
+      {
+       "input": "100\n",
+       "output": "small\n"
+      },
+      {
+       "input": "7\n",
+       "output": "small\n"
+      },
+      {
+       "input": "101\n",
+       "output": "big\n"
+      }
+     ],
+     "why": "Exactly 100 is not greater than 100, so it's `small`.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-07",
+   "title": "Loops",
+   "intro": "```js\nfor (let i = 1; i <= 5; i++) {   // start; keep going while; step\n  console.log(i);\n}\n\nlet n = 10;\nwhile (n > 0) {\n  n = Math.floor(n / 2);\n}\n\nfor (const x of [4, 8, 15]) { ... }   // each value of an array\n```\n\n`break` leaves the loop, `continue` jumps to the next round.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let out = \"\";\nfor (let i = 0; i < 3; i++) {\n  out += i + \" \";\n}\nconsole.log(out.trim());",
+     "why": "Starts at 0 and stops before 3: 0, 1, 2.",
+     "stdin": "",
+     "full": false,
+     "expected": "0 1 2\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let sum = 0;\nfor (let i = 1; i <= 4; i++) {\n  sum += i;\n}\nconsole.log(sum);",
+     "why": "1 + 2 + 3 + 4 = 10.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "let n = 20;\nlet steps = 0;\nwhile (n > 1) {\n  n = Math.floor(n / 2);\n  steps++;\n}\nconsole.log(steps);",
+     "why": "20 → 10 → 5 → 2 → 1: four halvings. Without `Math.floor`, n would never become a whole number.",
+     "stdin": "",
+     "full": false,
+     "expected": "4\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Print 5, 4, 3, 2, 1 on separate lines.",
+     "code": "for (let i = 5; i ___ 1; i___) {\n  console.log(i);\n}",
+     "blanks": [
+      [
+       ">="
+      ],
+      [
+       "--"
+      ]
+     ],
+     "why": "Count down while `i >= 1`, decreasing with `i--`.",
+     "stdin": "",
+     "full": false,
+     "expected": "5\n4\n3\n2\n1\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to print only the odd numbers from 1 to 5.",
+     "lines": [
+      "for (let i = 1; i <= 5; i++) {",
+      "  if (i % 2 === 0) {",
+      "    continue;",
+      "  }",
+      "  console.log(i);",
+      "}"
+     ],
+     "why": "`continue` skips the log for even numbers.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n3\n5\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "It should print 1 to 5 but stops at 4. Fix the loop.",
+     "code": "for (let i = 1; i < 5; i++) {\n  console.log(i);\n}",
+     "solution": "for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}",
+     "why": "`i < 5` stops before 5. Use `<=` to include it.",
+     "stdin": "",
+     "full": false,
+     "expected": "1\n2\n3\n4\n5\n"
+    }
+   ]
+  },
+  {
+   "id": "javascript-08",
+   "title": "Arrays",
+   "intro": "```js\nconst nums = [4, 8, 15];\nconst zeros = new Array(5).fill(0);   // five zeros\nnums[0];          // first\nnums.length;      // 3\nnums.push(16);    // add to the end\n```\n\n`const` stops you from reassigning `nums`, but you can still change what's inside.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const a = [3, 6, 9];\nconsole.log(a.length);\nconsole.log(a[1]);\na[1] = 100;\nconsole.log(a[0] + a[1]);",
+     "why": "Index 1 is the second element. After changing it, 3 + 100 = 103.",
+     "stdin": "",
+     "full": false,
+     "expected": "3\n6\n103\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "const a = new Array(4).fill(0);\na[2] = 7;\nconsole.log(a.join(\" \"));",
+     "why": "`new Array(4).fill(0)` is four zeros; only index 2 changed.",
+     "stdin": "",
+     "full": false,
+     "expected": "0 0 7 0\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "For `const a = [5, 6, 7];`, what is `a[3] + 1`?",
+     "options": [
+      "8",
+      "an error",
+      "NaN",
+      "undefined"
+     ],
+     "answer": 2,
+     "why": "`a[3]` is `undefined`, and `undefined + 1` is `NaN`. JavaScript doesn't stop you, so check your indexes.",
+     "code": null
+    },
+    {
+     "kind": "blank",
+     "prompt": "Find the largest value without `Math.max`.",
+     "code": "const a = [4, 11, 2, 9];\nlet best = a[0];\nfor (let i = 1; i < a.___; i++) {\n  if (a[i] ___ best) {\n    best = a[i];\n  }\n}\nconsole.log(best);",
+     "blanks": [
+      [
+       "length"
+      ],
+      [
+       ">"
+      ]
+     ],
+     "why": "Walk the array and keep the biggest value seen so far.",
+     "stdin": "",
+     "full": false,
+     "expected": "11\n"
+    },
+    {
+     "kind": "order",
+     "prompt": "Arrange the lines to print the sum of the array without `reduce`.",
+     "lines": [
+      "const a = [1, 2, 3, 4];",
+      "let sum = 0;",
+      "for (const x of a) {",
+      "  sum += x;",
+      "}",
+      "console.log(sum);"
+     ],
+     "why": "Create the array and the accumulator before the loop, log after it.",
+     "stdin": "",
+     "full": false,
+     "expected": "10\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Read `n`, then a line of `n` numbers. Print how many of them are negative.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);\nconst a = lines[1].trim().split(\" \").map(Number);\n// count the negatives",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nconst n = Number(lines[0]);\nconst a = lines[1].trim().split(\" \").map(Number);\nlet count = 0;\nfor (const x of a) {\n  if (x < 0) count++;\n}\nconsole.log(count);",
+     "tests": [
+      {
+       "input": "5\n1 -2 3 -4 -5\n",
+       "output": "3\n"
+      },
+      {
+       "input": "1\n7\n",
+       "output": "0\n"
+      },
+      {
+       "input": "3\n-1 -1 -1\n",
+       "output": "3\n"
+      }
+     ],
+     "why": "Loop over the array and count values below zero.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-09",
+   "title": "Functions",
+   "intro": "```js\nfunction square(x) {\n  return x * x;\n}\n\nconsole.log(square(4));   // 16\n```\n\nA function without `return` gives back `undefined`. In LogicQuest problems you write `solve`.",
+   "exercises": [
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "function twice(x) {\n  return x * 2;\n}\n\nconst a = twice(5);\nconsole.log(a + twice(1));",
+     "why": "twice(5) is 10, twice(1) is 2, so 12.",
+     "stdin": "",
+     "full": false,
+     "expected": "12\n"
+    },
+    {
+     "kind": "predict",
+     "prompt": "What does this print?",
+     "code": "function shout(word) {\n  console.log(word + \"!\");\n}\n\nconst result = shout(\"hey\");\nconsole.log(result);",
+     "why": "`shout` logs, but returns nothing, so `result` is `undefined`.",
+     "stdin": "",
+     "full": false,
+     "expected": "hey!\nundefined\n"
+    },
+    {
+     "kind": "blank",
+     "prompt": "Complete the function that returns the larger of two numbers.",
+     "code": "___ max2(a, b) {\n  if (a > b) {\n    ___ a;\n  }\n  return b;\n}\n\nconsole.log(max2(3, 8));",
+     "blanks": [
+      [
+       "function"
+      ],
+      [
+       "return"
+      ]
+     ],
+     "why": "`function` declares it; `return` sends the value back.",
+     "stdin": "",
+     "full": false,
+     "expected": "8\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "What does a JavaScript function return if it has no `return`?",
+     "options": [
+      "0",
+      "null",
+      "undefined",
+      "It's an error"
+     ],
+     "answer": 2,
+     "why": "It returns `undefined`.",
+     "code": null
+    },
+    {
+     "kind": "fix",
+     "prompt": "`isEven(4)` should print `true`, but it prints `undefined`. Fix it.",
+     "code": "function isEven(n) {\n  if (n % 2 === 0) {\n    console.log(true);\n  }\n}\n\nconsole.log(isEven(4));",
+     "solution": "function isEven(n) {\n  return n % 2 === 0;\n}\n\nconsole.log(isEven(4));",
+     "why": "Logging inside a function isn't returning. Use `return`.",
+     "stdin": "",
+     "full": false,
+     "expected": "true\n"
+    },
+    {
+     "kind": "write",
+     "prompt": "Complete `cube` so it returns `n * n * n`. The program reads `n` and prints `cube(n)`.",
+     "code": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nfunction cube(n) {\n  return 0;\n}\n\nconsole.log(cube(Number(lines[0])));",
+     "solution": "const lines = require(\"fs\").readFileSync(0, \"utf8\").split(\"\\n\");\nfunction cube(n) {\n  return n * n * n;\n}\n\nconsole.log(cube(Number(lines[0])));",
+     "tests": [
+      {
+       "input": "3\n",
+       "output": "27\n"
+      },
+      {
+       "input": "0\n",
+       "output": "0\n"
+      },
+      {
+       "input": "-2\n",
+       "output": "-8\n"
+      },
+      {
+       "input": "100\n",
+       "output": "1000000\n"
+      }
+     ],
+     "why": "Replace `return 0` with the real calculation.",
+     "full": false
+    }
+   ]
+  },
+  {
+   "id": "javascript-10",
+   "title": "Reading errors",
+   "intro": "Node prints the error type and a stack trace. Read the **first line** and the `main.js:LINE` location.\n\n- `ReferenceError: x is not defined` → typo, or used before declaring\n- `TypeError: ... is not a function` / `Cannot read properties of undefined` → wrong value, often from a bad index\n- `SyntaxError` → missing bracket, quote or comma\n- Silent bugs: `undefined` and `NaN` in your output usually mean an index or conversion went wrong.",
+   "exercises": [
+    {
+     "kind": "choice",
+     "prompt": "`ReferenceError: totl is not defined` most likely means…",
+     "options": [
+      "Node is broken",
+      "A typo or a variable used before it was declared",
+      "The array is empty",
+      "You need to import something"
+     ],
+     "answer": 1,
+     "why": "JavaScript doesn't know `totl`; usually a typo of `total`.",
+     "code": null
+    },
+    {
+     "kind": "choice",
+     "prompt": "Your output shows `NaN`. What's a likely cause?",
+     "options": [
+      "Adding a number to `undefined` (e.g. reading past the end of an array)",
+      "A missing semicolon",
+      "Using `let`",
+      "The number is too small"
+     ],
+     "answer": 0,
+     "why": "`undefined + 1` is `NaN`. Check indexes and `Number(...)` conversions.",
+     "code": null
+    },
+    {
+     "kind": "fix",
+     "prompt": "Fix the typo so it prints `30`.",
+     "code": "let total = 10;\ntotal = totl + 20;\nconsole.log(total);",
+     "solution": "let total = 10;\ntotal = total + 20;\nconsole.log(total);",
+     "why": "`ReferenceError: totl is not defined`. Match the name you declared.",
+     "stdin": "",
+     "full": false,
+     "expected": "30\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "The average prints `NaN` when there are no items. Print `0` in that case instead.",
+     "code": "const sum = 0;\nconst count = 0;\nconsole.log(sum / count);",
+     "solution": "const sum = 0;\nconst count = 0;\nif (count === 0) {\n  console.log(0);\n} else {\n  console.log(sum / count);\n}",
+     "why": "0 / 0 is `NaN` in JavaScript (no crash!). Check `count === 0` first.",
+     "stdin": "",
+     "full": false,
+     "expected": "0\n"
+    },
+    {
+     "kind": "fix",
+     "prompt": "`TypeError: Cannot read properties of undefined`. It should print each word's first letter: `L Q`.",
+     "code": "const words = [\"Logic\", \"Quest\"];\nlet out = \"\";\nfor (let i = 0; i <= words.length; i++) {\n  out += words[i][0] + \" \";\n}\nconsole.log(out.trim());",
+     "solution": "const words = [\"Logic\", \"Quest\"];\nlet out = \"\";\nfor (let i = 0; i < words.length; i++) {\n  out += words[i][0] + \" \";\n}\nconsole.log(out.trim());",
+     "why": "`i <= words.length` reaches index 2, which is `undefined`. Use `<`.",
+     "stdin": "",
+     "full": false,
+     "expected": "L Q\n"
+    },
+    {
+     "kind": "choice",
+     "prompt": "Your loop prints one value too few. What's the most likely cause?",
+     "options": [
+      "Using `<` where you needed `<=`",
+      "Missing semicolon",
+      "Using const",
+      "JavaScript skipped a line"
+     ],
+     "answer": 0,
+     "why": "Off-by-one: check where the loop starts and whether the end should be included.",
+     "code": null
+    }
+   ]
+  }
+ ]
+}

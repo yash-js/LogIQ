@@ -256,7 +256,7 @@ export function ProblemPage() {
                     </span>
                   ))}
                 </div>
-                <Markdown text={problem.statement} />
+                <Markdown text={problem.statement} lang={lang} />
                 {problem.examples.map((ex, i) => (
                   <div className="example" key={i}>
                     <div className="example-head">Example {i + 1}</div>
@@ -289,7 +289,7 @@ export function ProblemPage() {
                 <p className="note" style={{ marginTop: 0 }}>
                   Each hint opened before you solve takes {HINT_PENALTY * 100}% off this problem's XP. The first one is a question, not an answer.
                 </p>
-                {problem.hints.map((h, i) => {
+                {problem.hints[lang].map((h, i) => {
                   const unlocked = i < hintsUsed || solved;
                   const nextUp = i === hintsUsed && !solved;
                   return (

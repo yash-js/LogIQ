@@ -27,7 +27,7 @@ const arr = s.split("");   // when you need to modify
 
 ## 2. Strings are immutable
 
-You cannot change a character inside a Java `String`, Python `str` or JavaScript string. Every `s = s + c` creates a whole new string, which gets slow inside a loop. Build with:
+You cannot change a character inside a string. Every `s = s + c` creates a whole new string, which gets slow inside a loop. Build with:
 
 ```java
 StringBuilder sb = new StringBuilder();
@@ -54,7 +54,17 @@ for (const c of s) {
 
 ## 3. Comparing strings
 
-In Java, `==` compares **references**, not text. Always use `a.equals(b)`. For single characters, `==` is fine because `char` is a number. In JavaScript, `===` compares string contents, so `a === b` is correct.
+:::only java
+`==` compares **references**, not text. Always use `a.equals(b)`. For a single `char`, `==` is fine because a `char` is a number.
+:::
+
+:::only python
+`==` compares the characters. `"hi" == "hi"` is true.
+:::
+
+:::only javascript
+`===` compares the characters, so `a === b` is the comparison to use. `==` coerces types; prefer `===`.
+:::
 
 ```java
 if (word.equals("Google")) ...       // correct
@@ -72,7 +82,7 @@ if (word == "Google") ...            // bug that sometimes "works"
 
 ## 5. Frequency arrays
 
-Counting characters is the single most useful string trick. For lowercase letters, an `int[26]` is all you need:
+Counting characters is the single most useful string trick. For lowercase letters, an array of 26 counters is all you need:
 
 ```java
 int[] freq = new int[26];
@@ -91,7 +101,17 @@ const freq = new Array(26).fill(0);
 for (const c of s) freq[c.charCodeAt(0) - 97]++;
 ```
 
-For any ASCII character, use size 128 and index directly with `c`.
+:::only java
+For any character in the ASCII range, use size 128 and index directly with the `char`.
+:::
+
+:::only python
+For any character in the ASCII range, use size 128 and index with `ord(c)`.
+:::
+
+:::only javascript
+For any character in the ASCII range, use size 128 and index with `c.charCodeAt(0)`.
+:::
 
 ## 6. Two pointers on strings
 
@@ -164,4 +184,16 @@ while (i < n) {
 
 ## 8. Grade-school arithmetic on strings
 
-Adding binary or decimal strings: start from the **right**, keep a carry, append `sum % base`, carry `sum / base`, and reverse at the end. Phase 6 builds on this for multiplication.
+Adding binary or decimal strings: start from the **right**, keep a carry, append the remainder, carry the quotient, and reverse at the end. Phase 6 builds on this for multiplication.
+
+:::only java
+The digit you append is `sum % base` and the carry is `sum / base`.
+:::
+
+:::only python
+The digit you append is `sum % base` and the carry is `sum // base`.
+:::
+
+:::only javascript
+The digit you append is `sum % base` and the carry is `Math.floor(sum / base)`.
+:::

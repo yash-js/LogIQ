@@ -21,6 +21,19 @@ export interface DocProgress {
   bestScore: number;
 }
 
+export interface UnitProgress {
+  done: boolean;
+  perfect: boolean;
+  xp: number;
+}
+
+export interface BasecampProgress {
+  units: Record<string, UnitProgress>;
+  /** Passed the placement test, so Basecamp counts as complete. */
+  placed?: boolean;
+  placementXp?: number;
+}
+
 export interface Settings {
   lang: Lang;
   pythonCmd: string;
@@ -32,6 +45,7 @@ export interface Settings {
 export interface ProgressState {
   problems: Record<string, ProblemProgress>;
   docs: Record<number, DocProgress>;
+  basecamp: Partial<Record<Lang, BasecampProgress>>;
   xp: number;
   activity: Record<string, number>;
   bestStreak: number;
@@ -49,6 +63,8 @@ interface Actions {
   setLastOpened(id: string): void;
   markDocRead(phase: number): void;
   recordQuiz(phase: number, score: number, passed: boolean): void;
+  recordUnit(lang: Lang, unitId: string, xp: number, perfect: boolean): number;
+  recordPlacement(lang: Lang, xp: number): number;
   setSettings(s: Partial<Settings>): void;
   replaceAll(s: ProgressState): void;
   reset(): void;
@@ -57,6 +73,7 @@ interface Actions {
 export const initialState: ProgressState = {
   problems: {},
   docs: {},
+  basecamp: {},
   xp: 0,
   activity: {},
   bestStreak: 0,
@@ -141,6 +158,35 @@ export const useProgress = create<ProgressState & Actions>()(
         });
       },
 
+      /** Stores a finished Basecamp unit. Returns the XP actually added (best run counts). */
+      recordUnit(lang, unitId, xp, perfect) {
+        const s = get();
+        const bc = s.basecamp[lang] ?? { units: {} };
+        const prev = bc.units[unitId];
+        const gain = Math.max(0, xp - (prev?.xp ?? 0));
+        const today = dayKey();
+        const activity = { ...s.activity, [today]: (s.activity[today] ?? 0) + 1 };
+        set({
+          basecamp: {
+            ...s.basecamp,
+            [lang]: { ...bc, units: { ...bc.units, [unitId]: { done: true, perfect: !!prev?.perfect || perfect, xp: Math.max(prev?.xp ?? 0, xp) } } },
+          },
+          xp: s.xp + gain,
+          activity,
+          bestStreak: Math.max(s.bestStreak, streak(activity)),
+          updatedAt: now(),
+        });
+        return gain;
+      },
+
+      recordPlacement(lang, xp) {
+        const s = get();
+        const bc = s.basecamp[lang] ?? { units: {} };
+        if (bc.placed) return 0;
+        set({ basecamp: { ...s.basecamp, [lang]: { ...bc, placed: true, placementXp: xp } }, xp: s.xp + xp, updatedAt: now() });
+        return xp;
+      },
+
       setSettings(s) {
         set({ settings: { ...get().settings, ...s } });
       },
@@ -155,11 +201,11 @@ export const useProgress = create<ProgressState & Actions>()(
     }),
     {
       name: "logicquest-progress",
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => progressStorage),
       migrate: (old) => {
         const st = old as ProgressState;
-        return { ...st, settings: { ...initialState.settings, ...st.settings } } as ProgressState & Actions;
+        return { ...st, basecamp: st.basecamp ?? {}, settings: { ...initialState.settings, ...st.settings } } as ProgressState & Actions;
       },
     },
   ),
@@ -170,6 +216,7 @@ export function snapshot(): ProgressState {
   return {
     problems: s.problems,
     docs: s.docs,
+    basecamp: s.basecamp,
     xp: s.xp,
     activity: s.activity,
     bestStreak: s.bestStreak,
@@ -207,12 +254,34 @@ export function mergeStates(a: ProgressState, b: ProgressState): ProgressState {
       ? { read: da.read || db.read, quizPassed: da.quizPassed || db.quizPassed, bestScore: Math.max(da.bestScore, db.bestScore) }
       : db;
   }
+  const basecamp: Partial<Record<Lang, BasecampProgress>> = {};
+  for (const l of ["java", "python", "javascript"] as Lang[]) {
+    const ba = a.basecamp?.[l];
+    const bb = b.basecamp?.[l];
+    if (!ba && !bb) continue;
+    const units: Record<string, UnitProgress> = { ...(ba?.units ?? {}) };
+    for (const [uid, ub] of Object.entries(bb?.units ?? {})) {
+      const ua = units[uid];
+      units[uid] = ua ? { done: ua.done || ub.done, perfect: ua.perfect || ub.perfect, xp: Math.max(ua.xp, ub.xp) } : ub;
+    }
+    basecamp[l] = {
+      units,
+      placed: !!(ba?.placed || bb?.placed),
+      placementXp: Math.max(ba?.placementXp ?? 0, bb?.placementXp ?? 0),
+    };
+  }
   const activity: Record<string, number> = { ...a.activity };
   for (const [d, n] of Object.entries(b.activity)) activity[d] = Math.max(activity[d] ?? 0, n);
-  const xp = Object.values(problems).reduce((s, p) => s + (p.xpEarned || 0), 0);
+  const xp =
+    Object.values(problems).reduce((s, p) => s + (p.xpEarned || 0), 0) +
+    Object.values(basecamp).reduce(
+      (s, bc) => s + (bc?.placementXp ?? 0) + Object.values(bc?.units ?? {}).reduce((t, u) => t + u.xp, 0),
+      0,
+    );
   return {
     problems,
     docs,
+    basecamp,
     xp,
     activity,
     bestStreak: Math.max(a.bestStreak, b.bestStreak, streak(activity)),

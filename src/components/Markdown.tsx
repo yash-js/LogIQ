@@ -18,10 +18,45 @@ export function slug(s: string) {
 }
 
 /**
+ * Keeps `:::only java` / `:::only python,javascript` regions that apply to `lang`
+ * and drops the marker lines. Blocks do not nest: a `:::` line closes only an open block.
+ * With no `lang`, every region is kept and the markers are still removed.
+ */
+export function filterForLang(text: string, lang?: Lang): string {
+  const lines = text.split("\n");
+  const out: string[] = [];
+  let allowed: Set<string> | null = null;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (allowed === null) {
+      const opened = /^:::only\s+(.+)$/.exec(trimmed);
+      if (opened) {
+        allowed = new Set(
+          opened[1]
+            .split(",")
+            .map((s) => s.trim().toLowerCase())
+            .filter(Boolean),
+        );
+        continue;
+      }
+      out.push(line);
+      continue;
+    }
+    if (trimmed === ":::") {
+      allowed = null;
+      continue;
+    }
+    if (!lang || allowed.has(lang)) out.push(line);
+  }
+  return out.join("\n");
+}
+
+/**
  * Renders guide/statement markdown. Code blocks tagged java / python / javascript
- * are shown only for the learner's chosen language.
+ * are shown only for the learner's chosen language. `:::only` regions are filtered first.
  */
 export function Markdown({ text: src, lang }: { text: string; lang?: Lang }) {
+  const body = filterForLang(src, lang);
   return (
     <div className="prose">
       <ReactMarkdown
@@ -52,7 +87,7 @@ export function Markdown({ text: src, lang }: { text: string; lang?: Lang }) {
           },
         }}
       >
-        {src}
+        {body}
       </ReactMarkdown>
     </div>
   );

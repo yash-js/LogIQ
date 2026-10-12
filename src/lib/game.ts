@@ -1,5 +1,6 @@
 import { phases, problems, problemsInPhase, type Problem } from "../content";
 import type { ProgressState } from "./progress";
+import { basecampDone } from "./basecamp";
 
 /** Share of a phase's problems that must be solved before the next world opens. */
 export const UNLOCK_SHARE = 0.6;
@@ -114,6 +115,12 @@ export function badges(state: ProgressState): Badge[] {
   }));
   list.push(
     { id: "first", name: "First Light", detail: "Solve your first problem", earned: solved.length >= 1 },
+    {
+      id: "basecamp",
+      name: "Basecamp Graduate",
+      detail: "Finish Basecamp (or its placement test) in any language",
+      earned: (["java", "python", "javascript"] as const).some((l) => basecampDone(l, state).complete),
+    },
     { id: "nohint10", name: "Unassisted", detail: "Solve 10 problems without hints", earned: noHint >= 10 },
     { id: "nohint50", name: "Lone Wolf", detail: "Solve 50 problems without hints", earned: noHint >= 50 },
     { id: "purist", name: "Purist", detail: "Finish 10 Pure challenges (no library shortcuts)", earned: pure >= 10 },

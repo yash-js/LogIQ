@@ -34,7 +34,19 @@ The hardest habit to build: **do not trace every call in your head.** Assume `fa
 
 Each call gets its own box (a stack frame) with its own `n`. `fact(3)` waits for `fact(2)`, which waits for `fact(1)`, which waits for `fact(0)`. Then the answers flow back up: 1 → 1 → 2 → 6.
 
-No base case, or a step that does not shrink the input, means infinite calls and a **StackOverflowError** (Java), **RecursionError** (Python) or **RangeError: Maximum call stack size exceeded** (JavaScript).
+No base case, or a step that does not shrink the input, means infinite calls. Every call uses a stack frame, and endless calls exhaust the stack.
+
+:::only java
+The error is **StackOverflowError**.
+:::
+
+:::only python
+The error is **RecursionError**.
+:::
+
+:::only javascript
+The error is **RangeError** (`Maximum call stack size exceeded`).
+:::
 
 ## 3. Before or after the call?
 
@@ -176,7 +188,17 @@ function ways(n) {
 
 ## 7. Recursion limits
 
-Python stops at about 1000 nested calls by default. Phase 3 tests stay below that. If you ever need more, `import sys; sys.setrecursionlimit(10000)`. Java and JavaScript allow several thousand levels; LogicQuest runs them with a larger stack.
+:::only java
+Several thousand nested calls are allowed. LogicQuest runs your program with a larger stack, and the tests in this phase stay inside that limit.
+:::
+
+:::only python
+About 1000 nested calls are allowed by default. The tests in this phase stay below that. If you ever need more, import `sys` and raise `sys.setrecursionlimit`.
+:::
+
+:::only javascript
+Several thousand nested calls are allowed. LogicQuest runs your program with a larger stack, and the tests in this phase stay inside that limit.
+:::
 
 ## 8. The leap of faith
 

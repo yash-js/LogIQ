@@ -60,7 +60,19 @@ Robot moves, lemonade change, zigzag rows and tic-tac-toe are all this shape.
 
 ## 3. Base conversion, one more time
 
-Any base b: `digit = n % b`, `n = n / b`, digits come out reversed. Excel columns are base 26 **without a zero digit**, which is why you subtract 1 before each step.
+Any base b: the next digit is `n % b`, then drop that digit by dividing by b. Digits come out reversed. Excel columns are base 26 **without a zero digit**, which is why you subtract 1 before each step.
+
+:::only java
+Drop the digit with `n = n / b` (integer division).
+:::
+
+:::only python
+Drop the digit with `n = n // b`.
+:::
+
+:::only javascript
+Drop the digit with `n = Math.floor(n / b)`. For a negative `n`, take the sign off first: floor division rounds the wrong way.
+:::
 
 ## 4. Look-ahead parsing
 
@@ -117,7 +129,19 @@ The two `if` checks handle single rows and single columns, the edge cases that b
 
 ## 6. Clamping and overflow
 
-`atoi` and similar problems must stay inside 32-bit limits. Build the number in a `long`, and as soon as it passes `Integer.MAX_VALUE`, clamp and stop reading. Python has no overflow, so you must clamp yourself with `max(-2**31, min(2**31 - 1, value))`. JavaScript numbers are exact up to 2^53, so you can build the value normally and clamp with two `if` checks.
+`atoi` and similar problems must stay inside the 32-bit range, about ±2.1 billion.
+
+:::only java
+Build the number in a `long`. As soon as it passes `Integer.MAX_VALUE`, or drops below `Integer.MIN_VALUE`, clamp and stop reading.
+:::
+
+:::only python
+Integers never overflow, so you must clamp yourself. Keep the value inside −2147483648 … 2147483647.
+:::
+
+:::only javascript
+Numbers stay exact well past the 32-bit range (up to 2^53). Build the value normally, then clamp with two comparisons. If a later value exceeds 2^53, switch to `BigInt`.
+:::
 
 ## 7. Stretch problems
 

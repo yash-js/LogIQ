@@ -29,7 +29,7 @@ export interface Problem {
   timeLimitMs: number;
   examples: TestCase[];
   tests: TestCase[];
-  hints: string[];
+  hints: Record<Lang, string[]>;
   practice: { label: string; url: string } | null;
   starter: Record<Lang, string>;
 }
@@ -39,6 +39,8 @@ export interface QuizQuestion {
   options: string[];
   answer: number;
   why: string;
+  /** Omitted questions are shown for every language. */
+  lang?: Lang;
 }
 
 export interface Phase {

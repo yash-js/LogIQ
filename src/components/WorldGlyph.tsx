@@ -2,6 +2,15 @@ import type { ReactElement } from "react";
 // Line-drawn emblems for the six worlds. Drawn on a 48×48 grid with currentColor.
 
 const glyphs: Record<number, ReactElement> = {
+  // Basecamp: a tent below a peak.
+  0: (
+    <>
+      <path d="M4 40l20-26 20 26z" />
+      <path d="M24 14v26M18 40l6-9 6 9" />
+      <path d="M30 8l4-4 4 4" />
+      <path d="M2 40h44" />
+    </>
+  ),
   // The Crossroads: a signpost pointing two ways.
   1: (
     <>

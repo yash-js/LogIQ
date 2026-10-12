@@ -27,7 +27,19 @@ for (let i = 0; i < b.length; i++) console.log(b[i]);
 for (const x of b) console.log(x);   // when you don't need i
 ```
 
-The last index is `length - 1`. Reading `a[a.length]` throws **ArrayIndexOutOfBoundsException**; in Python, **IndexError**. JavaScript silently gives `undefined`, which is worse: the bug shows up later as `NaN`.
+The last valid index is one less than the length.
+
+:::only java
+That index is `a.length - 1`. Reading `a[a.length]` throws **ArrayIndexOutOfBoundsException**.
+:::
+
+:::only python
+That index is `len(a) - 1`. Reading past the end throws **IndexError**.
+:::
+
+:::only javascript
+That index is `a.length - 1`. Reading `a[a.length]` silently gives `undefined`, and the bug shows up later as `NaN`.
+:::
 
 ## 2. Track a value while you walk
 
@@ -174,7 +186,17 @@ for (let i = 0; i < m.length; i++)
     total += m[i][j];
 ```
 
-`[[0] * cols] * rows` in Python makes every row the **same** list, so changing one changes all.
+:::only java
+`new int[rows][cols]` already gives each row its own array.
+:::
+
+:::only python
+`[[0] * cols] * rows` makes every row the **same** list, so changing one row changes all of them. Build each row on its own: `[[0] * cols for _ in range(rows)]`.
+:::
+
+:::only javascript
+`new Array(rows).fill([])` stores the **same** row over and over, so changing one row changes all of them. Build each row on its own: `Array.from({ length: rows }, () => new Array(cols).fill(0))`.
+:::
 
 ## 8. Returning arrays
 

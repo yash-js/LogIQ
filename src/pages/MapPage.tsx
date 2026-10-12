@@ -5,16 +5,21 @@ import { areProblemsOpen, dailyQuest, dayKey, isPhaseOpen, needToOpen, solvedCou
 import { WorldGlyph } from "../components/WorldGlyph";
 import { Topo } from "../components/Topo";
 import { Flame } from "../components/Sidebar";
+import { basecampDone, unitsFor, type Unit } from "../lib/basecamp";
+import { LANGS } from "../content";
 
 // Pin positions on the map: x in % of width, y in px.
+const CAMP_PIN = { x: 40, y: 72 };
 const PINS = [
-  { x: 14, y: 72 },
-  { x: 50, y: 196 },
-  { x: 22, y: 320 },
-  { x: 56, y: 444 },
-  { x: 16, y: 568 },
-  { x: 50, y: 692 },
+  { x: 14, y: 198 },
+  { x: 50, y: 322 },
+  { x: 22, y: 446 },
+  { x: 56, y: 570 },
+  { x: 16, y: 694 },
+  { x: 50, y: 818 },
 ];
+const ALL_PINS = [CAMP_PIN, ...PINS];
+const MAP_H = 890;
 
 /** The furthest world the learner has opened. */
 function currentPhase(state: ProgressState) {
@@ -26,9 +31,17 @@ function currentPhase(state: ProgressState) {
 type Next =
   | { kind: "problem"; problem: Problem; resume: boolean }
   | { kind: "guide"; phase: number }
+  | { kind: "basecamp"; unit: Unit; index: number; total: number }
   | { kind: "done" };
 
 function nextStep(state: ProgressState): Next {
+  const lang = state.settings.lang;
+  const solvedAny = Object.values(state.problems).some((p) => p.solvedAt);
+  if (!solvedAny && !state.lastOpened && !basecampDone(lang, state).complete) {
+    const units = unitsFor(lang);
+    const index = units.findIndex((u) => !state.basecamp[lang]?.units[u.id]?.done);
+    if (index >= 0) return { kind: "basecamp", unit: units[index], index, total: units.length };
+  }
   const last = state.lastOpened ? problemById.get(state.lastOpened) : undefined;
   if (last && !state.problems[last.id]?.solvedAt && areProblemsOpen(state, last.phase)) return { kind: "problem", problem: last, resume: true };
   for (const ph of phases) {
@@ -70,6 +83,10 @@ export function MapPage() {
 
   const nextPhase = next.kind === "problem" ? next.problem.phase : next.kind === "guide" ? next.phase : cur;
   const np = phaseById(nextPhase)!;
+  const lang = state.settings.lang;
+  const langLabel = LANGS.find((l) => l.id === lang)!.label;
+  const camp = basecampDone(lang, state);
+  const campHere = next.kind === "basecamp";
 
   return (
     <div className="page">
@@ -78,14 +95,28 @@ export function MapPage() {
           <h1 className="display">Your trail</h1>
           <p>
             {solvedTotal === 0
-              ? "Six worlds stand between you and DSA. Each one starts with a short guide, then a trail of problems."
+              ? `Start at Basecamp to learn the ${langLabel} basics. Then six worlds stand between you and DSA, each with a short guide and a trail of problems.`
               : `${solvedTotal} of 145 problems solved. ${st ? "Keep the streak alive with one more today." : "One problem today starts a new streak."}`}
           </p>
         </div>
       </div>
 
       <div className="home-cards">
-        {next.kind === "done" ? (
+        {next.kind === "basecamp" ? (
+          <Link className="continue" style={{ ["--c" as string]: "var(--gold)" }} to={`/basecamp/${next.unit.id}`}>
+            <WorldGlyph id={0} size={150} className="glyph" />
+            <span className="eyebrow">
+              Basecamp · {langLabel} unit {next.index + 1} of {next.total}
+            </span>
+            <h2>{next.unit.title}</h2>
+            <span className="meta">
+              Short exercises with 3 lives. Already know {langLabel}? Take the placement test from Basecamp.
+            </span>
+            <span className="go">
+              <span className="btn btn-primary">{next.index === 0 ? "Start Basecamp" : "Continue"}</span>
+            </span>
+          </Link>
+        ) : next.kind === "done" ? (
           <div className="continue" style={{ ["--c" as string]: "var(--gold)" }}>
             <span className="eyebrow">All worlds complete</span>
             <h2>You finished LogicQuest. Time for DSA.</h2>
@@ -156,16 +187,16 @@ export function MapPage() {
       <section className="map" aria-label="World map">
         <Topo className="topo" seed={11} peaks={6} />
         <div className="map-title">
-          <h2>The six worlds</h2>
+          <h2>The trail</h2>
           <span className="small muted">A world opens after you solve 60% of the one before it</span>
         </div>
-        <div className="map-trail">
-          <svg className="path" viewBox="0 0 100 760" preserveAspectRatio="none" aria-hidden="true">
+        <div className="map-trail" style={{ height: MAP_H }}>
+          <svg className="path" viewBox={`0 0 100 ${MAP_H}`} preserveAspectRatio="none" aria-hidden="true">
             <path
-              d={PINS.map((p, i) => {
+              d={ALL_PINS.map((p, i) => {
                 const x = p.x;
                 if (i === 0) return `M ${x} ${p.y}`;
-                const prev = PINS[i - 1];
+                const prev = ALL_PINS[i - 1];
                 const px = prev.x;
                 return `C ${px} ${p.y - 40}, ${x} ${prev.y + 40}, ${x} ${p.y}`;
               }).join(" ")}
@@ -178,11 +209,28 @@ export function MapPage() {
               vectorEffect="non-scaling-stroke"
             />
           </svg>
+          <Link
+            to="/basecamp"
+            className={`pin ${campHere ? "current" : ""}`}
+            style={{ left: `${CAMP_PIN.x}%`, top: CAMP_PIN.y, ["--c" as string]: "#ffc24b", transform: "translate(-52px, -50%)" }}
+          >
+            <div className="pin-medal">
+              <Ring value={camp.placed ? 1 : camp.done / camp.total} />
+              <WorldGlyph id={0} size={50} />
+              <span className="pin-num">0</span>
+              {campHere && <span className="you-are-here">You are here</span>}
+            </div>
+            <div className="pin-text">
+              <span className="pin-world">Basecamp</span>
+              <span className="pin-topic">{langLabel} basics</span>
+              <span className="pin-meta">{camp.placed ? "Placement test passed" : `${camp.done} of ${camp.total} units`}</span>
+            </div>
+          </Link>
           {phases.map((ph, i) => {
             const open = isPhaseOpen(state, ph.id);
             const total = problemsInPhase(ph.id).length;
             const solved = solvedCount(state, ph.id);
-            const here = ph.id === cur && open;
+            const here = !campHere && ph.id === cur && open;
             const pos = PINS[i];
             const cls = `pin ${open ? "" : "locked"} ${here ? "current" : ""}`;
             const style = { left: `${pos.x}%`, top: pos.y, ["--c" as string]: ph.color, transform: "translate(-52px, -50%)" };

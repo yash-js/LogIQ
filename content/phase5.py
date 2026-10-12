@@ -11,7 +11,15 @@ def rand_word(r, alpha="abcdefghijklmnopqrstuvwxyz", lo=1, hi=50):
          statement="""
          Replace every `.` in an IPv4 address with `[.]` and return the result.
 
-         Build the result yourself with a StringBuilder (Java) or a list of characters (Python) instead of `replace`.
+         :::only java
+         Build the result yourself with a `StringBuilder` instead of `replace`.
+         :::
+         :::only python
+         Build the result yourself with a list of characters and `join` instead of `replace`.
+         :::
+         :::only javascript
+         Build the result yourself by walking the characters instead of `replace`.
+         :::
 
          **Constraints:** a valid IPv4 address
          """,
@@ -19,7 +27,9 @@ def rand_word(r, alpha="abcdefghijklmnopqrstuvwxyz", lo=1, hi=50):
          tests=[("1.1.1.1",), ("255.100.50.0",), ("0.0.0.0",), ("192.168.1.10",), ("10.0.0.255",)],
          hints=["Walk the string one character at a time. What do you append for a normal character?",
                 "What do you append instead when the character is '.'?",
-                "Java: StringBuilder sb; sb.append(c == '.' ? \"[.]\" : String.valueOf(c))."],
+                {"java": "StringBuilder sb; append \"[.]\" when c == '.', otherwise append the character.",
+                 "python": "Append '[.]' if c == '.' else c, then ''.join the pieces.",
+                 "javascript": "Append '[.]' when c === '.', otherwise append the character."}],
          practice=("LeetCode 1108: Defanging an IP Address", "https://leetcode.com/problems/defanging-an-ip-address/"))
 def defang(address):
     return address.replace(".", "[.]")
@@ -27,7 +37,17 @@ def defang(address):
 
 @problem(phase=PH, title="To Lower Case", returns="str", concepts=["char arithmetic"],
          statement="""
-         Return `s` with every uppercase letter changed to lowercase, **without** `toLowerCase` / `lower()`.
+         Return `s` with every uppercase letter changed to lowercase.
+
+         :::only java
+         Do not use `toLowerCase`.
+         :::
+         :::only python
+         Do not use `.lower()`.
+         :::
+         :::only javascript
+         Do not use `toLowerCase`.
+         :::
 
          **Constraints:** 1 ≤ s.length ≤ 100, printable ASCII
          """,
@@ -35,7 +55,9 @@ def defang(address):
          tests=[("Hello",), ("here",), ("LOVELY",), ("Mixed 123 CASE!",), ("@[`{",)],
          hints=["What is the numeric distance between 'A' and 'a'?",
                 "Which characters should you leave untouched?",
-                "If 'A' <= c <= 'Z', use (char)(c + 32). Python: chr(ord(c) + 32)."],
+                {"java": "If 'A' <= c && c <= 'Z', use (char)(c + 32).",
+                 "python": "If 'A' <= c <= 'Z', use chr(ord(c) + 32).",
+                 "javascript": "If c >= 'A' && c <= 'Z', use String.fromCharCode(c.charCodeAt(0) + 32)."}],
          practice=("LeetCode 709: To Lower Case", "https://leetcode.com/problems/to-lower-case/"))
 def to_lower(s):
     return "".join(chr(ord(c) + 32) if "A" <= c <= "Z" else c for c in s)
@@ -52,7 +74,9 @@ def to_lower(s):
          tests=[("aA", "aAAbbbb"), ("z", "ZZ"), ("abc", "abc"), ("x", "xxxxx"), ("AbC", "abcABC")],
          hints=["For one stone, how do you decide whether it is a jewel?",
                 "Nested loops over the two strings work fine at this size.",
-                "Bonus: a boolean[128] lookup table makes the check O(1)."],
+                {"java": "A boolean[128], indexed by the character, makes the check constant time.",
+                 "python": "A list of 128 flags, indexed by ord(c), makes the check constant time.",
+                 "javascript": "An array of 128 flags, indexed by c.charCodeAt(0), makes the check constant time."}],
          practice=("LeetCode 771: Jewels and Stones", "https://leetcode.com/problems/jewels-and-stones/"))
 def jewels(jewels, stones):
     return sum(1 for c in stones if c in jewels)
@@ -70,7 +94,9 @@ def jewels(jewels, stones):
          gen=lambda r: (rand_word(r, "aeiouAEIOUbcdxyzBCD", 1, 500) * 2,), gen_count=2,
          hints=["Write an isVowel(c) helper first.",
                 "Which indexes belong to the first half?",
-                "Count vowels in [0, n/2) and [n/2, n) and compare."],
+                {"java": "Count vowels in [0, n / 2) and [n / 2, n) and compare.",
+                 "python": "Count vowels in [0, n // 2) and [n // 2, n) and compare.",
+                 "javascript": "Count vowels in [0, Math.floor(n / 2)) and [Math.floor(n / 2), n) and compare."}],
          practice=("LeetCode 1704: Determine if String Halves Are Alike",
                    "https://leetcode.com/problems/determine-if-string-halves-are-alike/"))
 def halves(s):
@@ -107,7 +133,9 @@ def rev_each(s):
          tests=[("A man, a plan, a canal: Panama",), ("race a car",), (" ",), ("0P",), ("Madam, I'm Adam",), (".,",)],
          hints=["Put one pointer at each end. When should a pointer skip a character?",
                 "After skipping, compare the two characters case-insensitively.",
-                "while l < r: skip non-alnum on both sides; if they differ return false; l++, r--."],
+                {"java": "while l < r: skip non-letters and non-digits on both sides; if they differ return false; then l++ and r--.",
+                 "python": "while l < r: skip non-letters and non-digits on both sides; if they differ return False; then l += 1 and r -= 1.",
+                 "javascript": "while l < r: skip non-letters and non-digits on both sides; if they differ return false; then l++ and r--."}],
          practice=("LeetCode 125: Valid Palindrome", "https://leetcode.com/problems/valid-palindrome/"))
 def valid_palin(s):
     t = [c.lower() for c in s if c.isalnum()]
@@ -157,8 +185,12 @@ def detect_capital(word):
          tests=[("thequickbrownfoxjumpsoverthelazydog",), ("leetcode",), ("abcdefghijklmnopqrstuvwxyz",),
                 ("abcdefghijklmnopqrstuvwxy",), ("zyxwvutsrqponmlkjihgfedcbaa",)],
          hints=["How can you remember which letters you have seen?",
-                "`c - 'a'` turns a letter into an index 0..25.",
-                "boolean[26] seen; mark each letter; check all 26 are true."],
+                {"java": "c - 'a' turns a lowercase letter into an index 0..25.",
+                 "python": "ord(c) - ord('a') turns a lowercase letter into an index 0..25.",
+                 "javascript": "c.charCodeAt(0) - 97 turns a lowercase letter into an index 0..25."},
+                {"java": "boolean[26] seen; mark each letter; check that all 26 are true.",
+                 "python": "seen = [False] * 26; mark each letter; check that all 26 are True.",
+                 "javascript": "seen = new Array(26).fill(false); mark each letter; check that all 26 are true."}],
          practice=("LeetCode 1832: Check if the Sentence Is Pangram",
                    "https://leetcode.com/problems/check-if-the-sentence-is-pangram/"))
 def pangram(sentence):
@@ -176,7 +208,9 @@ def pangram(sentence):
          gen=lambda r: (lambda w: (w, "".join(r.sample(w, len(w)))))(rand_word(r, "abc", 1000, 50000)), gen_count=1,
          hints=["If the lengths differ, can they be anagrams?",
                 "Count each letter of s, then 'un-count' each letter of t.",
-                "int[26] count; count[s[i]-'a']++, count[t[i]-'a']--; all zero means anagram."],
+                {"java": "int[26] count; count[s.charAt(i) - 'a']++; count[t.charAt(i) - 'a']--; all zeros means an anagram.",
+                 "python": "count = [0] * 26; count[ord(s[i]) - ord('a')] += 1; count[ord(t[i]) - ord('a')] -= 1; all zeros means an anagram.",
+                 "javascript": "count = new Array(26).fill(0); count[s.charCodeAt(i) - 97]++; count[t.charCodeAt(i) - 97]--; all zeros means an anagram."}],
          practice=("LeetCode 242: Valid Anagram", "https://leetcode.com/problems/valid-anagram/"))
 def anagram(s, t):
     return sorted(s) == sorted(t)
@@ -193,7 +227,9 @@ def anagram(s, t):
          gen=lambda r: (rand_word(r, "abcdefghijklmnopqrstuvwxy", 10**4, 10**5) * 2 + "z",), gen_count=1,
          hints=["Can you know a character is unique before you have seen the whole string?",
                 "First pass: count. Second pass: find.",
-                "int[26] freq; then return the first i with freq[s[i]-'a'] == 1."],
+                {"java": "int[26] freq; then return the first i with freq[s.charAt(i) - 'a'] == 1.",
+                 "python": "freq = [0] * 26; then return the first i with freq[ord(s[i]) - ord('a')] == 1.",
+                 "javascript": "freq = new Array(26).fill(0); then return the first i with freq[s.charCodeAt(i) - 97] === 1."}],
          practice=("LeetCode 387: First Unique Character in a String",
                    "https://leetcode.com/problems/first-unique-character-in-a-string/"))
 def first_unique(s):
@@ -215,7 +251,7 @@ def first_unique(s):
          tests=[("a", "b"), ("aa", "ab"), ("aa", "aab"), ("abc", "cba"), ("zzz", "zz")],
          hints=["Which string's letters are the 'supply'?",
                 "Count the supply, then spend from it.",
-                "If any count goes below zero, return false."],
+                "If any count goes below zero, the answer is no."],
          practice=("LeetCode 383: Ransom Note", "https://leetcode.com/problems/ransom-note/"))
 def ransom(note, magazine):
     from collections import Counter
@@ -232,7 +268,7 @@ def ransom(note, magazine):
          tests=[("hello",), ("leetcode",), ("aA",), ("xyz",), ("IceCreAm",)],
          hints=["Which two characters swap first?",
                 "Move each pointer until it lands on a vowel.",
-                "Convert to a char array; swap when both pointers are on vowels; move inward."],
+                "Turn the string into an array of characters; swap when both pointers are on vowels; move inward."],
          practice=("LeetCode 345: Reverse Vowels of a String", "https://leetcode.com/problems/reverse-vowels-of-a-string/"))
 def rev_vowels(s):
     v = [c for c in s if c in "aeiouAEIOU"]
@@ -250,7 +286,9 @@ def rev_vowels(s):
          tests=[("abc", "ahbgdc"), ("axc", "ahbgdc"), ("", "abc"), ("abc", "abc"), ("aaa", "aa")],
          hints=["Walk through t. When do you move forward in s?",
                 "When is the answer known to be true?",
-                "i over s, j over t; if s[i] == t[j] then i++; always j++. True if i reaches s.length."],
+                {"java": "i walks s and j walks t; when the characters match, i++. Always j++. You are done when i reaches s.length().",
+                 "python": "i walks s and j walks t; when the characters match, i += 1. Always j += 1. You are done when i reaches len(s).",
+                 "javascript": "i walks s and j walks t; when the characters match, i++. Always j++. You are done when i reaches s.length."}],
          practice=("LeetCode 392: Is Subsequence", "https://leetcode.com/problems/is-subsequence/"))
 def is_subseq(s, t):
     it = iter(t)
@@ -320,7 +358,7 @@ def rotate_str(s, goal):
          tests=[("egg", "add"), ("foo", "bar"), ("paper", "title"), ("badc", "baba"), ("a", "b")],
          hints=["What goes wrong in foo → bar? What goes wrong in badc → baba?",
                 "One mapping s→t is not enough. Why?",
-                "Keep two char arrays of size 128: mapST and mapTS; check both directions at each index."],
+                "Keep two arrays of 128 slots, one for each direction, and check both at each index."],
          practice=("LeetCode 205: Isomorphic Strings", "https://leetcode.com/problems/isomorphic-strings/"))
 def isomorphic(s, t):
     return len(set(s)) == len(set(t)) == len(set(zip(s, t)))
@@ -335,7 +373,7 @@ def isomorphic(s, t):
          """,
          params=[("s", "str")],
          tests=[("III",), ("LVIII",), ("MCMXCIV",), ("IV",), ("MMMCMXCIX",), ("XLII",)],
-         hints=["Write value(c) using a switch.",
+         hints=["Write value(c) as a lookup of the seven symbols.",
                 "When do you subtract a symbol instead of adding it?",
                 "If value(s[i]) < value(s[i+1]) subtract it, else add it."],
          practice=("LeetCode 13: Roman to Integer", "https://leetcode.com/problems/roman-to-integer/"))
@@ -362,7 +400,9 @@ def roman_to_int(s):
          gen=lambda r: ("1" + rand_word(r, "01", 5000, 9999), "1" + rand_word(r, "01", 1, 9999)), gen_count=1,
          hints=["Which digits do you add first?",
                 "What three values go into each column's sum?",
-                "i, j from the ends; sum = carry + bits; append sum % 2; carry = sum / 2; reverse at the end."],
+                {"java": "i and j start at the ends; sum = carry + the two bits; append sum % 2; carry = sum / 2; reverse at the end.",
+                 "python": "i and j start at the ends; total = carry + the two bits; append total % 2; carry = total // 2; reverse at the end.",
+                 "javascript": "i and j start at the ends; total = carry + the two bits; append total % 2; carry = Math.floor(total / 2); reverse at the end."}],
          practice=("LeetCode 67: Add Binary", "https://leetcode.com/problems/add-binary/"))
 def add_binary(a, b):
     return bin(int(a, 2) + int(b, 2))[2:]

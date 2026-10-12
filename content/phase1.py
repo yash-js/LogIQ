@@ -33,7 +33,9 @@ def number_identity(n):
          params=[("n", "int")], returns="str",
          tests=[(4,), (7,), (0,), (-7,), (-8,), (999999999,), (-1,)],
          hints=["What does the remainder after dividing by 2 tell you?",
-                "In Java, what is `-7 % 2`? Try it. Is it 1?",
+                {"java": "What is `-7 % 2`? Try it. Is it 1?",
+                 "python": "What is `-7 % 2`? Try it. And what is `-7 // 2`?",
+                 "javascript": "What is `-7 % 2`? Try it. Is it 1?"},
                 "Compare the remainder with 0 instead of 1, so negative numbers work too."],
          practice=("HackerRank: Java If-Else", "https://www.hackerrank.com/challenges/java-if-else/problem"))
 def odd_even(n):
@@ -70,7 +72,15 @@ def divisibility(n):
          statement="""
          Given three integers `a`, `b` and `c` (one per line), return the largest.
 
-         Do not use `Math.max` / `max()`. Build the comparisons yourself.
+         :::only java
+         Do not use `Math.max`. Build the comparisons yourself.
+         :::
+         :::only python
+         Do not use `max()`. Build the comparisons yourself.
+         :::
+         :::only javascript
+         Do not use `Math.max`. Build the comparisons yourself.
+         :::
 
          **Constraints:** -10^9 ≤ a, b, c ≤ 10^9
          """,
@@ -155,7 +165,15 @@ def vowel_consonant(ch):
          statement="""
          Given a character `ch`, return `"Uppercase"`, `"Lowercase"`, `"Digit"` or `"Special"`.
 
-         Do not use built-ins like `Character.isDigit` / `str.isdigit()`. Compare ranges yourself.
+         :::only java
+         Do not use `Character.isDigit` or `Character.isLetter`. Compare ranges yourself.
+         :::
+         :::only python
+         Do not use `str.isdigit` or `str.isalpha`. Compare ranges yourself.
+         :::
+         :::only javascript
+         Do not use a character-class test. Compare ranges yourself.
+         :::
 
          **Constraints:** `ch` is a printable, non-space ASCII character.
          """,
@@ -163,7 +181,9 @@ def vowel_consonant(ch):
          tests=[("A",), ("z",), ("0",), ("9",), ("@",), ("M",), ("[",), ("`",)],
          hints=["Characters are ordered. What can you say about every character between 'A' and 'Z'?",
                 "Write one range check per category.",
-                "`ch >= 'A' && ch <= 'Z'` is uppercase; do the same for 'a'..'z' and '0'..'9'."])
+                {"java": "`ch >= 'A' && ch <= 'Z'` is uppercase; do the same for 'a'..'z' and '0'..'9'.",
+                 "python": "`'A' <= ch <= 'Z'` is uppercase; do the same for 'a'..'z' and '0'..'9'.",
+                 "javascript": "`ch >= 'A' && ch <= 'Z'` is uppercase; do the same for 'a'..'z' and '0'..'9'."}])
 def char_type(ch):
     if "A" <= ch <= "Z":
         return "Uppercase"
@@ -178,9 +198,17 @@ def char_type(ch):
          statement="""
          Given integers `a` and `b` and an operator `op` (one of `+ - * / %`), return the result as a string.
 
-         - Division truncates toward zero, like Java: `-7 / 2 = -3`.
-         - `%` follows Java too: `-7 % 2 = -1`.
-         - If `op` is `/` or `%` and `b` is 0, return `"Error"`.
+         :::only java
+         Division truncates toward zero: `-7 / 2` is `-3`. The remainder follows the left operand: `-7 % 2` is `-1`.
+         :::
+         :::only python
+         Division must truncate toward zero. `//` does not: `-7 // 2` is `-4`, and `-7 % 2` is `1`. Use `int(a / b)` for the quotient. The matching remainder is `a - b * int(a / b)`.
+         :::
+         :::only javascript
+         Division must truncate toward zero: `Math.trunc(a / b)`. The remainder follows the left operand: `-7 % 2` is `-1`. A plain `/` keeps the decimals.
+         :::
+
+         If `op` is `/` or `%` and `b` is 0, return `"Error"`.
 
          **Constraints:** -10^4 ≤ a, b ≤ 10^4
          """,
@@ -189,7 +217,9 @@ def char_type(ch):
                 (-7, "%", 2), (5, "/", 0), (5, "%", 0), (0, "/", 5)],
          hints=["Which statement lets you pick one branch out of five based on a single value?",
                 "Which two operators can fail? What should happen before you divide?",
-                "Python users: `//` and `%` round toward negative infinity. How can you get Java's behaviour? (Think about abs and signs, or int(a / b).)"])
+                {"java": "Check `b == 0` before `/` or `%`. `/` truncates toward zero, and `%` follows the left operand.",
+                 "python": "Check `b == 0` first. The quotient is `int(a / b)` and the remainder is `a - b * int(a / b)`. Do not use `//`.",
+                 "javascript": "Check `b === 0` before `/` or `%`. The quotient is `Math.trunc(a / b)`; `%` already follows the left operand."}])
 def calculator(a, op, b):
     if op in "/%" and b == 0:
         return "Error"
@@ -297,8 +327,10 @@ def triangle_type(a, b, c):
          params=[("celsius", "double")], returns="double_list",
          tests=[(36.5,), (122.11,), (0.0,), (100.0,), (37.0,), (1000.0,)],
          hints=["Which data type keeps the decimal part?",
-                "In Java, what does `9 / 5` evaluate to? Why might that be a problem?",
-                "Use the formulas exactly as given, with double values."],
+                {"java": "What does `9 / 5` evaluate to when both values are ints? Why might that drop the decimal?",
+                 "python": "What does `9 / 5` evaluate to? What does `9 // 5` evaluate to, and which one does the formula need?",
+                 "javascript": "What does `9 / 5` evaluate to? Does it keep the decimal?"},
+                "Use the formulas exactly as given, and keep the fractional part."],
          practice=("LeetCode 2469: Convert the Temperature", "https://leetcode.com/problems/convert-the-temperature/"))
 def temperature(celsius):
     return [celsius + 273.15, celsius * 1.8 + 32.0]
@@ -332,7 +364,9 @@ def smallest_even_multiple(n):
          tests=[(3, 7), (8, 10), (0, 0), (1, 1), (2, 2), (0, 1000000000), (1, 1000000000), (7, 8)],
          hints=["How many odd numbers are there from 0 up to some number x?",
                 "Count odds in [0, high] and subtract odds in [0, low - 1].",
-                "Odds in [0, x] = (x + 1) / 2 using integer division."],
+                {"java": "Odds in [0, x] = (x + 1) / 2, with integer division.",
+                 "python": "Odds in [0, x] = (x + 1) // 2.",
+                 "javascript": "Odds in [0, x] = Math.floor((x + 1) / 2)."}],
          practice=("LeetCode 1523: Count Odd Numbers in an Interval Range",
                    "https://leetcode.com/problems/count-odd-numbers-in-an-interval-range/"))
 def count_odds(low, high):
@@ -370,14 +404,28 @@ def circle_cuts(n):
 
          Return `"Both"`, `"Bulky"`, `"Heavy"` or `"Neither"`.
 
+         :::only java
+         The volume can exceed an `int`. Multiply in a `long`.
+         :::
+         :::only python
+         The volume fits in an ordinary integer.
+         :::
+         :::only javascript
+         The largest volume here is 10^15, which is still exact in a normal number.
+         :::
+
          **Constraints:** 1 ≤ length, width, height ≤ 10^5, 1 ≤ mass ≤ 10^3
          """,
          params=[("length", "int"), ("width", "int"), ("height", "int"), ("mass", "int")], returns="str",
          tests=[(1000, 35, 700, 300), (200, 50, 800, 50), (10000, 1, 1, 1), (1000, 1000, 1000, 100),
                 (100000, 100000, 100000, 1000), (1, 1, 1, 99), (999, 999, 999, 100)],
          hints=["Compute two booleans separately: isBulky and isHeavy.",
-                "What is the largest possible volume? Does it fit in an int?",
-                "Use a long (Java) for the volume, then combine the two flags."],
+                {"java": "What is the largest possible volume? Does it fit in an int?",
+                 "python": "What is the largest possible volume? An integer can hold it. Which comparison uses it?",
+                 "javascript": "What is the largest possible volume? Is 10^15 still exact in a normal number?"},
+                {"java": "Multiply into a long, then combine the two flags.",
+                 "python": "Multiply the three dimensions, then combine the two flags.",
+                 "javascript": "Multiply the three dimensions (10^15 is still exact), then combine the two flags."}],
          practice=("LeetCode 2525: Categorize Box According to Criteria",
                    "https://leetcode.com/problems/categorize-box-according-to-criteria/"))
 def box_category(length, width, height, mass):

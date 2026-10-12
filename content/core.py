@@ -42,7 +42,7 @@ class Problem:
     params: list[tuple[str, str]]
     returns: str
     tests: list[tuple]
-    hints: list[str]
+    hints: list | dict
     concepts: list[str]
     ref: Callable
     mode: str = "solve"  # "solve" -> learner returns a value; "print" -> learner prints
@@ -51,6 +51,7 @@ class Problem:
     examples: int = 2
     strict: bool = False
     notes: list[str] = field(default_factory=list)
+    # hints may be a shared list, a {lang: [3 strings]} dict, or a mixed list. See normalize_hints.
 
 
 _counters: dict[int, int] = {}
@@ -68,10 +69,36 @@ def _clean(text: str) -> str:
     return "\n".join(out).strip()
 
 
+LANGS = ("java", "python", "javascript")
+
+
+def normalize_hints(hints) -> dict[str, list[str]]:
+    """Turn a shared list, a per-language dict, or a mixed list into three lists of 3."""
+    if isinstance(hints, dict) and hints and all(isinstance(v, list) for v in hints.values()):
+        missing = [lang for lang in LANGS if lang not in hints]
+        assert not missing, f"hints missing {missing}"
+        for lang in LANGS:
+            assert len(hints[lang]) == 3 and all(isinstance(s, str) for s in hints[lang]), (lang, hints[lang])
+        return {lang: list(hints[lang]) for lang in LANGS}
+    assert isinstance(hints, list) and len(hints) == 3, "a problem needs exactly 3 hints"
+    out: dict[str, list[str]] = {lang: [] for lang in LANGS}
+    for item in hints:
+        if isinstance(item, str):
+            for lang in LANGS:
+                out[lang].append(item)
+        elif isinstance(item, dict):
+            for lang in LANGS:
+                assert lang in item and isinstance(item[lang], str), item
+                out[lang].append(item[lang])
+        else:
+            raise AssertionError(f"bad hint entry: {item!r}")
+    return out
+
+
 def problem(*, phase: int, title: str, difficulty: str = "easy", statement: str,
             params: list[tuple[str, str]], returns: str, tests: list[tuple] | None = None,
             gen: Callable[[random.Random], tuple] | None = None, gen_count: int = 0,
-            hints: list[str], concepts: list[str], mode: str = "solve",
+            hints: list | dict, concepts: list[str], mode: str = "solve",
             practice: tuple[str, str] | None = None, time_limit_ms: int = 2000,
             examples: int = 2, seed: int | None = None, strict: bool = False):
     def wrap(fn):
@@ -82,7 +109,7 @@ def problem(*, phase: int, title: str, difficulty: str = "easy", statement: str,
             rng = random.Random(f"{pid}-{seed}")
             for _ in range(gen_count):
                 all_tests.append(gen(rng))
-        assert len(hints) == 3, f"{pid} needs exactly 3 hints"
+        normalize_hints(hints)  # shape check; build.py stores the normalised form
         REGISTRY.append(Problem(
             id=pid, phase=phase, title=title, difficulty=difficulty,
             statement=_clean(statement), params=params, returns=returns,

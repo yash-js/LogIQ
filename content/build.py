@@ -68,7 +68,7 @@ def build(problems):
             "timeLimitMs": p.time_limit_ms,
             "examples": tests[: p.examples],
             "tests": tests,
-            "hints": p.hints,
+            "hints": core.normalize_hints(p.hints),
             "practice": p.practice,
             "starter": {"java": core.java_starter(p), "python": core.py_starter(p),
                         "javascript": core.js_starter(p, big=p.returns in ("long", "long_list") and needs_bigint(tests))},

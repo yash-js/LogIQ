@@ -14,7 +14,9 @@ PH = 2
          tests=[(5,), (1,), (2,), (10,), (37,), (1000,)],
          hints=["Which three parts does a for-loop have? What should each be here?",
                 "How do you print on the same line without a newline after each number?",
-                "Loop i = 1..n printing `i + \" \"`, then a newline, then loop i = n down to 1."])
+                {"java": "Loop i from 1 to n, printing each i and a space, then a newline, then loop i from n down to 1.",
+                 "python": "Loop i from 1 to n with print(i, end=' '), then a newline, then loop i from n down to 1.",
+                 "javascript": "Build each line in a string and log it once. One line is 1..n, the next is n..1."}])
 def counting(n):
     return [" ".join(str(i) for i in range(1, n + 1)), " ".join(str(i) for i in range(n, 0, -1))]
 
@@ -33,7 +35,9 @@ def counting(n):
          tests=[(2,), (9,), (1,), (13,), (10000,)],
          hints=["Which part of each line changes, and which part stays the same?",
                 "Your loop variable runs from 1 to 10. What do you print in each iteration?",
-                "Print `n + \" x \" + i + \" = \" + (n * i)`; mind the brackets in Java."],
+                {"java": "Print n + \" x \" + i + \" = \" + (n * i). The brackets multiply before the pieces are joined.",
+                 "python": "Print an f-string: f\"{n} x {i} = {n * i}\".",
+                 "javascript": "Log n + \" x \" + i + \" = \" + (n * i). The brackets multiply before the pieces are joined."}],
          practice=("HackerRank: Java Loops I", "https://www.hackerrank.com/challenges/java-loops-i/problem"))
 def table(n):
     return [f"{n} x {i} = {n * i}" for i in range(1, 11)]
@@ -44,13 +48,25 @@ def table(n):
          For the numbers 1 to `n`, return three values: the sum of all numbers, the sum of even numbers,
          and the sum of odd numbers.
 
-         **Constraints:** 1 ≤ n ≤ 10^6 (the sums may not fit in an int)
+         **Constraints:** 1 ≤ n ≤ 10^6
+
+         :::only java
+         The sums may not fit in an `int`. Accumulate in a `long`.
+         :::
+         :::only python
+         The sums can be large. An integer grows to hold them.
+         :::
+         :::only javascript
+         The sums stay exact in a normal number.
+         :::
          """,
          params=[("n", "int")],
          tests=[(5,), (1,), (2,), (10,), (999,), (1000000,)],
          hints=["What variable do you need before the loop to collect a sum?",
                 "Can one loop update all three sums at once?",
-                "Use three `long` accumulators and add `i` to the even or odd one depending on `i % 2`."])
+                {"java": "Use three long accumulators. Add i to the even or odd one depending on i % 2.",
+                 "python": "Use three accumulators. Add i to the even or odd one depending on i % 2. Integers will not overflow.",
+                 "javascript": "Use three accumulators. Add i to the even or odd one depending on i % 2. These sums stay exact."}])
 def three_sums(n):
     total = n * (n + 1) // 2
     evens = sum(range(2, n + 1, 2))
@@ -92,7 +108,9 @@ def fizzbuzz(n):
          tests=[(7,), (121,), (1248,), (111,), (987654321,), (22,), (35,)],
          hints=["How do you get the last digit of a number? How do you remove it?",
                 "You need the original `n` for the divisibility check. What happens if you modify `n` itself?",
-                "Copy n into `temp`; loop while temp > 0: d = temp % 10, check n % d, temp /= 10."],
+                {"java": "Copy n into temp; while temp > 0: d = temp % 10, check n % d, then temp /= 10.",
+                 "python": "Copy n into temp; while temp > 0: d = temp % 10, check n % d, then temp //= 10.",
+                 "javascript": "Copy n into temp; while temp > 0: d = temp % 10, check n % d, then temp = Math.floor(temp / 10)."}],
          practice=("LeetCode 2520: Count the Digits That Divide a Number",
                    "https://leetcode.com/problems/count-the-digits-that-divide-a-number/"))
 def digits_divide(n):
@@ -108,7 +126,9 @@ def digits_divide(n):
          params=[("n", "int")],
          tests=[(234,), (4421,), (1,), (10,), (99999,), (100000,)],
          hints=["What should the product start at? What should the sum start at?",
-                "Use the same `% 10` and `/ 10` loop as before.",
+                {"java": "Use the same % 10 and / 10 loop as before.",
+                 "python": "Use the same % 10 and // 10 loop as before.",
+                 "javascript": "Use the same % 10 and Math.floor(n / 10) loop as before."},
                 "product = 1, sum = 0; update both for each digit; return product - sum."],
          practice=("LeetCode 1281: Subtract the Product and Sum of Digits",
                    "https://leetcode.com/problems/subtract-the-product-and-sum-of-digits-of-an-integer/"))
@@ -151,7 +171,9 @@ def digital_root(n):
          tests=[(123,), (-123,), (120,), (0,), (1534236469,), (-2147483648,), (2147483647,), (1463847412,), (-10,)],
          hints=["How do you build a number one digit at a time? Think `rev = rev * 10 + digit`.",
                 "How can you detect that `rev * 10 + digit` would go past 2^31 − 1 before it happens?",
-                "Work with a `long` (or check `rev > Integer.MAX_VALUE / 10` first). Python: check the range at the end."],
+                {"java": "Work in a long, or stop early when rev > Integer.MAX_VALUE / 10.",
+                 "python": "Integers never overflow. After reversing, return 0 if the result is outside -2147483648 .. 2147483647.",
+                 "javascript": "Reversing a 32-bit value stays exact. Return 0 if the result is outside -2147483648 .. 2147483647."}],
          practice=("LeetCode 7: Reverse Integer", "https://leetcode.com/problems/reverse-integer/"))
 def reverse_int(x):
     sign = -1 if x < 0 else 1
@@ -169,7 +191,9 @@ def reverse_int(x):
          tests=[(121,), (-121,), (10,), (0,), (1221,), (12321,), (2147447412,), (1000021,)],
          hints=["Can a negative number be a palindrome?",
                 "Reverse the number with the loop from the last problem and compare.",
-                "Use a long for the reversed value so it cannot overflow."],
+                {"java": "Build the reversed value in a long so it cannot overflow an int.",
+                 "python": "Reversing cannot overflow. Compare the rebuilt number with the original.",
+                 "javascript": "Reversing a 32-bit value stays exact. Compare the rebuilt number with the original."}],
          practice=("LeetCode 9: Palindrome Number", "https://leetcode.com/problems/palindrome-number/"))
 def palin_num(x):
     return x >= 0 and str(x) == str(x)[::-1]
@@ -198,13 +222,25 @@ def armstrong(n):
          statement="""
          Return `n!` and the number of trailing zeroes in `n!`.
 
-         **Constraints:** 0 ≤ n ≤ 20 (20! still fits in a `long`)
+         **Constraints:** 0 ≤ n ≤ 20
+
+         :::only java
+         20! still fits in a `long`.
+         :::
+         :::only python
+         An integer holds 20! exactly.
+         :::
+         :::only javascript
+         20! is larger than 2^53, so build it with `BigInt` or the digits will not be exact.
+         :::
          """,
          params=[("n", "int")],
          tests=[(5,), (0,), (1,), (10,), (15,), (20,), (4,)],
          hints=["What is 0! ? What should the product start at?",
                 "Trailing zeroes: how do you check whether the last digit of a number is 0? How do you drop it?",
-                "Compute f with a long loop; then count while f % 10 == 0: f /= 10."],
+                {"java": "Compute f in a long loop; then while f % 10 == 0, count one and do f /= 10.",
+                 "python": "Compute f in a loop; then while f % 10 == 0, count one and do f //= 10.",
+                 "javascript": "20! exceeds 2^53, so compute f with BigInt; then while f % 10n === 0n, count one and do f /= 10n."}],
          practice=("LeetCode 172: Factorial Trailing Zeroes", "https://leetcode.com/problems/factorial-trailing-zeroes/"))
 def fact_zeros(n):
     f = 1
@@ -222,12 +258,24 @@ def fact_zeros(n):
          F(0) = 0, F(1) = 1, and F(n) = F(n−1) + F(n−2). Return F(n) using a loop.
 
          **Constraints:** 0 ≤ n ≤ 90
+
+         :::only java
+         F(90) fits in a `long`, not in an `int`.
+         :::
+         :::only python
+         An integer holds F(90) exactly.
+         :::
+         :::only javascript
+         F(90) is larger than 2^53. Use `BigInt`.
+         :::
          """,
          params=[("n", "int")],
          tests=[(0,), (1,), (2,), (10,), (30,), (50,), (90,)],
          hints=["To compute the next term, which values do you need to remember?",
                 "Keep `a` and `b` for the last two terms. How do they shift each step?",
-                "next = a + b; a = b; b = next. Use long."],
+                {"java": "next = a + b; a = b; b = next. Keep them in long, because F(90) does not fit in an int.",
+                 "python": "next = a + b; a = b; b = next. An integer grows to hold F(90).",
+                 "javascript": "next = a + b; a = b; b = next. F(90) exceeds 2^53, so use BigInt."}],
          practice=("LeetCode 509: Fibonacci Number", "https://leetcode.com/problems/fibonacci-number/"))
 def fib(n):
     a, b = 0, 1
@@ -265,13 +313,25 @@ def count_primes(n):
          statement="""
          Return the greatest common divisor and the least common multiple of `a` and `b`.
 
-         **Constraints:** 1 ≤ a, b ≤ 10^6 (the LCM may not fit in an int)
+         **Constraints:** 1 ≤ a, b ≤ 10^6
+
+         :::only java
+         The LCM may not fit in an `int`. Use a `long`, and divide before you multiply.
+         :::
+         :::only python
+         Divide before you multiply. An integer will not overflow either way.
+         :::
+         :::only javascript
+         Divide before you multiply. These values stay below 2^53, so a normal number is exact.
+         :::
          """,
          params=[("a", "int"), ("b", "int")],
          tests=[(12, 18), (7, 13), (1, 1), (100, 10), (1000000, 999999), (48, 180), (17, 17)],
          hints=["A slow way: try every number from min(a, b) down to 1. Can you do better?",
                 "Euclid: gcd(a, b) = gcd(b, a % b). When does it stop?",
-                "lcm = a / gcd * b (divide first to stay small). Use long."],
+                {"java": "lcm = a / gcd * b (divide first so the product fits in a long).",
+                 "python": "lcm = a // gcd * b (divide first). An integer will not overflow.",
+                 "javascript": "lcm = Math.floor(a / gcd) * b (divide first). These values stay exact."}],
          practice=("LeetCode 1979: Find Greatest Common Divisor of Array",
                    "https://leetcode.com/problems/find-greatest-common-divisor-of-array/"))
 def gcd_lcm(a, b):
@@ -317,7 +377,9 @@ def perfect(n):
          tests=[(1,), (16,), (3,), (0,), (-8,), (1073741824,), (2147483647,), (6,)],
          hints=["Which values can never be a power of two?",
                 "If n is even, divide it by 2. What should be left at the end?",
-                "Return false for n <= 0; while n % 2 == 0: n /= 2; return n == 1."],
+                {"java": "Return false for n <= 0; while n % 2 == 0, do n /= 2; return n == 1.",
+                 "python": "Return False for n <= 0; while n % 2 == 0, do n //= 2; return n == 1.",
+                 "javascript": "Return false for n <= 0; while n % 2 === 0, do n = Math.floor(n / 2); return n === 1."}],
          practice=("LeetCode 231: Power of Two", "https://leetcode.com/problems/power-of-two/"))
 def pow2(n):
     return n > 0 and (n & (n - 1)) == 0
@@ -357,7 +419,9 @@ def happy(n):
          tests=[(6,), (1,), (14,), (0,), (-30,), (2147483647,), (1000000000,), (49,)],
          hints=["What happens to 30 if you keep dividing by 2, then 3, then 5?",
                 "What value is left when the number had only those factors?",
-                "For each f in {2, 3, 5}: while n % f == 0: n /= f. Ugly if n == 1 (and n > 0 at start)."],
+                {"java": "For each f in {2, 3, 5}: while n % f == 0, do n /= f. Ugly if n == 1 (and n > 0 at the start).",
+                 "python": "For each f in {2, 3, 5}: while n % f == 0, do n //= f. Ugly if n == 1 (and n > 0 at the start).",
+                 "javascript": "For each f in {2, 3, 5}: while n % f === 0, do n = Math.floor(n / f). Ugly if n === 1 (and n > 0 at the start)."}],
          practice=("LeetCode 263: Ugly Number", "https://leetcode.com/problems/ugly-number/"))
 def ugly(n):
     if n <= 0:
@@ -378,7 +442,9 @@ def ugly(n):
          tests=[(14,), (8,), (0,), (1,), (123,), (1000000,)],
          hints=["What is the loop condition?",
                 "Inside the loop, which two actions are possible?",
-                "while n > 0: n = (n even) ? n / 2 : n - 1; steps++."],
+                {"java": "while (n > 0) { n = (n % 2 == 0) ? n / 2 : n - 1; steps++; }",
+                 "python": "while n > 0: n = n // 2 if n % 2 == 0 else n - 1; then steps += 1.",
+                 "javascript": "while (n > 0) { n = n % 2 === 0 ? Math.floor(n / 2) : n - 1; steps++; }"}],
          practice=("LeetCode 1342: Number of Steps to Reduce a Number to Zero",
                    "https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/"))
 def steps_zero(n):
@@ -398,8 +464,12 @@ def steps_zero(n):
          params=[("n", "int")],
          tests=[(11,), (128,), (0,), (1,), (2147483647,), (255,), (1024,)],
          hints=["How do you get the last digit of a number in base 10? What is the base-2 version?",
-                "`n % 2` is the last bit; `n / 2` removes it.",
-                "Loop while n > 0, add n % 2 to a counter, then n /= 2."],
+                {"java": "n % 2 is the last bit; n / 2 removes it.",
+                 "python": "n % 2 is the last bit; n // 2 removes it.",
+                 "javascript": "n % 2 is the last bit; Math.floor(n / 2) removes it."},
+                {"java": "Loop while n > 0, add n % 2 to a counter, then n /= 2.",
+                 "python": "Loop while n > 0, add n % 2 to a counter, then n //= 2.",
+                 "javascript": "Loop while n > 0, add n % 2 to a counter, then n = Math.floor(n / 2)."}],
          practice=("LeetCode 191: Number of 1 Bits", "https://leetcode.com/problems/number-of-1-bits/"))
 def set_bits(n):
     return bin(n).count("1")
@@ -407,15 +477,29 @@ def set_bits(n):
 
 @problem(phase=PH, title="Integer Square Root", returns="int", concepts=["overflow", "loop bound"],
          statement="""
-         Return the square root of `x` rounded down, without `Math.sqrt` / `math.sqrt` / `** 0.5`.
+         Return the square root of `x` rounded down.
+
+         :::only java
+         Do not use `Math.sqrt`.
+         :::
+         :::only python
+         Do not use `math.sqrt` or `** 0.5`.
+         :::
+         :::only javascript
+         Do not use `Math.sqrt` or `** 0.5`.
+         :::
 
          **Constraints:** 0 ≤ x ≤ 2^31 − 1
          """,
          params=[("x", "int")],
          tests=[(4,), (8,), (0,), (1,), (2147483647,), (2147395600,), (99,), (100,)],
          hints=["Start from 1 and go up. When should you stop?",
-                "What happens to `i * i` in Java when i is around 46341?",
-                "Loop while (long) i * i <= x; the answer is the last i that passed."],
+                {"java": "What happens to i * i in an int when i is around 46341?",
+                 "python": "i * i is always exact. When should the loop stop?",
+                 "javascript": "i * i stays exact for a 32-bit x. When should the loop stop?"},
+                {"java": "Loop while (long) i * i <= x; the answer is the last i that passed.",
+                 "python": "Loop while i * i <= x; the answer is the last i that passed.",
+                 "javascript": "Loop while i * i <= x; the answer is the last i that passed."}],
          practice=("LeetCode 69: Sqrt(x)", "https://leetcode.com/problems/sqrtx/"))
 def isqrt(x):
     import math
@@ -516,7 +600,9 @@ def diamond(n):
          tests=[(4,), (1,), (2,), (7,), (100,)],
          hints=["Does the number restart in each row?",
                 "Declare the counter outside both loops.",
-                "Print `counter++` i times in row i."])
+                {"java": "Print counter, then add 1, i times in row i. counter++ does both.",
+                 "python": "Print the counter, then add 1, i times in row i.",
+                 "javascript": "Log the counter, then add 1, i times in row i. counter++ does both."}])
 def floyd(n):
     out, c = [], 1
     for i in range(1, n + 1):

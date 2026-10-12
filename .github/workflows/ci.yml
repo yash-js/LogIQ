@@ -26,8 +26,12 @@ jobs:
       - run: npm ci
       - name: Content builds and every reference solution passes (Python + Java I/O)
         run: python3 content/build.py --verify
-      - name: Problems JSON is up to date
-        run: git diff --exit-code src/content/problems.json
+      - name: Basecamp exercises run and check out
+        run: python3 content/build_basecamp.py
+      - name: Generated content is up to date
+        run: git diff --exit-code src/content/problems.json src/content/basecamp.json
+      - name: Language-specific text
+        run: python3 content/lint_lang.py
       - run: npx tsc --noEmit
       - name: Shortcut detector
         run: node --experimental-strip-types --no-warnings tests/builtins.test.ts

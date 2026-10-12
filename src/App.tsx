@@ -8,10 +8,13 @@ import { GuidePage } from "./pages/GuidePage";
 import { ProblemPage } from "./pages/ProblemPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { BasecampPage } from "./pages/BasecampPage";
+import { LessonPage } from "./pages/LessonPage";
+import { PlacementPage } from "./pages/PlacementPage";
 
 function Shell() {
   const loc = useLocation();
-  const flush = loc.pathname.startsWith("/problem/");
+  const flush = loc.pathname.startsWith("/problem/") || (/^\/basecamp\/[a-z]+-\d+$/.test(loc.pathname));
   return (
       <div className={`app ${flush ? "compact" : ""}`}>
         <Sidebar />
@@ -21,6 +24,9 @@ function Shell() {
             <Route path="/phase/:id" element={<PhasePage />} />
             <Route path="/phase/:id/guide" element={<GuidePage />} />
             <Route path="/problem/:id" element={<ProblemPage />} />
+            <Route path="/basecamp" element={<BasecampPage />} />
+            <Route path="/basecamp/placement" element={<PlacementPage />} />
+            <Route path="/basecamp/:unitId" element={<LessonPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<MapPage />} />

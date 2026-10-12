@@ -7,51 +7,66 @@
     "color": "#34d399",
     "quiz": [
       {
-        "q": "In Java, what does -7 % 2 evaluate to?",
-        "options": [
-          "1",
-          "-1",
-          "0",
-          "3"
-        ],
+        "q": "What does -7 % 2 evaluate to?",
+        "options": ["1", "-1", "0", "3"],
         "answer": 1,
-        "why": "Java's remainder takes the sign of the left operand, so -7 % 2 is -1. That's why `n % 2 == 1` misses negative odd numbers."
+        "why": "The remainder takes the sign of the left operand, so -7 % 2 is -1. That's why n % 2 == 1 misses negative odd numbers.",
+        "lang": "java"
+      },
+      {
+        "q": "What does -7 % 2 evaluate to?",
+        "options": ["1", "-1", "0", "3"],
+        "answer": 0,
+        "why": "The remainder takes the sign of the divisor, so -7 % 2 is 1. Floor division is different: -7 // 2 is -4.",
+        "lang": "python"
+      },
+      {
+        "q": "What does -7 % 2 evaluate to?",
+        "options": ["1", "-1", "0", "3"],
+        "answer": 1,
+        "why": "The remainder takes the sign of the left operand, so -7 % 2 is -1. That's why n % 2 === 1 misses negative odd numbers.",
+        "lang": "javascript"
       },
       {
         "q": "For FizzBuzz-style checks, which condition should come first in the if-else chain?",
-        "options": [
-          "n % 3 == 0",
-          "n % 5 == 0",
-          "n % 15 == 0",
-          "Order doesn't matter"
-        ],
+        "options": ["n % 3 == 0", "n % 5 == 0", "n % 15 == 0", "Order doesn't matter"],
         "answer": 2,
         "why": "The first true branch wins, so the most specific condition (divisible by both) must be checked first."
       },
       {
-        "q": "What is the value of 'D' - 'A' in Java?",
-        "options": [
-          "3",
-          "4",
-          "68",
-          "It doesn't compile"
-        ],
+        "q": "What is the value of 'D' - 'A'?",
+        "options": ["3", "4", "68", "It doesn't compile"],
         "answer": 0,
-        "why": "Characters are numbers and letters are consecutive: 'A' is 65, 'D' is 68, so the difference is 3."
+        "why": "Characters are numbers and letters are consecutive: 'A' is 65, 'D' is 68, so the difference is 3.",
+        "lang": "java"
+      },
+      {
+        "q": "What is ord('D') - ord('A')?",
+        "options": ["3", "4", "68", "an error"],
+        "answer": 0,
+        "why": "Letters are consecutive codes: 'A' is 65, 'D' is 68, so the difference is 3.",
+        "lang": "python"
+      },
+      {
+        "q": "What is 'D'.charCodeAt(0) - 'A'.charCodeAt(0)?",
+        "options": ["3", "4", "68", "NaN"],
+        "answer": 0,
+        "why": "Letters are consecutive codes: 'A' is 65, 'D' is 68, so the difference is 3. Subtracting the strings themselves gives NaN.",
+        "lang": "javascript"
       },
       {
         "q": "Which expression correctly tests a leap year?",
         "options": [
-          "y % 4 == 0",
-          "y % 4 == 0 && y % 100 == 0",
-          "y % 400 == 0 || (y % 4 == 0 && y % 100 != 0)",
-          "y % 100 != 0"
+          "divisible by 4",
+          "divisible by 4 and by 100",
+          "divisible by 400, or by 4 but not by 100",
+          "not divisible by 100"
         ],
         "answer": 2,
         "why": "Divisible by 400, or divisible by 4 but not by 100."
       },
       {
-        "q": "Why might `int volume = l * w * h` give a wrong answer for large sides?",
+        "q": "Why might int volume = l * w * h give a wrong answer for large sides?",
         "options": [
           "Multiplication is slow",
           "The result can overflow an int",
@@ -59,7 +74,32 @@
           "It always works"
         ],
         "answer": 1,
-        "why": "An int holds about ±2.1 billion. Larger products wrap around silently, so use long."
+        "why": "An int holds about ±2.1 billion. Larger products wrap around silently, so use long.",
+        "lang": "java"
+      },
+      {
+        "q": "Why might a problem still ask you to check a product against about ±2.1 billion?",
+        "options": [
+          "Multiplication is slow",
+          "The problem wants the 32-bit range detected",
+          "Integers can't be multiplied three times",
+          "Integers always wrap around"
+        ],
+        "answer": 1,
+        "why": "Integers grow without bound. When a problem talks about the 32-bit range, you compare against it yourself and clamp or reject.",
+        "lang": "python"
+      },
+      {
+        "q": "Why might let volume = l * w * h be wrong for huge sides?",
+        "options": [
+          "Multiplication is slow",
+          "Past 2^53 the result is no longer exact",
+          "Numbers can't be multiplied three times",
+          "It always works"
+        ],
+        "answer": 1,
+        "why": "Numbers stay exact only up to 2^53. Past that, use BigInt.",
+        "lang": "javascript"
       }
     ]
   },
@@ -72,56 +112,66 @@
     "quiz": [
       {
         "q": "Which pair of operations extracts and then removes the last digit of n?",
+        "options": ["n / 10, then n % 10", "n % 10, then n / 10", "n * 10, then n + 10", "n - 10, then n % 10"],
+        "answer": 1,
+        "why": "n % 10 is the last digit; n / 10 on integers drops it.",
+        "lang": "java"
+      },
+      {
+        "q": "Which pair of operations extracts and then removes the last digit of n?",
+        "options": ["n // 10, then n % 10", "n % 10, then n // 10", "n * 10, then n + 10", "n - 10, then n % 10"],
+        "answer": 1,
+        "why": "n % 10 is the last digit; n // 10 drops it. n / 10 would leave a float.",
+        "lang": "python"
+      },
+      {
+        "q": "Which pair of operations extracts and then removes the last digit of n?",
         "options": [
-          "n / 10, then n % 10",
-          "n % 10, then n / 10",
+          "Math.floor(n / 10), then n % 10",
+          "n % 10, then Math.floor(n / 10)",
           "n * 10, then n + 10",
           "n - 10, then n % 10"
         ],
         "answer": 1,
-        "why": "n % 10 is the last digit; n / 10 (integer division) drops it."
+        "why": "n % 10 is the last digit; Math.floor(n / 10) drops it. n / 10 alone keeps decimals.",
+        "lang": "javascript"
       },
       {
         "q": "What should a running product start at?",
-        "options": [
-          "0",
-          "1",
-          "n",
-          "-1"
-        ],
+        "options": ["0", "1", "n", "-1"],
         "answer": 1,
         "why": "Starting at 0 would make every product 0. 1 is the identity for multiplication."
       },
       {
-        "q": "In Python, which numbers does range(1, 5) produce?",
-        "options": [
-          "1 2 3 4 5",
-          "1 2 3 4",
-          "0 1 2 3 4",
-          "2 3 4 5"
-        ],
+        "q": "Which numbers does for (int i = 1; i < 5; i++) visit?",
+        "options": ["1 2 3 4 5", "1 2 3 4", "0 1 2 3 4", "2 3 4 5"],
         "answer": 1,
-        "why": "range stops before the end value."
+        "why": "The condition i < 5 stops before 5.",
+        "lang": "java"
+      },
+      {
+        "q": "Which numbers does range(1, 5) produce?",
+        "options": ["1 2 3 4 5", "1 2 3 4", "0 1 2 3 4", "2 3 4 5"],
+        "answer": 1,
+        "why": "range stops before the end value.",
+        "lang": "python"
+      },
+      {
+        "q": "Which numbers does for (let i = 1; i < 5; i++) visit?",
+        "options": ["1 2 3 4 5", "1 2 3 4", "0 1 2 3 4", "2 3 4 5"],
+        "answer": 1,
+        "why": "The condition i < 5 stops before 5.",
+        "lang": "javascript"
       },
       {
         "q": "To test whether x is prime, the divisor loop can stop when…",
-        "options": [
-          "d reaches x",
-          "d reaches x / 2",
-          "d * d exceeds x",
-          "d reaches 10"
-        ],
+        "options": ["d reaches x", "d reaches x / 2", "d * d exceeds x", "d reaches 10"],
         "answer": 2,
-        "why": "If x has a divisor larger than √x, it must also have one smaller than √x."
+        "why": "If x has a divisor larger than its square root, it must also have one smaller."
       },
       {
         "q": "For a centred pyramid with n rows, how many stars are in row i (1-based)?",
-        "options": [
-          "i",
-          "2i",
-          "2i - 1",
-          "n - i"
-        ],
+        "options": ["i", "2i", "2i - 1", "n - i"],
         "answer": 2,
         "why": "Rows have 1, 3, 5, … stars: the odd numbers 2i − 1."
       }
@@ -140,32 +190,37 @@
           "A loop and a return",
           "A base case and a step that makes the problem smaller",
           "Two recursive calls",
-          "A global variable and a print"
+          "A global variable and an output statement"
         ],
         "answer": 1,
         "why": "Without a base case it never stops; without shrinking it never reaches the base case."
       },
       {
-        "q": "What does this print for f(3)?  f(n): if n == 0 return; f(n-1); print(n)",
-        "options": [
-          "3 2 1",
-          "1 2 3",
-          "3",
-          "0 1 2 3"
-        ],
+        "q": "What does f(3) output?  f(n): if n == 0 return; f(n-1); then output n",
+        "options": ["3 2 1", "1 2 3", "3", "0 1 2 3"],
         "answer": 1,
         "why": "Printing after the call means the deepest call (n = 1) prints first."
       },
       {
-        "q": "What error do you get when recursion never reaches its base case in Java?",
-        "options": [
-          "NullPointerException",
-          "ArithmeticException",
-          "StackOverflowError",
-          "OutOfBoundsException"
-        ],
+        "q": "What error do you get when recursion never reaches its base case?",
+        "options": ["NullPointerException", "ArithmeticException", "StackOverflowError", "OutOfBoundsException"],
         "answer": 2,
-        "why": "Every call uses a stack frame; endless calls exhaust the stack."
+        "why": "Every call uses a stack frame; endless calls exhaust the stack.",
+        "lang": "java"
+      },
+      {
+        "q": "What error do you get when recursion never reaches its base case?",
+        "options": ["NameError", "ZeroDivisionError", "RecursionError", "IndexError"],
+        "answer": 2,
+        "why": "Every call uses a stack frame; endless calls exhaust the stack.",
+        "lang": "python"
+      },
+      {
+        "q": "What error do you get when recursion never reaches its base case?",
+        "options": ["TypeError", "SyntaxError", "RangeError", "ReferenceError"],
+        "answer": 2,
+        "why": "Every call uses a stack frame; endless calls raise RangeError: Maximum call stack size exceeded.",
+        "lang": "javascript"
       },
       {
         "q": "Why is plain recursive fib(40) slow?",
@@ -173,19 +228,14 @@
           "Recursion is always slow",
           "It recomputes the same values many times",
           "Additions are expensive",
-          "Java limits recursion to 40 levels"
+          "Recursion is limited to 40 levels"
         ],
         "answer": 1,
         "why": "The call tree repeats subproblems exponentially. Memoisation stores each answer once."
       },
       {
         "q": "How many multiplications does fast power need for x^64 (roughly)?",
-        "options": [
-          "64",
-          "32",
-          "about 6",
-          "1"
-        ],
+        "options": ["64", "32", "about 6", "1"],
         "answer": 2,
         "why": "Halving the exponent each time: 64 → 32 → 16 → 8 → 4 → 2 → 1."
       }
@@ -200,50 +250,42 @@
     "quiz": [
       {
         "q": "What is the last valid index of an array with length n?",
-        "options": [
-          "n",
-          "n - 1",
-          "n + 1",
-          "0"
-        ],
+        "options": ["n", "n - 1", "n + 1", "0"],
         "answer": 1,
         "why": "Indexes start at 0, so they run from 0 to n − 1."
       },
       {
-        "q": "When finding the maximum, what is the safest starting value for `best`?",
-        "options": [
-          "0",
-          "-1",
-          "arr[0]",
-          "Integer.MAX_VALUE"
-        ],
+        "q": "When finding the maximum, what is the safest starting value for best?",
+        "options": ["0", "-1", "arr[0]", "the largest possible number"],
         "answer": 2,
         "why": "0 fails when every element is negative. Starting from the first element always works."
       },
       {
         "q": "To visit every pair (i, j) exactly once with i < j, the inner loop should start at…",
-        "options": [
-          "0",
-          "i",
-          "i + 1",
-          "n - 1"
-        ],
+        "options": ["0", "i", "i + 1", "n - 1"],
         "answer": 2,
         "why": "Starting at i + 1 skips pairing an element with itself and avoids counting (j, i) again."
       },
       {
         "q": "After rotating right by k, element at index i moves to…",
-        "options": [
-          "i + k",
-          "(i + k) % n",
-          "i - k",
-          "k"
-        ],
+        "options": ["i + k", "(i + k) % n", "i - k", "k"],
         "answer": 1,
         "why": "Modulo wraps the index around the end of the array."
       },
       {
-        "q": "What's wrong with `grid = [[0] * 3] * 3` in Python?",
+        "q": "What's wrong with filling every slot of a 2D array with the same int[] row?",
+        "options": [
+          "Syntax error",
+          "It stores 3 references to the same row",
+          "It creates a 9-element flat array",
+          "Nothing"
+        ],
+        "answer": 1,
+        "why": "Assigning one array to every row means changing one row changes all of them. new int[3][3] allocates each row separately.",
+        "lang": "java"
+      },
+      {
+        "q": "What's wrong with grid = [[0] * 3] * 3?",
         "options": [
           "Syntax error",
           "It makes 3 references to the same row",
@@ -251,7 +293,20 @@
           "Nothing"
         ],
         "answer": 1,
-        "why": "Multiplying the outer list copies the reference, so changing one row changes all three."
+        "why": "Multiplying the outer list copies the reference, so changing one row changes all three.",
+        "lang": "python"
+      },
+      {
+        "q": "What's wrong with grid = new Array(3).fill([])?",
+        "options": [
+          "Syntax error",
+          "It stores 3 references to the same row",
+          "It creates a 9-element flat array",
+          "Nothing"
+        ],
+        "answer": 1,
+        "why": "fill copies the reference, so changing one row changes all three.",
+        "lang": "javascript"
       }
     ]
   },
@@ -263,37 +318,67 @@
     "color": "#f472b6",
     "quiz": [
       {
-        "q": "How should you compare two Strings for equal text in Java?",
-        "options": [
-          "a == b",
-          "a.equals(b)",
-          "a = b",
-          "a.compare(b)"
-        ],
+        "q": "How should you compare two strings for equal text?",
+        "options": ["a == b", "a.equals(b)", "a = b", "a.compare(b)"],
         "answer": 1,
-        "why": "== compares object references; .equals compares the characters."
+        "why": "== compares references; .equals compares the characters.",
+        "lang": "java"
       },
       {
-        "q": "Why use StringBuilder instead of s = s + c inside a loop?",
+        "q": "How should you compare two strings for equal text?",
+        "options": ["a is b", "a == b", "a = b", "len(a) == len(b)"],
+        "answer": 1,
+        "why": "== compares the characters. is compares object identity, and equal lengths are not enough.",
+        "lang": "python"
+      },
+      {
+        "q": "How should you compare two strings for equal text?",
+        "options": ["a = b", "a === b", "a != b", "a.length"],
+        "answer": 1,
+        "why": "=== compares the characters. Prefer it over ==, which coerces types.",
+        "lang": "javascript"
+      },
+      {
+        "q": "Why build with a StringBuilder instead of s = s + c inside a loop?",
         "options": [
-          "It's required by Java",
+          "It's required",
           "Strings are immutable, so + creates a new string every time",
           "+ doesn't work with chars",
           "StringBuilder sorts the text"
         ],
         "answer": 1,
-        "why": "Each + copies the whole string, turning a linear loop into a quadratic one."
+        "why": "Each + copies the whole string, turning a linear loop into a quadratic one.",
+        "lang": "java"
       },
       {
-        "q": "For lowercase letters, what does c - 'a' give?",
+        "q": "Why build with a list and join instead of s = s + c inside a loop?",
         "options": [
-          "The ASCII code",
-          "A number from 0 to 25",
-          "The uppercase letter",
-          "Always 0"
+          "It's required",
+          "Strings are immutable, so + creates a new string every time",
+          "+ doesn't work with characters",
+          "join sorts the text"
         ],
         "answer": 1,
-        "why": "'a' maps to 0, 'b' to 1, … 'z' to 25: perfect for indexing an int[26]."
+        "why": "Each + copies the whole string, turning a linear loop into a quadratic one.",
+        "lang": "python"
+      },
+      {
+        "q": "Why can s = s + c inside a loop get slow for very long strings?",
+        "options": [
+          "It's a syntax error",
+          "Strings are immutable, so each + may copy the whole string",
+          "+ doesn't work with characters",
+          "It sorts the text"
+        ],
+        "answer": 1,
+        "why": "Each + copies the characters so far. Collecting pieces in an array and joining avoids that.",
+        "lang": "javascript"
+      },
+      {
+        "q": "For lowercase letters, what does the distance from 'a' give?",
+        "options": ["The character code itself", "A number from 0 to 25", "The uppercase letter", "Always 0"],
+        "answer": 1,
+        "why": "'a' maps to 0, 'b' to 1, … 'z' to 25: perfect for indexing an array of 26 counters."
       },
       {
         "q": "Two strings are anagrams when…",
@@ -308,12 +393,7 @@
       },
       {
         "q": "When adding two binary strings, where do you start?",
-        "options": [
-          "Leftmost digits",
-          "Rightmost digits",
-          "The middle",
-          "The longer string's start"
-        ],
+        "options": ["Leftmost digits", "Rightmost digits", "The middle", "The longer string's start"],
         "answer": 1,
         "why": "Like grade-school addition: least significant digits first, carrying to the left."
       }
@@ -332,19 +412,14 @@
           "Look up the solution",
           "Work a smaller example by hand",
           "Rewrite in another language",
-          "Add more print statements at random"
+          "Add output statements at random"
         ],
         "answer": 1,
         "why": "A tiny worked example usually reveals the missing rule."
       },
       {
-        "q": "In base conversion, in which order do digits come out of the % / loop?",
-        "options": [
-          "Most significant first",
-          "Least significant first (reversed)",
-          "Random",
-          "Sorted"
-        ],
+        "q": "In base conversion, in which order do digits come out of the remainder loop?",
+        "options": ["Most significant first", "Least significant first (reversed)", "Random", "Sorted"],
         "answer": 1,
         "why": "n % b gives the last digit first, so you prepend or reverse at the end."
       },
@@ -354,16 +429,16 @@
           "To avoid overflow",
           "Because columns have no zero digit (A=1 … Z=26)",
           "To make it faster",
-          "Because Java arrays start at 0"
+          "Because arrays start at 0"
         ],
         "answer": 1,
         "why": "Shifting 1..26 to 0..25 lets ordinary base-26 math work."
       },
       {
-        "q": "In spiral traversal, why check `top <= bottom` again before walking the bottom row?",
+        "q": "In spiral traversal, why check top <= bottom again before walking the bottom row?",
         "options": [
           "Style only",
-          "So a single remaining row isn't printed twice",
+          "So a single remaining row isn't walked twice",
           "To make it run faster",
           "It isn't needed"
         ],

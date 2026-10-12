@@ -30,6 +30,12 @@ export function Flame({ lit, size = 18 }: { lit: boolean; size?: number }) {
 
 const icons = {
   home: <path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" />,
+  camp: (
+    <>
+      <path d="M3 20L12 5l9 15z" />
+      <path d="M12 5v15M9 20l3-5 3 5" />
+    </>
+  ),
   profile: (
     <>
       <circle cx="12" cy="8" r="4" />
@@ -83,6 +89,9 @@ export function Sidebar() {
       <nav className="side-nav">
         <NavLink to="/" end>
           <Icon name="home" /> <span>Trail</span>
+        </NavLink>
+        <NavLink to="/basecamp">
+          <Icon name="camp" /> <span>Basecamp</span>
         </NavLink>
         <NavLink to="/profile">
           <Icon name="profile" /> <span>Profile</span>

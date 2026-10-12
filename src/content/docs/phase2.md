@@ -23,7 +23,19 @@ while (n > 0) { ... }                   // you know when to stop
 do { ... } while (cond);                // runs at least once
 ```
 
-A loop that runs n times goes either from 1 to n (`<=`) or from 0 to n − 1 (`<`). Mixing the two up is the most common off-by-one bug. In Python, `range(a, b)` stops **before** `b`.
+A loop that runs n times goes either from 1 to n or from 0 to n − 1. Mixing the two up is the most common off-by-one bug.
+
+:::only java
+Write `i <= n` to include n, and `i < n` to stop just before it.
+:::
+
+:::only python
+`range(a, b)` stops **before** `b`, so `range(1, n + 1)` is 1 through n.
+:::
+
+:::only javascript
+Write `i <= n` to include n, and `i < n` to stop just before it.
+:::
 
 ## 2. Accumulators
 
@@ -54,7 +66,19 @@ for (let i = 1; i <= n; i++) sum += i;
 
 ## 3. Pulling digits apart
 
-`% 10` gives the last digit, `/ 10` removes it. This one loop powers digit sums, reversing numbers, palindromes and Armstrong numbers.
+`% 10` gives the last digit. Dividing by 10 drops it. This one loop powers digit sums, reversing numbers, palindromes and Armstrong numbers.
+
+:::only java
+`temp /= 10` removes the last digit. `/` on whole numbers truncates toward zero.
+:::
+
+:::only python
+`temp //= 10` removes the last digit. `/` would leave a float; `//` is floor division, which for a positive digit is the drop you want.
+:::
+
+:::only javascript
+`temp = Math.floor(temp / 10)` removes the last digit. `/` alone keeps the decimals.
+:::
 
 ```java
 int temp = n;
@@ -151,7 +175,19 @@ for (let i = 1; i <= n; i++) {
 
 ## 6. Print vs return
 
-Pattern problems use **print mode**: `solve` prints directly. In Java, `System.out.print` stays on the line and `System.out.println` ends it. In Python, `print(x, end=" ")` stays on the line. In JavaScript every `console.log` ends the line, so build the row in a string first and log it once.
+Pattern problems use **print mode**: `solve` prints directly and does not return the lines.
+
+:::only java
+`System.out.print` stays on the line. `System.out.println` ends it. Returning a string is not the same as printing it.
+:::
+
+:::only python
+`print(x, end=" ")` stays on the line. A plain `print(x)` ends it. Returning a string is not the same as printing it.
+:::
+
+:::only javascript
+Every `console.log` ends the line, so build the row in a string first and log it once. Returning a string is not the same as printing it.
+:::
 
 ## 7. Loops that might never end
 

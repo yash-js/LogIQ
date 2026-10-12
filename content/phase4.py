@@ -35,7 +35,9 @@ def max_min(arr):
          gen=rand_arr(-10**6, 10**6, 1, 10**4), gen_count=3,
          hints=["How many variables do you need to keep across the loop?",
                 "Remember the negative-number trap with `%` from Phase 1.",
-                "Use `x % 2 == 0` for even; keep the sum in a long."])
+                {"java": "Use x % 2 == 0 for even. Keep the sum in a long: 10^4 values of size 10^6 do not fit in an int.",
+                 "python": "Use x % 2 == 0 for even. The sum fits in an ordinary integer. For negatives, compare the remainder with 0, not 1.",
+                 "javascript": "Use x % 2 === 0 for even. The sum stays exact in a normal number. For negatives, compare the remainder with 0, not 1."}])
 def evens_odds_sum(arr):
     e = sum(1 for x in arr if x % 2 == 0)
     return [e, len(arr) - e, sum(arr)]
@@ -144,7 +146,7 @@ def candies(candies, extra):
          gen=rand_arr(-100, 100, 1, 100), gen_count=2,
          hints=["Which two values change as you walk the array?",
                 "Should the best altitude start at 0 or at the first gain?",
-                "alt += gain[i]; best = max(best, alt); best starts at 0."],
+                "Add gain[i] to the altitude. best is the larger of best and the altitude, and best starts at 0."],
          practice=("LeetCode 1732: Find the Highest Altitude", "https://leetcode.com/problems/find-the-highest-altitude/"))
 def altitude(gain):
     best = alt = 0
@@ -165,7 +167,9 @@ def altitude(gain):
          gen=rand_arr(1, 10**5, 1, 500), gen_count=2,
          hints=["You wrote a digit counter in Phase 2. Can you make it a function?",
                 "Call it for each element.",
-                "count += (digits(x) % 2 == 0) ? 1 : 0."],
+                {"java": "count += (digitCount(x) % 2 == 0) ? 1 : 0.",
+                 "python": "if the digit count is even: count += 1.",
+                 "javascript": "count += digitCount(x) % 2 === 0 ? 1 : 0."}],
          practice=("LeetCode 1295: Find Numbers with Even Number of Digits",
                    "https://leetcode.com/problems/find-numbers-with-even-number-of-digits/"))
 def even_digits(nums):
@@ -259,7 +263,9 @@ def shuffle(nums):
          gen=rand_arr(-1000, 1000, 1, 10**4), gen_count=2,
          hints=["Which element swaps with arr[0]? With arr[1]?",
                 "When should the swapping stop?",
-                "l = 0, r = n−1; while l < r: swap, l++, r--."],
+                {"java": "l = 0, r = n - 1; while l < r: swap, then l++ and r--.",
+                 "python": "l, r = 0, len(arr) - 1; while l < r: swap, then l += 1 and r -= 1.",
+                 "javascript": "l = 0, r = n - 1; while l < r: swap, then l++ and r--."}],
          practice=("LeetCode 344: Reverse String", "https://leetcode.com/problems/reverse-string/"))
 def reverse_arr(arr):
     return arr[::-1]
@@ -277,7 +283,9 @@ def reverse_arr(arr):
          gen=rand_arr(-50, 50, 1, 10**4), gen_count=2,
          hints=["Start with the second-largest version: which two variables do you keep?",
                 "When a new number beats `first`, what happens to `second` and `third`?",
-                "Skip numbers equal to first/second/third. Use long with Long.MIN_VALUE as 'empty'."],
+                {"java": "Skip values equal to first, second or third. Use long, and Long.MIN_VALUE means empty.",
+                 "python": "Skip values equal to first, second or third. Use None for empty, because every integer is a real value.",
+                 "javascript": "Skip values equal to first, second or third. Use null for empty, because every number is a real value."}],
          practice=("LeetCode 414: Third Maximum Number", "https://leetcode.com/problems/third-maximum-number/"))
 def third_max(nums):
     s = sorted(set(nums), reverse=True)
@@ -295,7 +303,7 @@ def third_max(nums):
          gen=rand_arr(0, 1, 1, 10**5), gen_count=1,
          hints=["What should happen to the current streak when you see a 0?",
                 "When do you update the best streak?",
-                "cur = (x == 1) ? cur + 1 : 0; best = max(best, cur)."],
+                "If the value is 1, the streak grows by 1; otherwise the streak is 0. best is the larger of best and the streak."],
          practice=("LeetCode 485: Max Consecutive Ones", "https://leetcode.com/problems/max-consecutive-ones/"))
 def max_ones(nums):
     best = cur = 0
@@ -334,7 +342,7 @@ def sorted_rotated(nums):
          tests=[([1, 2, 2, 3],), ([6, 5, 4, 4],), ([1, 3, 2],), ([5],), ([2, 2, 2],), ([1, 1, 0, 1],)],
          hints=["Can you track two possibilities at once?",
                 "Which pair breaks 'non-decreasing'? Which breaks 'non-increasing'?",
-                "inc = dec = true; for each pair flip the right flag; return inc || dec."],
+                "Start both flags true. For each neighbouring pair, clear the flag that pair breaks. The array is monotonic if either flag is still true."],
          practice=("LeetCode 896: Monotonic Array", "https://leetcode.com/problems/monotonic-array/"))
 def monotonic(nums):
     inc = all(nums[i] <= nums[i + 1] for i in range(len(nums) - 1))
@@ -387,7 +395,9 @@ def evens_first(nums):
          gen=lambda r: ([r.choice([0, 0, r.randint(-100, 100)]) for _ in range(r.randint(1, 10**4))],), gen_count=2,
          hints=["Imagine copying only the non-zero numbers to the front. Where does each one go?",
                 "After that copy, what is left to fill?",
-                "k = 0; for each x != 0: nums[k++] = x; then fill nums[k..] with 0."],
+                {"java": "k = 0; for each x != 0: nums[k++] = x; then fill the rest with 0.",
+                 "python": "k = 0; for each x != 0: nums[k] = x; k += 1; then fill the rest with 0.",
+                 "javascript": "k = 0; for each x !== 0: nums[k++] = x; then fill the rest with 0."}],
          practice=("LeetCode 283: Move Zeroes", "https://leetcode.com/problems/move-zeroes/"))
 def move_zeroes(nums):
     nz = [x for x in nums if x != 0]
@@ -405,7 +415,9 @@ def move_zeroes(nums):
          gen=lambda r: (sorted(r.randint(-100, 100) for _ in range(r.randint(1, 3 * 10**4))),), gen_count=1,
          hints=["In a sorted array, where are the duplicates of a value?",
                 "Compare each element with the last unique one you kept.",
-                "k = 1; if nums[i] != nums[k−1]: nums[k++] = nums[i]. Return the first k."],
+                {"java": "k = 1; if nums[i] != nums[k - 1]: nums[k++] = nums[i]. Return the first k elements.",
+                 "python": "k = 1; if nums[i] != nums[k - 1]: nums[k] = nums[i]; k += 1. Return the first k elements.",
+                 "javascript": "k = 1; if nums[i] !== nums[k - 1]: nums[k++] = nums[i]. Return the first k elements."}],
          practice=("LeetCode 26: Remove Duplicates from Sorted Array",
                    "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"))
 def remove_dups(nums):
@@ -465,7 +477,7 @@ def missing(nums):
          tests=[([1, 2, 3, 1],), ([1, 2, 3, 4],), ([1, 1, 1, 3, 3, 4, 3, 2, 4, 2],), ([5],), (list(range(2000)),)],
          hints=["Which pairs do you need to compare?",
                 "Can you stop early?",
-                "Two loops with j > i; return true as soon as nums[i] == nums[j]."],
+                "Two loops with j > i; as soon as nums[i] == nums[j], you have found one."],
          practice=("LeetCode 217: Contains Duplicate", "https://leetcode.com/problems/contains-duplicate/"))
 def contains_dup(nums):
     return len(set(nums)) != len(nums)
@@ -542,7 +554,7 @@ def pivot(nums):
          gen=rand_arr(0, 10**4, 1, 10**5), gen_count=1,
          hints=["If you sell on day i, what is the best day to have bought?",
                 "Can you remember the cheapest price seen so far as you walk forward?",
-                "minSoFar = min(minSoFar, p); best = max(best, p − minSoFar)."],
+                "Remember the cheapest price so far. The best profit is the larger of the current best and (this price minus that cheapest price)."],
          practice=("LeetCode 121: Best Time to Buy and Sell Stock",
                    "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"))
 def stock(prices):
@@ -565,7 +577,9 @@ def stock(prices):
          gen_count=1,
          hints=["If the input is 2×3, what size is the output?",
                 "Where does matrix[i][j] go?",
-                "ans = new int[cols][rows]; ans[j][i] = matrix[i][j]."],
+                {"java": "ans = new int[cols][rows]; ans[j][i] = matrix[i][j].",
+                 "python": "ans = [[0] * rows for _ in range(cols)]; ans[j][i] = matrix[i][j]. Build each row on its own.",
+                 "javascript": "ans = Array.from({ length: cols }, () => new Array(rows).fill(0)); ans[j][i] = matrix[i][j]."}],
          practice=("LeetCode 867: Transpose Matrix", "https://leetcode.com/problems/transpose-matrix/"))
 def transpose(matrix):
     return [list(r) for r in zip(*matrix)]

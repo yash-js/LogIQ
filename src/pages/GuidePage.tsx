@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import { docFor, LANGS, phaseById } from "../content";
-import { Markdown, slug } from "../components/Markdown";
+import { filterForLang, Markdown, slug } from "../components/Markdown";
 import { useProgress } from "../lib/progress";
 import { isPhaseOpen } from "../lib/game";
 
@@ -15,8 +15,15 @@ export function GuidePage() {
   const { markDocRead, recordQuiz } = state;
   const lang = state.settings.lang;
   const endRef = useRef<HTMLDivElement>(null);
-  const [picks, setPicks] = useState<(number | null)[]>(() => phase?.quiz.map(() => null) ?? []);
+  const quiz = phase ? phase.quiz.filter((q) => !q.lang || q.lang === lang) : [];
+  const [picks, setPicks] = useState<(number | null)[]>(() => quiz.map(() => null));
   const [checked, setChecked] = useState(false);
+  const [quizKey, setQuizKey] = useState(`${id}:${lang}`);
+  if (quizKey !== `${id}:${lang}`) {
+    setQuizKey(`${id}:${lang}`);
+    setPicks(quiz.map(() => null));
+    setChecked(false);
+  }
 
   useEffect(() => {
     const el = endRef.current;
@@ -32,9 +39,9 @@ export function GuidePage() {
 
   if (!phase || !isPhaseOpen(state, id)) return <Navigate to="/" replace />;
 
-  const md = docFor(id);
+  const md = filterForLang(docFor(id), lang);
   const sections = md.split("\n").filter((l) => l.startsWith("## ")).map((l) => l.slice(3));
-  const score = phase.quiz.reduce((s, q, i) => s + (picks[i] === q.answer ? 1 : 0), 0);
+  const score = quiz.reduce((s, q, i) => s + (picks[i] === q.answer ? 1 : 0), 0);
   const passed = score >= PASS;
 
   const scrollTo = (sid: string) => (e: React.MouseEvent) => {
@@ -60,7 +67,7 @@ export function GuidePage() {
 
       <article>
         <div className="lang-note">
-          Code examples are in {LANGS.find((l) => l.id === lang)?.label}. Switch the language in the sidebar.
+          Written for {LANGS.find((l) => l.id === lang)?.label}. Switch the language in the sidebar.
         </div>
         <Markdown text={md} lang={lang} />
 
@@ -68,10 +75,10 @@ export function GuidePage() {
           <div className="quiz-head">
             <h2>Check your understanding</h2>
             <span className="small muted">
-              {PASS} of {phase.quiz.length} to pass · {state.docs[id]?.quizPassed ? "already passed" : "unlimited tries"}
+              {PASS} of {quiz.length} to pass · {state.docs[id]?.quizPassed ? "already passed" : "unlimited tries"}
             </span>
           </div>
-          {phase.quiz.map((q, qi) => (
+          {quiz.map((q, qi) => (
             <div className="quiz-q" key={qi}>
               <p>
                 {qi + 1}. {q.q}
@@ -97,7 +104,7 @@ export function GuidePage() {
           {!checked ? (
             <button
               className="btn btn-primary btn-lg"
-              disabled={picks.some((p) => p === null)}
+              disabled={picks.length !== quiz.length || picks.some((p) => p === null)}
               onClick={() => {
                 setChecked(true);
                 recordQuiz(id, score, score >= PASS);
@@ -108,7 +115,7 @@ export function GuidePage() {
           ) : passed ? (
             <div className="notice good">
               <strong>
-                {score}/{phase.quiz.length} correct. The trail is open.
+                {score}/{quiz.length} correct. The trail is open.
               </strong>
               <Link to={`/phase/${id}`} className="btn btn-gold">
                 Start solving
@@ -117,14 +124,14 @@ export function GuidePage() {
           ) : (
             <div className="notice bad">
               <strong>
-                {score}/{phase.quiz.length} correct.
+                {score}/{quiz.length} correct.
               </strong>
               <span>Read the explanations, then try again.</span>
               <button
                 className="btn btn-sm"
                 onClick={() => {
                   setChecked(false);
-                  setPicks(phase.quiz.map(() => null));
+                  setPicks(quiz.map(() => null));
                 }}
               >
                 Try again
