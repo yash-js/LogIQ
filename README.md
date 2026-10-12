@@ -14,6 +14,7 @@ No account, no internet needed, no server. Your progress stays on your machine.
   - [Windows](#windows)
   - [Linux](#linux)
 - [Build an installer](#build-an-installer)
+- [Releasing](#releasing)
 - [Your data and backups](#your-data-and-backups)
 - [Troubleshooting](#troubleshooting)
 - [For developers](#for-developers)
@@ -220,7 +221,17 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-`.github/workflows/release.yml` builds the Windows and Linux installers and attaches them to a draft release. You don't need Rust installed locally for this.
+`.github/workflows/release.yml` builds the Windows and Linux installers and publishes a GitHub Release. You don't need Rust installed locally for this. See [Releasing](#releasing).
+
+---
+
+## Releasing
+
+- One-time setup: on GitHub, open **Settings → Actions → General → Workflow permissions** and choose **Read and write permissions**.
+- First release: `git tag v0.1.0` then `git push origin v0.1.0`.
+- Later releases: `npm run release 0.1.1`.
+- The build takes about 10–15 minutes and attaches `.exe`, `.msi`, `.AppImage` and `.deb` to the release.
+- The landing page picks up the latest release automatically.
 
 ---
 

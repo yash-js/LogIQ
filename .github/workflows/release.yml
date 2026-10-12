@@ -1,9 +1,12 @@
-name: Build desktop app
+name: Release desktop app
 
 on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -42,7 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
-          releaseName: "LogIQ ${{ github.ref_name }}"
-          releaseDraft: true
+          tagName: v__VERSION__
+          releaseName: "LogIQ v__VERSION__"
+          releaseBody: "Download the installer for your system below. LogIQ runs your code with your installed runtime, so also install Java (JDK 17+), Python 3 or Node.js for the language you practice in."
+          releaseDraft: false
           prerelease: false
